@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investor Project Suggestions</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .wave-bg {
+      position: absolute;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      pointer-events: none;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 20px 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2.1rem;
+      color: #2980ef;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .no-projects {
+      color: #888;
+      font-size: 1.05rem;
+      font-style: italic;
+      text-align: center;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .suggested-title {
+      color: #22314a;
+      font-size: 1.18rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 30px;
+      width: 100%;
+    }
+    .card {
+      background: linear-gradient(180deg, #fff 80%, #e3f6fc 100%);
+      padding: 28px 24px 22px 24px;
+      border-radius: 22px;
+      width: 320px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      transition: 0.2s cubic-bezier(.4,2,.6,1);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1.5px solid #cbe7f6;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 36px rgba(41,128,239,0.13), 0 2px 8px rgba(0,0,0,0.10);
+      border-color: #2980ef;
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #27ae60;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: #22314a;
+      font-size: 1.05rem;
+      margin-bottom: 0;
+    }
+    @media (max-width: 900px) {
+      .cards { flex-direction: column; align-items: center; }
+      .card { width: 95vw; max-width: 370px; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 30px 2vw 20px 2vw; }
+      h1 { font-size: 1.3rem; }
+      .suggested-title { font-size: 1rem; }
+      .card { padding: 18px 8px 14px 8px; }
+    }
+  </style>
+</head>
+<body>
+  <svg class="wave-bg" viewBox="0 0 1440 320"><path fill="#b6e2d3" fill-opacity="0.35" d="M0,224L60,197.3C120,171,240,117,360,117.3C480,117,600,171,720,197.3C840,224,960,224,1080,197.3C1200,171,1320,117,1380,90.7L1440,64L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+  <div class="container">
+    <h1>Matching Projects for You</h1>
+    <div style="height: 9cm;"></div>
+    <div class="no-projects">There are currently no projects shared in your field.</div>
+    <div style="height: 10cm;"></div>
+    <div class="suggested-title">Projects you might be interested in:</div>
+    <div class="cards" id="projectCards"></div>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const interest = params.get('interest') || 'tech';
+    const budget = parseInt(params.get('budget')) || 1000;
+    const investmentType = params.get('investmentType') || 'grant';
+    const contact = params.get('contact') || 'view_profiles';
+
+    // Farklı interest ve bütçe aralıkları için örnek projeler
+    const projectTemplates = {
+      tech: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'AI-Powered Task Manager', description: 'A smart to-do app for small teams. Looking for micro-investment under $5000.' },
+            { title: 'Student Coding Platform', description: 'Affordable coding education for students. Seeking small-scale support.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'IoT Home Automation', description: 'Smart home devices for everyone. Seeking mid-level investment.' },
+            { title: 'Remote Work SaaS', description: 'A platform for distributed teams. Investment needed: $10,000 - $50,000.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Next-Gen Robotics Startup', description: 'Cutting-edge robotics for industry. Large-scale investment opportunity.' },
+            { title: 'AI Cloud Infrastructure', description: 'Scalable AI cloud for enterprises. Investment $50,000+.' },
+          ]
+        }
+      ],
+      health: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Wellness App', description: 'Mobile app for daily health tips. Small investment needed.' },
+            { title: 'Affordable Fitness Tracker', description: 'Low-cost wearable for health monitoring.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Telemedicine Platform', description: 'Connects doctors and patients remotely. Mid-level investment.' },
+            { title: 'Nutrition Analytics', description: 'AI-based nutrition advice for clinics.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Medical Device Innovation', description: 'Advanced diagnostic tools. Large investment needed.' },
+            { title: 'Health Data Platform', description: 'Big data for healthcare providers.' },
+          ]
+        }
+      ],
+      fashion: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Eco-Friendly Accessories', description: 'Handmade, sustainable products. Small investment.' },
+            { title: 'Local Designer Platform', description: 'Support for emerging designers.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Online Boutique', description: 'Trendy fashion e-commerce. Mid-level investment.' },
+            { title: 'Wearable Tech Fashion', description: 'Smart clothing for urban youth.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Global Fashion Brand', description: 'Expanding sustainable fashion worldwide.' },
+            { title: 'Fashion Tech Startup', description: 'AI-driven style recommendations.' },
+          ]
+        }
+      ],
+      environment: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Community Clean-Up App', description: 'Mobile app to organize local clean-up events. Small investment needed.' },
+            { title: 'Eco-Education Kits', description: 'Affordable kits for schools to teach sustainability.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Urban Green Roofs', description: 'Transforming city rooftops into gardens. Mid-level investment.' },
+            { title: 'Plastic Recycling Startup', description: 'Innovative recycling solutions for communities.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Renewable Energy Grid', description: 'Large-scale solar and wind integration. Major investment opportunity.' },
+            { title: 'Carbon Capture Tech', description: 'Advanced technology for reducing emissions.' },
+          ]
+        }
+      ],
+      education: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'After-School Tutoring', description: 'Affordable tutoring for underserved students.' },
+            { title: 'Language Learning App', description: 'Fun, gamified language lessons for kids.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Online Course Platform', description: 'Interactive courses for adult learners. Mid-level investment.' },
+            { title: 'STEM Kits for Schools', description: 'Hands-on science kits for classrooms.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Virtual University', description: 'Accredited online degrees for global students.' },
+            { title: 'EdTech AI Analytics', description: 'AI-driven learning analytics for institutions.' },
+          ]
+        }
+      ],
+      art: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Local Art Exhibitions', description: 'Pop-up galleries for emerging artists.' },
+            { title: 'Digital Art Marketplace', description: 'Platform for artists to sell digital works.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Art Therapy Program', description: 'Therapeutic art for communities.' },
+            { title: 'Augmented Reality Murals', description: 'Interactive murals using AR technology.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'International Art Fair', description: 'Global showcase for contemporary artists.' },
+            { title: 'AI Art Generator', description: 'AI-powered platform for creating unique art.' },
+          ]
+        }
+      ],
+      finance: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Personal Budgeting App', description: 'Simple app for managing daily expenses.' },
+            { title: 'Microloan Platform', description: 'Connecting small lenders and borrowers.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'SME Lending Service', description: 'Loans for small and medium businesses.' },
+            { title: 'Crowdfunding Portal', description: 'Platform for group investments.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'FinTech Analytics', description: 'Big data analytics for financial institutions.' },
+            { title: 'Digital Bank Startup', description: 'Next-gen online banking solutions.' },
+          ]
+        }
+      ],
+      media: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Podcast Network', description: 'Support for new podcast creators.' },
+            { title: 'Local News App', description: 'Hyperlocal news for communities.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Video Content Studio', description: 'Production for online creators.' },
+            { title: 'Digital Magazine', description: 'Interactive magazine for niche audiences.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Streaming Platform', description: 'Next-gen video streaming service.' },
+            { title: 'Media AI Tools', description: 'AI-powered editing and content creation.' },
+          ]
+        }
+      ],
+      science: [
+        {
+          min: 0, max: 5000,
+          projects: [
+            { title: 'Citizen Science App', description: 'Mobile app for public science projects.' },
+            { title: 'DIY Science Kits', description: 'Affordable kits for home experiments.' },
+          ]
+        },
+        {
+          min: 5001, max: 50000,
+          projects: [
+            { title: 'Lab Equipment Sharing', description: 'Platform for sharing lab resources.' },
+            { title: 'Science Education Channel', description: 'Online science videos for all ages.' },
+          ]
+        },
+        {
+          min: 50001, max: Infinity,
+          projects: [
+            { title: 'Space Research Startup', description: 'Private sector space research and tech.' },
+            { title: 'Genomics Data Platform', description: 'Big data for genetic research.' },
+          ]
+        }
+      ],
+      // Diğer kategoriler eklenebilir...
+    };
+
+    // Uygun projeleri bul
+    let selectedProjects = [];
+    if (projectTemplates[interest]) {
+      for (const range of projectTemplates[interest]) {
+        if (budget >= range.min && budget <= range.max) {
+          selectedProjects = range.projects;
+          break;
+        }
+      }
+    }
+    // Eğer kategori yoksa veya eşleşme yoksa, generic örnekler göster
+    if (selectedProjects.length === 0) {
+      selectedProjects = [
+        {
+          title: `Innovative ${interest.charAt(0).toUpperCase() + interest.slice(1)} Startup`,
+          description: `Looking for ${investmentType} investment to scale a new ${interest} idea under $${budget}.`,
+        },
+        {
+          title: `Sustainable ${interest.charAt(0).toUpperCase() + interest.slice(1)} Solution`,
+          description: `Promising project seeking support via ${investmentType}. Budget-friendly option for investors.`,
+        },
+        {
+          title: `Next-Gen ${interest.charAt(0).toUpperCase() + interest.slice(1)} Platform`,
+          description: `Opportunity to invest in a forward-thinking ${interest} project with ${contact.replace('_', ' ')}.`
+        },
+      ];
+    }
+
+    const container = document.getElementById('projectCards');
+    selectedProjects.forEach(project => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${project.title}</h3>
+        <p>${project.description}</p>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>

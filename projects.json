@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "title": "EcoTech Smart Home",
+    "description": "AI-powered smart home system that optimizes energy consumption and reduces carbon footprint. Features include intelligent climate control, automated lighting, and real-time energy monitoring.",
+    "category": "Technology",
+    "funding": 50000,
+    "creator": "tech_innovator",
+    "status": "active",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "investors": [],
+    "likes": 12
+  },
+  {
+    "id": "2",
+    "title": "HealthAI Mobile App",
+    "description": "Revolutionary health monitoring app that uses AI to predict health issues before they become serious. Integrates with wearable devices and provides personalized health recommendations.",
+    "category": "Healthcare",
+    "funding": 75000,
+    "creator": "health_entrepreneur",
+    "status": "active",
+    "createdAt": "2024-01-10T14:20:00.000Z",
+    "investors": [],
+    "likes": 8
+  },
+  {
+    "id": "3",
+    "title": "Green Energy Solutions",
+    "description": "Sustainable energy solutions for small businesses. Solar panel installation and maintenance services with innovative financing options.",
+    "category": "Environment",
+    "funding": 30000,
+    "creator": "green_innovator",
+    "status": "active",
+    "createdAt": "2024-01-08T09:15:00.000Z",
+    "investors": [],
+    "likes": 15
+  },
+  {
+    "id": "4",
+    "title": "EduTech Learning Platform",
+    "description": "Interactive online learning platform for children with special needs. Uses AI to adapt content and provide personalized learning experiences.",
+    "category": "Education",
+    "funding": 40000,
+    "creator": "edu_innovator",
+    "status": "active",
+    "createdAt": "2024-01-05T16:45:00.000Z",
+    "investors": [],
+    "likes": 6
+  },
+  {
+    "id": "5",
+    "title": "Urban Farming Network",
+    "description": "Community-based urban farming initiative that connects local farmers with consumers. Includes mobile app for ordering fresh produce and educational programs.",
+    "category": "Food & Agriculture",
+    "funding": 25000,
+    "creator": "urban_farmer",
+    "status": "active",
+    "createdAt": "2024-01-03T11:30:00.000Z",
+    "investors": [],
+    "likes": 20
+  }
+] 

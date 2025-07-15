@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up - IDEAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signup-container {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      padding: 40px 32px 32px 32px;
+      max-width: 450px;
+      width: 100%;
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .signup-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2980ef;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .signup-desc {
+      font-size: 1.05rem;
+      color: #3d4c5c;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    label {
+      font-weight: 600;
+      color: #22314a;
+      margin-bottom: 4px;
+      font-size: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1.5px solid #cbe7f6;
+      border-radius: 10px;
+      background: #f7fafd;
+      box-shadow: 0 2px 8px rgba(41,128,239,0.04);
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border: 1.5px solid #2980ef;
+      outline: none;
+      background: #e3f6fc;
+    }
+    .user-type-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .user-type-option {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #cbe7f6;
+      border-radius: 10px;
+      background: #f7fafd;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 600;
+      color: #3d4c5c;
+      transition: all 0.2s;
+    }
+    .user-type-option:hover {
+      border-color: #2980ef;
+      background: #e3f6fc;
+    }
+    .user-type-option.selected {
+      border-color: #2980ef;
+      background: #2980ef;
+      color: #fff;
+    }
+    .user-type-option.entrepreneur.selected {
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      border-color: #2ecc71;
+    }
+    .user-type-option.investor.selected {
+      background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+      border-color: #2980ef;
+    }
+    button {
+      background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 32px;
+      box-shadow: 0 6px 24px rgba(41,128,239,0.13), 0 2px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(41,128,239,0.20);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .success-message {
+      color: #27ae60;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .signup-container {
+        padding: 24px 16px 20px 16px;
+        margin: 16px;
+      }
+      .user-type-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="signup-title">Create Your Account</div>
+    <div class="signup-desc">Sign up to IDEAI and start your journey!</div>
+    <form id="signupForm">
+      <div>
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="firstname" required>
+      </div>
+      <div>
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname" required>
+      </div>
+      <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required minlength="6">
+        <div class="error-message" id="passwordError">Password must be at least 6 characters long</div>
+      </div>
+      <div>
+        <label for="password2">Repeat Password</label>
+        <input type="password" id="password2" name="password2" required>
+        <div class="error-message" id="password2Error">Passwords do not match</div>
+      </div>
+      <div>
+        <label>I am a:</label>
+        <div class="user-type-container">
+          <div class="user-type-option entrepreneur" data-type="entrepreneur">
+            <div style="font-size: 1.2rem; margin-bottom: 4px;">🚀</div>
+            Entrepreneur
+          </div>
+          <div class="user-type-option investor" data-type="investor">
+            <div style="font-size: 1.2rem; margin-bottom: 4px;">💰</div>
+            Investor
+          </div>
+        </div>
+        <div class="error-message" id="userTypeError">Please select your user type</div>
+      </div>
+      <button type="submit" id="submitBtn">Create Account</button>
+      <div class="success-message" id="successMessage">Account created successfully!</div>
+    </form>
+    <script>
+    let selectedUserType = '';
+    
+    // User type selection
+    document.querySelectorAll('.user-type-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.user-type-option').forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedUserType = this.dataset.type;
+        document.getElementById('userTypeError').style.display = 'none';
+      });
+    });
+
+    // Form validation
+    function validateForm() {
+      let isValid = true;
+      
+      // Password validation
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+      
+      if (password.length < 6) {
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('passwordError').style.display = 'none';
+      }
+      
+      if (password !== password2) {
+        document.getElementById('password2Error').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('password2Error').style.display = 'none';
+      }
+      
+      if (!selectedUserType) {
+        document.getElementById('userTypeError').style.display = 'block';
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // Form submission
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const successMessage = document.getElementById('successMessage');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Account...';
+      
+      const data = {
+        firstname: document.getElementById('firstname').value,
+        lastname: document.getElementById('lastname').value,
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        userType: selectedUserType
+      };
+      
+      try {
+        const res = await fetch('http://localhost:5000/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await res.json();
+        
+        if (res.ok) {
+          // Store user data
+          localStorage.setItem('username', data.username);
+          localStorage.setItem('firstname', data.firstname);
+          localStorage.setItem('userType', data.userType);
+          
+          successMessage.style.display = 'block';
+          submitBtn.textContent = 'Account Created!';
+          
+          // Redirect after 1 second
+          setTimeout(() => {
+            window.location.href = 'index.html.html';
+          }, 1000);
+        } else {
+          alert('Sign up failed: ' + (result.message || 'Unknown error'));
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Account';
+        }
+      } catch (err) {
+        alert('Network error! Please check your connection.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    });
+    </script>
+  </div>
+</body>
+</html> 

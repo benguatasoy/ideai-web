@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDEAI - Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2980ef;
+            text-decoration: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: 700;
+            color: #22314a;
+            font-size: 1rem;
+        }
+        
+        .user-type {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: #f7fafd;
+            color: #2980ef;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: #e3f6fc;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 24px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #22314a;
+            margin-bottom: 8px;
+        }
+        
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            color: #3d4c5c;
+            margin-bottom: 32px;
+        }
+        
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2980ef;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #3d4c5c;
+            font-weight: 600;
+        }
+        
+        /* Admin Actions */
+        .actions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        .action-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 8px;
+        }
+        
+        .action-description {
+            color: #3d4c5c;
+            line-height: 1.6;
+        }
+        
+        /* Data Tables */
+        .data-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 24px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e3f6fc;
+        }
+        
+        .data-table th {
+            background: #f7fafd;
+            font-weight: 700;
+            color: #22314a;
+        }
+        
+        .data-table tr:hover {
+            background: #f7fafd;
+        }
+        
+        .user-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .user-type-badge.entrepreneur {
+            background: #e8f5e8;
+            color: #27ae60;
+        }
+        
+        .user-type-badge.investor {
+            background: #e3f6fc;
+            color: #2980ef;
+        }
+        
+        .user-type-badge.admin {
+            background: #fdeaea;
+            color: #e74c3c;
+        }
+        
+        .project-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .project-status.active {
+            background: #e8f5e8;
+            color: #27ae60;
+        }
+        
+        .project-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+                margin-top: 70px;
+            }
+            
+            .dashboard-title {
+                font-size: 2rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .actions-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-table {
+                font-size: 0.8rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html.html" class="logo">IDEAI</a>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">👑</div>
+            <div class="user-details">
+                <div class="username" id="username">Loading...</div>
+                <div class="user-type">Administrator <span class="admin-badge">CEO</span></div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Admin Dashboard</h1>
+            <p class="dashboard-subtitle">Welcome back, Bengü! Manage IDEAI platform and monitor user activity</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalProjects">0</div>
+                <div class="stat-label">Total Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="entrepreneurs">0</div>
+                <div class="stat-label">Entrepreneurs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="investors">0</div>
+                <div class="stat-label">Investors</div>
+            </div>
+        </div>
+
+        <!-- Admin Actions -->
+        <div class="actions-container">
+            <div class="action-card" onclick="viewAllUsers()">
+                <div class="action-icon">👥</div>
+                <div class="action-title">Manage Users</div>
+                <div class="action-description">View and manage all platform users</div>
+            </div>
+            <div class="action-card" onclick="viewAllProjects()">
+                <div class="action-icon">📋</div>
+                <div class="action-title">Manage Projects</div>
+                <div class="action-description">Monitor and manage all projects</div>
+            </div>
+            <div class="action-card" onclick="platformStats()">
+                <div class="action-icon">📊</div>
+                <div class="action-title">Platform Analytics</div>
+                <div class="action-description">View detailed platform statistics</div>
+            </div>
+            <div class="action-card" onclick="systemSettings()">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">System Settings</div>
+                <div class="action-description">Configure platform settings</div>
+            </div>
+            <div class="action-card" onclick="userReports()">
+                <div class="action-icon">📈</div>
+                <div class="action-title">User Reports</div>
+                <div class="action-description">Generate user activity reports</div>
+            </div>
+            <div class="action-card" onclick="platformAnnouncements()">
+                <div class="action-icon">📢</div>
+                <div class="action-title">Announcements</div>
+                <div class="action-description">Send platform announcements</div>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="data-section">
+            <h2 class="section-title">Recent Users</h2>
+            <table class="data-table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Type</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Users will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="data-section">
+            <h2 class="section-title">Recent Projects</h2>
+            <table class="data-table" id="projectsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Creator</th>
+                        <th>Category</th>
+                        <th>Funding</th>
+                        <th>Status</th>
+                        <th>Likes</th>
+                    </tr>
+                </thead>
+                <tbody id="projectsTableBody">
+                    <!-- Projects will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            
+            if (!username) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (userType !== 'admin') {
+                alert('This page is for administrators only.');
+                window.location.href = 'index.html.html';
+                return;
+            }
+            
+            // Update UI
+            document.getElementById('username').textContent = username;
+            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('firstname');
+            localStorage.removeItem('userType');
+            window.location.href = 'index.html.html';
+        }
+
+        // Load platform data
+        async function loadPlatformData() {
+            try {
+                // Load users
+                const usersResponse = await fetch('http://localhost:5000/api/users');
+                const usersData = await usersResponse.json();
+                
+                if (usersData.success) {
+                    displayUsers(usersData.users);
+                    updateUserStats(usersData.users);
+                }
+                
+                // Load projects
+                const projectsResponse = await fetch('http://localhost:5000/api/projects');
+                const projectsData = await projectsResponse.json();
+                
+                if (projectsData.success) {
+                    displayProjects(projectsData.projects);
+                    updateProjectStats(projectsData.projects);
+                }
+            } catch (error) {
+                console.error('Error loading platform data:', error);
+            }
+        }
+
+        // Display users
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #3d4c5c;">No users found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = users.slice(0, 10).map(user => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user.firstname} ${user.lastname}</td>
+                    <td>${user.email}</td>
+                    <td><span class="user-type-badge ${user.userType}">${user.userType}</span></td>
+                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Display projects
+        function displayProjects(projects) {
+            const tbody = document.getElementById('projectsTableBody');
+            
+            if (projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #3d4c5c;">No projects found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = projects.slice(0, 10).map(project => `
+                <tr>
+                    <td>${project.title}</td>
+                    <td>${project.creator}</td>
+                    <td>${project.category}</td>
+                    <td>$${project.funding.toLocaleString()}</td>
+                    <td><span class="project-status ${project.status}">${project.status}</span></td>
+                    <td>❤️ ${project.likes}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Update user stats
+        function updateUserStats(users) {
+            const totalUsers = users.length;
+            const entrepreneurs = users.filter(u => u.userType === 'entrepreneur').length;
+            const investors = users.filter(u => u.userType === 'investor').length;
+            
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('entrepreneurs').textContent = entrepreneurs;
+            document.getElementById('investors').textContent = investors;
+        }
+
+        // Update project stats
+        function updateProjectStats(projects) {
+            const totalProjects = projects.length;
+            document.getElementById('totalProjects').textContent = totalProjects;
+        }
+
+        // Admin action functions
+        function viewAllUsers() {
+            alert('View all users functionality - Coming soon!');
+        }
+
+        function viewAllProjects() {
+            alert('View all projects functionality - Coming soon!');
+        }
+
+        function platformStats() {
+            alert('Platform analytics functionality - Coming soon!');
+        }
+
+        function systemSettings() {
+            alert('System settings functionality - Coming soon!');
+        }
+
+        function userReports() {
+            alert('User reports functionality - Coming soon!');
+        }
+
+        function platformAnnouncements() {
+            alert('Platform announcements functionality - Coming soon!');
+        }
+
+        // Initialize
+        checkAuth();
+        loadPlatformData();
+    </script>
+</body>
+</html> 

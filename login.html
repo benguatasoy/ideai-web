@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - IDEAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      padding: 40px 32px 32px 32px;
+      max-width: 450px;
+      width: 100%;
+      margin: 32px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .login-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2980ef;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+    .login-desc {
+      font-size: 1.05rem;
+      color: #3d4c5c;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    label {
+      font-weight: 600;
+      color: #22314a;
+      margin-bottom: 4px;
+      font-size: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1.5px solid #cbe7f6;
+      border-radius: 10px;
+      background: #f7fafd;
+      box-shadow: 0 2px 8px rgba(41,128,239,0.04);
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border: 1.5px solid #2980ef;
+      outline: none;
+      background: #e3f6fc;
+    }
+
+    button {
+      background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 32px;
+      box-shadow: 0 6px 24px rgba(41,128,239,0.13), 0 2px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(41,128,239,0.20);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: none;
+      text-align: center;
+    }
+    .success-message {
+      color: #27ae60;
+      font-size: 0.9rem;
+      margin-top: 4px;
+      display: none;
+      text-align: center;
+    }
+    .signup-link {
+      margin-top: 20px;
+      text-align: center;
+      color: #3d4c5c;
+    }
+    .signup-link a {
+      color: #2980ef;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .remember-me input {
+      width: auto;
+      margin: 0;
+    }
+    .remember-me label {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 600px) {
+      .login-container {
+        padding: 24px 16px 20px 16px;
+        margin: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-title">Log In</div>
+    <div class="login-desc">Log in to your IDEAI account</div>
+    <form id="loginForm">
+      <div>
+        <label for="usernameOrEmail">Username or Email</label>
+        <input type="text" id="usernameOrEmail" name="usernameOrEmail" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+
+
+      <button type="submit" id="submitBtn">Log In</button>
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage">Login successful! Redirecting...</div>
+    </form>
+    <div class="signup-link">
+      Don't have an account? <a href="signup.html">Sign up here</a>
+    </div>
+  </div>
+  <script>
+    // Form validation
+    function validateForm() {
+      return true; // No validation needed since we removed user type selection
+    }
+
+    // Form submission
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+      
+      const submitBtn = document.getElementById('submitBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+      
+      // Reset messages
+      errorMessage.style.display = 'none';
+      successMessage.style.display = 'none';
+      
+      // Disable button and show loading
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging In...';
+      
+      const data = {
+        usernameOrEmail: document.getElementById('usernameOrEmail').value,
+        password: document.getElementById('password').value
+      };
+      
+      try {
+        const res = await fetch('http://localhost:5000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await res.json();
+        
+        if (res.ok) {
+          // Store user data
+          localStorage.setItem('username', result.user.username);
+          localStorage.setItem('firstname', result.user.firstname);
+          localStorage.setItem('userType', result.user.userType);
+          
+          successMessage.style.display = 'block';
+          submitBtn.textContent = 'Success!';
+          
+          // Redirect based on user type from database
+          setTimeout(() => {
+            if (result.user.userType === 'admin') {
+              window.location.href = 'admin.html';
+            } else if (result.user.userType === 'entrepreneur') {
+              window.location.href = 'entrepreneur_updated.html';
+            } else if (result.user.userType === 'investor') {
+              window.location.href = 'investor.html';
+            } else {
+              window.location.href = 'index.html.html';
+            }
+          }, 1000);
+        } else {
+          errorMessage.textContent = result.message || 'Login failed. Please try again.';
+          errorMessage.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Log In';
+        }
+      } catch (err) {
+        errorMessage.textContent = 'Network error! Please check your connection.';
+        errorMessage.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html> 
