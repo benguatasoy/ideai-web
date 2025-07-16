@@ -495,31 +495,6 @@
       box-shadow: 0 16px 48px rgba(44,62,80,0.15), 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* Hamburger menu animation */
-    .hamburger {
-      transition: all 0.2s ease;
-    }
-
-    .hamburger:hover {
-      transform: scale(1.1);
-    }
-
-    .hamburger span {
-      transition: all 0.2s ease;
-    }
-
-    .hamburger:hover span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .hamburger:hover span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger:hover span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-
     /* Wave background animations */
     .wave-bg {
       animation: wave 8s ease-in-out infinite;
@@ -622,9 +597,41 @@
         transition-duration: 0.01ms !important;
       }
     }
+    /* Custom Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+      background: #e3f6fc;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #b6e2d3;
+      border-radius: 8px;
+      border: 2px solid #e3f6fc;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a7c7e7;
+    }
+    /* For Firefox */
+    html {
+      scrollbar-color: #b6e2d3 #e3f6fc;
+      scrollbar-width: thin;
+    }
   </style>
 </head>
 <body>
+  <div id="user-area" style="position: absolute; top: -20px; right: 0px; z-index: 10;"></div>
+  <div id="panelim-fixed" style="display:none; position: fixed; top: 16px; left: 16px; z-index: 10000;"></div>
+  <!-- Hamburger Menu -->
+  <div id="hamburger" style="position: fixed; top: 18px; left: 18px; width: 38px; height: 38px; z-index: 12000; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,255,255,0.85); border-radius: 10px; box-shadow: 0 2px 8px rgba(44,62,80,0.10);">
+    <div style="width: 24px; height: 3px; background: #22314a; border-radius: 2px; margin: 3px 0;"></div>
+    <div style="width: 24px; height: 3px; background: #22314a; border-radius: 2px; margin: 3px 0;"></div>
+    <div style="width: 24px; height: 3px; background: #22314a; border-radius: 2px; margin: 3px 0;"></div>
+  </div>
+  <div id="side-menu-overlay" style="display:none; position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:11999;"></div>
+  <nav id="side-menu" style="display:none; position: fixed; top:0; left:0; height:100vh; width: 240px; background: #f7fafd; box-shadow: 2px 0 16px rgba(44,62,80,0.10); z-index:12001; padding-top: 60px; transition: left 0.3s;">
+    <ul id="side-menu-list" style="list-style:none; padding:0; margin:0;">
+      <!-- Menü içeriği JS ile doldurulacak -->
+    </ul>
+  </nav>
   <!-- Büyük, modern, mavi ve yeşil dalgalar (üst üste binmeyecek şekilde) -->
   <svg class="wave-bg" style="top:0px;" viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill="#a7c7e7" fill-opacity="0.28" d="M0,60 Q360,0 720,60 T1440,60 Q1200,180 720,140 Q240,100 0,180 Z"/>
@@ -643,88 +650,13 @@
   <svg class="wave-bg" style="bottom:120px;" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill="#b6e2d3" fill-opacity="0.18" d="M0,80 Q500,120 1440,80 Q1200,40 720,60 Q240,100 0,40 Z"/>
   </svg>
-  <div class="hamburger" tabindex="0" aria-label="Menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-
-  <!-- Sağ üst köşe: Dinamik kullanıcı alanı -->
-  <div id="user-area" style="position:absolute;top:-32px;right:24px;z-index:2;display:flex;gap:12px;"></div>
-  <script>
-    function renderUserArea() {
-      const userArea = document.getElementById('user-area');
-      const username = localStorage.getItem('username');
-      const userType = localStorage.getItem('userType');
-      const isMobile = window.innerWidth <= 480;
-      
-      if (username) {
-        let userTypeIcon, userTypeText;
-        if (userType === 'entrepreneur') {
-          userTypeIcon = '🚀';
-          userTypeText = 'Entrepreneur';
-        } else if (userType === 'investor') {
-          userTypeIcon = '💰';
-          userTypeText = 'Investor';
-        } else if (userType === 'admin') {
-          userTypeIcon = '👑';
-          userTypeText = 'Admin';
-        } else {
-          userTypeIcon = '👤';
-          userTypeText = 'User';
-        }
-        
-        if (isMobile) {
-          userArea.innerHTML = `
-            <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:8px;padding:6px 12px;font-size:0.9rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:8px;">
-              <span style="font-size:1rem;">${userTypeIcon}</span>
-              <span style="font-weight:700;font-size:0.85rem;">${username}</span>
-              <button id="logout-btn" style="background:#f7fafd;color:#2980ef;font-weight:600;border:none;border-radius:6px;padding:4px 12px;font-size:0.8rem;cursor:pointer;">Logout</button>
-            </div>
-          `;
-        } else {
-          userArea.innerHTML = `
-            <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:10px;padding:8px 22px;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.2rem;">${userTypeIcon}</span>
-              <span style="font-weight:700;">${username}</span>
-              <span style="font-size:0.85rem;color:#3d4c5c;">(${userTypeText})</span>
-              <button id="logout-btn" style="background:#f7fafd;color:#2980ef;font-weight:600;border:none;border-radius:8px;padding:6px 16px;font-size:0.95rem;cursor:pointer;">Logout</button>
-            </div>
-          `;
-        }
-        document.getElementById('logout-btn').onclick = function() {
-          localStorage.removeItem('username');
-          localStorage.removeItem('firstname');
-          localStorage.removeItem('userType');
-          renderUserArea();
-        };
-      } else {
-        if (isMobile) {
-          userArea.innerHTML = `
-            <a href="login.html" style="text-decoration:none;"><button style="background:#fff;color:#2980ef;font-weight:600;border:none;border-radius:8px;padding:6px 12px;font-size:0.85rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);cursor:pointer;transition:background 0.2s;">Sign In</button></a>
-            <a href="signup.html" style="text-decoration:none;"><button style="background:#2980ef;color:#fff;font-weight:600;border:none;border-radius:8px;padding:6px 12px;font-size:0.85rem;box-shadow:0 2px 8px rgba(41,128,239,0.13);cursor:pointer;transition:background 0.2s;">Sign Up</button></a>
-          `;
-        } else {
-          userArea.innerHTML = `
-            <a href="login.html" style="text-decoration:none;"><button style="background:#fff;color:#2980ef;font-weight:600;border:none;border-radius:10px;padding:8px 22px;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);cursor:pointer;transition:background 0.2s;">Sign In</button></a>
-            <a href="signup.html" style="text-decoration:none;"><button style="background:#2980ef;color:#fff;font-weight:600;border:none;border-radius:10px;padding:8px 22px;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.13);cursor:pointer;transition:background 0.2s;">Sign Up</button></a>
-          `;
-        }
-      }
-    }
-    
-    // Re-render on window resize
-    window.addEventListener('resize', renderUserArea);
-    renderUserArea();
-  </script>
-
   <div class="container" style="margin-top: 60px; padding-bottom: 400px; padding-left: 20px; padding-right: 20px;">
     <div class="welcome" style="margin-top: 60px;">WELCOME TO</div>
     <div class="ideai-box">IDEAI</div>
     <div class="slogan">Where ideas become action.</div>
     <div class="button-row">
-      <a href="entrepreneur_updated.html"><button class="main-btn entrepreneur">I'm an entrepreneur</button></a>
-      <a href="investor.html"><button class="main-btn investor">I'm an investor</button></a>
+      <a href="entrepreneur_updated.html"><button class="main-btn entrepreneur" id="entrepreneur-btn">I'm an entrepreneur</button></a>
+      <a href="investor.html"><button class="main-btn investor" id="investor-btn">I'm an investor</button></a>
     </div>
     <div style="height:80px;"></div>
     <div class="info-bubble" style="max-width:900px; margin: 0 auto 60px auto; padding: 56px 60px 48px 60px; font-size:1.18rem; width: 100%; box-sizing: border-box;">
@@ -747,105 +679,113 @@
   </div>
   <div style="height:700px;"></div>
   <script>
-    // Button click animations
-    document.addEventListener('DOMContentLoaded', function() {
-      const buttons = document.querySelectorAll('.main-btn');
-      
-      buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          // Add ripple effect
-          const ripple = document.createElement('span');
-          const rect = this.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          const x = e.clientX - rect.left - size / 2;
-          const y = e.clientY - rect.top - size / 2;
-          
-          ripple.style.width = ripple.style.height = size + 'px';
-          ripple.style.left = x + 'px';
-          ripple.style.top = y + 'px';
-          ripple.classList.add('ripple');
-          
-          this.appendChild(ripple);
-          
-          // Remove ripple after animation
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
-          
-          // Add loading state for 0.5 seconds
-          this.classList.add('loading');
-          setTimeout(() => {
-            this.classList.remove('loading');
-          }, 500);
-        });
-      });
-      
-      // Hamburger menu click animation
-      const hamburger = document.querySelector('.hamburger');
-      let isMenuOpen = false;
-      
-      hamburger.addEventListener('click', function() {
-        isMenuOpen = !isMenuOpen;
-        const spans = this.querySelectorAll('span');
-        
-        if (isMenuOpen) {
-          spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-          spans[1].style.opacity = '0';
-          spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+    function renderUserArea() {
+      const userArea = document.getElementById('user-area');
+      const panelimFixed = document.getElementById('panelim-fixed');
+      const username = localStorage.getItem('username');
+      const userType = localStorage.getItem('userType');
+      const isMobile = window.innerWidth <= 480;
+      if (username) {
+        let userTypeIcon, userTypeText;
+        if (userType === 'entrepreneur') {
+          userTypeIcon = '🚀';
+          userTypeText = 'Entrepreneur';
+        } else if (userType === 'investor') {
+          userTypeIcon = '💰';
+          userTypeText = 'Investor';
+        } else if (userType === 'admin') {
+          userTypeIcon = '👑';
+          userTypeText = 'Admin';
         } else {
-          spans[0].style.transform = 'none';
-          spans[1].style.opacity = '1';
-          spans[2].style.transform = 'none';
+          userTypeIcon = '👤';
+          userTypeText = 'User';
         }
-      });
-      
-      // Parallax effect for wave backgrounds
-      window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const waveBgs = document.querySelectorAll('.wave-bg');
-        
-        waveBgs.forEach((wave, index) => {
-          const speed = 0.5 + (index * 0.1);
-          wave.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-      });
-      
-      // Intersection Observer for scroll animations
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+        userArea.innerHTML = `
+          <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:10px;padding:0;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:10px;justify-content:flex-end;">
+            <span style="font-size:1.2rem;">${userTypeIcon}</span>
+            <span style="font-weight:700;">${username}</span>
+            <span style="font-size:0.85rem;color:#3d4c5c;">(${userTypeText})</span>
+            <button id="logout-btn" style="background:#f7fafd;color:#2980ef;font-weight:600;border:none;border-radius:8px;padding:10px 26px;font-size:1.05rem;cursor:pointer;margin:0;">Logout</button>
+          </div>
+        `;
+        panelimFixed.innerHTML = '';
+        panelimFixed.style.display = 'none';
+        document.getElementById('logout-btn').onclick = function() {
+          localStorage.removeItem('username');
+          localStorage.removeItem('firstname');
+          localStorage.removeItem('userType');
+          renderUserArea();
+        };
+      } else {
+        userArea.innerHTML = `
+          <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:10px;padding:0;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:10px;justify-content:flex-end;">
+            <a href="login.html" style="text-decoration:none;"><button style="background:#fff;color:#2980ef;font-weight:600;border:none;border-radius:10px;padding:10px 26px;font-size:1.05rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);cursor:pointer;transition:background 0.2s;margin:0;">Sign In</button></a>
+            <a href="signup.html" style="text-decoration:none;"><button style="background:#2980ef;color:#fff;font-weight:600;border:none;border-radius:10px;padding:10px 26px;font-size:1.05rem;box-shadow:0 2px 8px rgba(41,128,239,0.13);cursor:pointer;transition:background 0.2s;margin:0;">Sign Up</button></a>
+          </div>
+        `;
+        panelimFixed.innerHTML = '';
+        panelimFixed.style.display = 'none';
+      }
+    }
+    window.addEventListener('resize', renderUserArea);
+    renderUserArea();
+
+    // Butonlara erişim kontrolü
+    document.addEventListener('DOMContentLoaded', function() {
+      const entrepreneurBtn = document.getElementById('entrepreneur-btn');
+      const investorBtn = document.getElementById('investor-btn');
+      if (entrepreneurBtn) {
+        entrepreneurBtn.addEventListener('click', function(e) {
+          const userType = localStorage.getItem('userType');
+          if (userType === 'investor') {
+            e.preventDefault();
+            alert('This section is for entrepreneurs only.');
           }
         });
-      }, observerOptions);
-      
-      // Observe elements for scroll animations
-      const animatedElements = document.querySelectorAll('.info-bubble');
-      animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.4s ease-out';
-        observer.observe(el);
-      });
+      }
+      if (investorBtn) {
+        investorBtn.addEventListener('click', function(e) {
+          const userType = localStorage.getItem('userType');
+          if (userType === 'entrepreneur') {
+            e.preventDefault();
+            alert('This section is for investors only.');
+          }
+        });
+      }
     });
-    
-    // Show info-bubble on scroll
-    window.addEventListener('scroll', function() {
-      var bubble = document.getElementById('infoBubble');
-      if (window.scrollY > 200) {
-        bubble.style.opacity = 1;
-        bubble.style.pointerEvents = 'auto';
-        bubble.style.transform = 'translateY(0)';
+
+    // Hamburger Menü
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('side-menu');
+    const sideMenuOverlay = document.getElementById('side-menu-overlay');
+    const sideMenuList = document.getElementById('side-menu-list');
+
+    function renderSideMenu() {
+      const username = localStorage.getItem('username');
+      let html = '';
+      if (username) {
+        html += `<li><a href="dashboard.html" style="display:block;padding:16px 28px;color:#22314a;text-decoration:none;font-weight:600;font-size:1.08rem;">Account</a></li>`;
+        html += `<li><a href="#" style="display:block;padding:16px 28px;color:#22314a;text-decoration:none;font-weight:600;font-size:1.08rem;">Favorites</a></li>`;
       } else {
-        bubble.style.opacity = 0;
-        bubble.style.pointerEvents = 'none';
-        bubble.style.transform = 'translateY(40px)';
+        html += `<li><a href="login.html" style="display:block;padding:16px 28px;color:#2980ef;text-decoration:none;font-weight:700;font-size:1.08rem;">Sign In</a></li>`;
+      }
+      sideMenuList.innerHTML = html;
+    }
+
+    hamburger.addEventListener('click', function() {
+      renderSideMenu();
+      sideMenu.style.display = 'block';
+      sideMenuOverlay.style.display = 'block';
+    });
+    sideMenuOverlay.addEventListener('click', function() {
+      sideMenu.style.display = 'none';
+      sideMenuOverlay.style.display = 'none';
+    });
+    // ESC ile menüyü kapat
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        sideMenu.style.display = 'none';
+        sideMenuOverlay.style.display = 'none';
       }
     });
   </script>

@@ -10,8 +10,22 @@
     "createdAt": "2024-01-01T00:00:00.000Z",
     "profile": {
       "bio": "IDEAI Platform Founder & CEO - Building the future of entrepreneurship and investment",
-      "skills": ["Platform Management", "System Administration", "Business Development", "User Experience", "Strategic Planning", "Web Development", "Business Strategy"],
-      "interests": ["Technology", "Innovation", "Entrepreneurship", "Investment", "Startup Ecosystem"],
+      "skills": [
+        "Platform Management",
+        "System Administration",
+        "Business Development",
+        "User Experience",
+        "Strategic Planning",
+        "Web Development",
+        "Business Strategy"
+      ],
+      "interests": [
+        "Technology",
+        "Innovation",
+        "Entrepreneurship",
+        "Investment",
+        "Startup Ecosystem"
+      ],
       "location": "Turkey",
       "website": "ideai.com",
       "socialMedia": {
@@ -38,7 +52,12 @@
         "fundingRaised": 500000,
         "teamSize": 25,
         "startupStage": "Growth",
-        "lookingFor": ["Investors", "Partners", "Mentors", "Talent"],
+        "lookingFor": [
+          "Investors",
+          "Partners",
+          "Mentors",
+          "Talent"
+        ],
         "businessModel": "SaaS Platform",
         "targetMarket": "Global",
         "revenueModel": "Subscription + Commission",
@@ -50,6 +69,23 @@
           "International Expansion - 2025"
         ]
       }
+    }
+  },
+  {
+    "id": "1752648963991",
+    "firstname": "Cuneyt",
+    "lastname": "Atasoy",
+    "username": "cunatasoy",
+    "email": "cunatasoy@yahoo.com",
+    "password": "$2a$12$6soUYGvETYhpfgM5YgbSgeuduXiuiKWwZE6sFl27w4lgmi0AR2grW",
+    "userType": "entrepreneur",
+    "createdAt": "2025-07-16T06:56:03.991Z",
+    "profile": {
+      "bio": "",
+      "skills": [],
+      "interests": [],
+      "location": "",
+      "website": ""
     }
   }
 ]
