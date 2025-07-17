@@ -87,5 +87,22 @@
       "location": "",
       "website": ""
     }
+  },
+  {
+    "id": "1752727879205",
+    "firstname": "Bengü",
+    "lastname": "Atasoy",
+    "username": "benguatasoy0",
+    "email": "benguatasoy@yahoo.com.tr",
+    "password": "$2a$12$u1UeD.FQegupNlilzHqZE.Mw16bmq00RhOItbIgXzLeH..Vr/WFzi",
+    "userType": "investor",
+    "createdAt": "2025-07-17T04:51:19.205Z",
+    "profile": {
+      "bio": "",
+      "skills": [],
+      "interests": [],
+      "location": "",
+      "website": ""
+    }
   }
 ]

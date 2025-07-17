@@ -751,6 +751,44 @@
             // Here you could save the selected idea to localStorage or send to backend
         }
 
+        function addToMyIdeas(ideaTitle, ideaDescription) {
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert('Please sign in to save ideas to My Ideas.');
+        return;
+      }
+      
+      let myIdeas = JSON.parse(localStorage.getItem('myIdeas') || '[]');
+      
+      // Aynı fikir zaten var mı kontrol et
+      const existingIdea = myIdeas.find(idea => idea.title === ideaTitle);
+      if (existingIdea) {
+        alert('This idea is already in your My Ideas!');
+        return;
+      }
+      
+      // Yeni fikri ekle
+      myIdeas.push({
+        title: ideaTitle,
+        description: ideaDescription,
+        date: new Date().toISOString(),
+        username: username
+      });
+      
+      localStorage.setItem('myIdeas', JSON.stringify(myIdeas));
+      alert('Idea added to My Ideas successfully!');
+    }
+
+    function createCard(idea, accentColor) {
+      return `
+        <div class="card" style="--card-accent: ${accentColor}">
+          <h3>${idea.title}</h3>
+          <p>${idea.description}</p>
+          <button onclick="addToMyIdeas('${idea.title.replace(/'/g, "\\'")}', '${idea.description.replace(/'/g, "\\'")}')">Add to My Ideas</button>
+        </div>
+      `;
+    }
+
         // Initialize
         checkAuth();
     </script>

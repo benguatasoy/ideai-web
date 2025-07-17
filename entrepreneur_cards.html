@@ -442,7 +442,7 @@
       const card = document.createElement('div');
       card.className = 'card';
       card.style.setProperty('--card-accent', accentColors[i % accentColors.length]);
-      card.innerHTML = `<h3>${title}</h3><p>${desc.replace(/\n/g, '<br>')}</p><button onclick="selectIdea('${title}')">Select this idea</button>`;
+      card.innerHTML = `<h3>${title}</h3><p>${desc.replace(/\n/g, '<br>')}</p><button onclick="addToMyIdeas('${title}', '${desc.replace(/'/g, "\\'")}')">Add to My Ideas</button>`;
       topRow.appendChild(card);
     }
     ideaCards.appendChild(topRow);
@@ -455,15 +455,47 @@
       const card = document.createElement('div');
       card.className = 'card';
       card.style.setProperty('--card-accent', accentColors[i % accentColors.length]);
-      card.innerHTML = `<h3>${title}</h3><p>${desc.replace(/\n/g, '<br>')}</p><button onclick="selectIdea('${title}')">Select this idea</button>`;
+      card.innerHTML = `<h3>${title}</h3><p>${desc.replace(/\n/g, '<br>')}</p><button onclick="addToMyIdeas('${title}', '${desc.replace(/'/g, "\\'")}')">Add to My Ideas</button>`;
       bottomRow.appendChild(card);
     }
     ideaCards.appendChild(bottomRow);
 
-    // Select idea function
-    function selectIdea(title) {
-      alert(`Great choice! You selected: "${title}"\n\nThis idea has been saved to your project list.`);
-      // Here you could save the selected idea to localStorage or send to backend
+    function addToMyIdeas(ideaTitle, ideaDescription) {
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert('Please sign in to save ideas to My Ideas.');
+        return;
+      }
+      
+      let myIdeas = JSON.parse(localStorage.getItem('myIdeas') || '[]');
+      
+      // Aynı fikir zaten var mı kontrol et
+      const existingIdea = myIdeas.find(idea => idea.title === ideaTitle);
+      if (existingIdea) {
+        alert('This idea is already in your My Ideas!');
+        return;
+      }
+      
+      // Yeni fikri ekle
+      myIdeas.push({
+        title: ideaTitle,
+        description: ideaDescription,
+        date: new Date().toISOString(),
+        username: username
+      });
+      
+      localStorage.setItem('myIdeas', JSON.stringify(myIdeas));
+      alert('Idea added to My Ideas successfully!');
+    }
+
+    function createCard(idea, accentColor) {
+      return `
+        <div class="card" style="--card-accent: ${accentColor}">
+          <h3>${idea.title}</h3>
+          <p>${idea.description}</p>
+          <button onclick="addToMyIdeas('${idea.title.replace(/'/g, "\\'")}', '${idea.description.replace(/'/g, "\\'")}')">Add to My Ideas</button>
+        </div>
+      `;
     }
   </script>
 </body>

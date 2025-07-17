@@ -618,7 +618,7 @@
   </style>
 </head>
 <body>
-  <div id="user-area" style="position: absolute; top: -20px; right: 0px; z-index: 10;"></div>
+  <div id="user-area" style="position: absolute; top: -20px; right: 8px; z-index: 10;"></div>
   <div id="panelim-fixed" style="display:none; position: fixed; top: 16px; left: 16px; z-index: 10000;"></div>
   <!-- Hamburger Menu -->
   <div id="hamburger" style="position: fixed; top: 18px; left: 18px; width: 38px; height: 38px; z-index: 12000; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,255,255,0.85); border-radius: 10px; box-shadow: 0 2px 8px rgba(44,62,80,0.10);">
@@ -686,36 +686,25 @@
       const userType = localStorage.getItem('userType');
       const isMobile = window.innerWidth <= 480;
       if (username) {
-        let userTypeIcon, userTypeText;
+        let userTypeText;
         if (userType === 'entrepreneur') {
-          userTypeIcon = '🚀';
           userTypeText = 'Entrepreneur';
         } else if (userType === 'investor') {
-          userTypeIcon = '💰';
           userTypeText = 'Investor';
         } else if (userType === 'admin') {
-          userTypeIcon = '👑';
           userTypeText = 'Admin';
         } else {
           userTypeIcon = '👤';
           userTypeText = 'User';
         }
         userArea.innerHTML = `
-          <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:10px;padding:0;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:10px;justify-content:flex-end;">
-            <span style="font-size:1.2rem;">${userTypeIcon}</span>
-            <span style="font-weight:700;">${username}</span>
-            <span style="font-size:0.85rem;color:#3d4c5c;">(${userTypeText})</span>
-            <button id="logout-btn" style="background:#f7fafd;color:#2980ef;font-weight:600;border:none;border-radius:8px;padding:10px 26px;font-size:1.05rem;cursor:pointer;margin:0;">Logout</button>
+          <div style="background:#fff;color:#22314a;font-weight:600;border-radius:12px;padding:12px 24px;font-size:1.1rem;box-shadow:0 2px 8px rgba(44,62,80,0.10);display:flex;align-items:center;gap:12px;justify-content:flex-end;">
+            <span style="font-weight:700;font-size:1.15rem;color:#22314a;">${username}</span>
+            <span style="font-size:0.9rem;color:#2980ef;font-weight:600;background:#f0f7ff;padding:4px 12px;border-radius:6px;">${userTypeText}</span>
           </div>
         `;
         panelimFixed.innerHTML = '';
         panelimFixed.style.display = 'none';
-        document.getElementById('logout-btn').onclick = function() {
-          localStorage.removeItem('username');
-          localStorage.removeItem('firstname');
-          localStorage.removeItem('userType');
-          renderUserArea();
-        };
       } else {
         userArea.innerHTML = `
           <div style="background:#fff;color:#2980ef;font-weight:600;border-radius:10px;padding:0;font-size:1rem;box-shadow:0 2px 8px rgba(41,128,239,0.10);display:flex;align-items:center;gap:10px;justify-content:flex-end;">
@@ -762,14 +751,48 @@
 
     function renderSideMenu() {
       const username = localStorage.getItem('username');
+      const userType = localStorage.getItem('userType');
       let html = '';
       if (username) {
-        html += `<li><a href="dashboard.html" style="display:block;padding:16px 28px;color:#22314a;text-decoration:none;font-weight:600;font-size:1.08rem;">Account</a></li>`;
-        html += `<li><a href="#" style="display:block;padding:16px 28px;color:#22314a;text-decoration:none;font-weight:600;font-size:1.08rem;">Favorites</a></li>`;
+        if (userType === 'entrepreneur') {
+          html += `<li><a href="entrepreneur-account.html" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Account</a></li>`;
+          html += `<li><a href="my-ideas.html" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">My Ideas</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Messages</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Funding Request</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Discover</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Help & Support</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">About IDEAI</a></li>`;
+          html += `<li><a href="contact.html" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Contact Us</a></li>`;
+          html += `<li><a href="#" onclick="logout()" style="display:block;padding:18px 28px;color:#e74c3c;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;">Logout</a></li>`;
+        } else if (userType === 'investor') {
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Account</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Investment Portfolio</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Messages</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Discover</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Help & Support</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">About IDEAI</a></li>`;
+          html += `<li><a href="contact.html" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Contact Us</a></li>`;
+          html += `<li><a href="#" onclick="logout()" style="display:block;padding:18px 28px;color:#e74c3c;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;">Logout</a></li>`;
+        } else {
+          // Admin veya diğer kullanıcı tipleri için varsayılan
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Account</a></li>`;
+          html += `<li><a href="#" style="display:block;padding:18px 28px;color:#22314a;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;border-bottom:1px solid #e3eaf2;">Favorites</a></li>`;
+          html += `<li><a href="#" onclick="logout()" style="display:block;padding:18px 28px;color:#e74c3c;text-decoration:none;font-weight:500;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;">Logout</a></li>`;
+        }
       } else {
-        html += `<li><a href="login.html" style="display:block;padding:16px 28px;color:#2980ef;text-decoration:none;font-weight:700;font-size:1.08rem;">Sign In</a></li>`;
+        html += `<li><a href="login.html" style="display:block;padding:18px 28px;color:#2980ef;text-decoration:none;font-weight:600;font-size:1rem;font-family:'Segoe UI',Arial,sans-serif;">Sign In</a></li>`;
       }
       sideMenuList.innerHTML = html;
+    }
+
+    function logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('firstname');
+      localStorage.removeItem('userType');
+      renderUserArea();
+      // Menüyü kapat
+      sideMenu.style.display = 'none';
+      sideMenuOverlay.style.display = 'none';
     }
 
     hamburger.addEventListener('click', function() {
