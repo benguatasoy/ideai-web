@@ -7,10 +7,22 @@
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: #f3f2ef;
+      background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Wave background shapes */
+    .wave-bg {
+      position: absolute;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      pointer-events: none;
     }
     
     /* Header */
@@ -19,14 +31,14 @@
       top: 0;
       left: 0;
       right: 0;
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 12px 24px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 100;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      z-index: 2;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
     }
     
     .logo {
@@ -46,7 +58,7 @@
       cursor: pointer;
       transition: all 0.2s;
       text-decoration: none;
-      display: inline-block;
+      font-size: 0.9rem;
     }
     
     .back-btn:hover {
@@ -55,34 +67,56 @@
     
     /* Main Content */
     .main-content {
-      margin-top: 60px;
+      margin-top: 80px;
       padding: 24px;
-      max-width: 800px;
+      max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #22314a;
+      margin-bottom: 8px;
+    }
+    
+    .page-subtitle {
+      font-size: 1.2rem;
+      color: #3d4c5c;
+      margin-bottom: 32px;
     }
     
     /* Profile Section */
     .profile-section {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
     }
     
     .profile-header {
       display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      margin-bottom: 24px;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 32px;
     }
     
-    .profile-photo {
+    .profile-avatar {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -90,6 +124,7 @@
       font-size: 3rem;
       font-weight: 700;
       flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(46,204,113,0.25);
     }
     
     .profile-info {
@@ -97,107 +132,162 @@
     }
     
     .profile-name {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      color: #191919;
+      color: #22314a;
       margin-bottom: 8px;
     }
     
-    .profile-title {
+    .profile-role {
       font-size: 1.1rem;
-      color: #666;
+      color: #2ecc71;
+      font-weight: 600;
       margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     
     .profile-bio {
-      font-size: 1rem;
-      color: #191919;
+      font-size: 1.1rem;
+      color: #3d4c5c;
       line-height: 1.6;
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
     
-    .edit-bio-btn {
-      background: #fff;
-      color: #2980ef;
-      border: 1px solid #2980ef;
-      padding: 8px 16px;
-      border-radius: 6px;
+    .edit-profile-btn {
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(46,204,113,0.25);
     }
     
-    .edit-bio-btn:hover {
-      background: #f0f7ff;
+    .edit-profile-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(46,204,113,0.35);
     }
     
-    /* Contact Information Section */
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #f7fafd 0%, #e3f6fc 100%);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(44,62,80,0.12);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #2980ef;
+      margin-bottom: 8px;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      color: #3d4c5c;
+      font-weight: 600;
+    }
+    
+    /* Contact Information */
     .contact-section {
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #e0e0e0;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #22314a;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      border-radius: 2px;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
     }
     
     .contact-item {
       display: flex;
       align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f5f5f5;
-      transition: background-color 0.2s;
+      gap: 16px;
+      padding: 20px;
+      background: #f7fafd;
+      border: 2px solid #e3f6fc;
+      border-radius: 16px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .contact-item:hover {
-      background-color: #f8f9fa;
-      margin: 0 -12px;
-      padding: 12px;
-      border-radius: 6px;
-    }
-    
-    .contact-item:last-child {
-      border-bottom: none;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(44,62,80,0.12);
+      border-color: #2980ef;
+      background: #e3f6fc;
     }
     
     .contact-icon {
-      width: 24px;
-      height: 24px;
-      margin-right: 12px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
-      font-size: 14px;
-      color: #666;
+      font-size: 1.5rem;
+      flex-shrink: 0;
     }
     
     .contact-icon.email {
-      background: #e3f2fd;
-      color: #1976d2;
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
     }
     
     .contact-icon.linkedin {
-      background: #e3f2fd;
-      color: #0077b5;
+      background: linear-gradient(135deg, #2980ef 0%, #0056b3 100%);
+      color: white;
     }
     
     .contact-icon.twitter {
-      background: #e8f5e8;
-      color: #1da1f2;
+      background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+      color: white;
     }
     
     .contact-icon.instagram {
-      background: #fce4ec;
-      color: #e91e63;
-    }
-    
-    .contact-icon.facebook {
-      background: #e3f2fd;
-      color: #1877f2;
-    }
-    
-    .contact-icon.github {
-      background: #f5f5f5;
-      color: #333;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
     }
     
     .contact-info {
@@ -205,15 +295,16 @@
     }
     
     .contact-label {
-      font-size: 0.85rem;
-      color: #666;
-      margin-bottom: 2px;
+      font-size: 0.9rem;
+      color: #3d4c5c;
+      margin-bottom: 4px;
+      font-weight: 500;
     }
     
     .contact-value {
-      font-size: 0.95rem;
-      color: #191919;
-      font-weight: 500;
+      font-size: 1.1rem;
+      color: #22314a;
+      font-weight: 600;
     }
     
     .contact-value a {
@@ -226,160 +317,289 @@
     }
     
     .add-contact-btn {
-      background: #f8f9fa;
-      color: #2980ef;
-      border: 1px solid #e0e0e0;
-      padding: 8px 12px;
-      border-radius: 6px;
+      background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 12px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 24px;
+      box-shadow: 0 4px 16px rgba(41,128,239,0.25);
     }
     
     .add-contact-btn:hover {
-      background: #e3f6fc;
-      border-color: #2980ef;
-    }
-    
-    /* My Ideas Section */
-    .my-ideas-section {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .section-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #191919;
-      margin-bottom: 16px;
-    }
-    
-    .ideas-count {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 16px;
-    }
-    
-    .view-ideas-btn {
-      background: #2980ef;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .view-ideas-btn:hover {
-      background: #1a5ca4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(41,128,239,0.35);
     }
     
     /* Projects Section */
     .projects-section {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.10), 0 2px 8px rgba(0,0,0,0.08);
+      padding: 40px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .projects-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #22314a;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .projects-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      border-radius: 2px;
     }
     
     .share-project-btn {
-      background: #2980ef;
-      color: #fff;
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
       border: none;
       padding: 12px 24px;
-      border-radius: 6px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.2s;
-      margin-bottom: 24px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(46,204,113,0.25);
     }
     
     .share-project-btn:hover {
-      background: #1a5ca4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(46,204,113,0.35);
     }
     
-    .projects-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
     }
     
     .project-card {
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 20px;
-      transition: box-shadow 0.2s;
+      background: #f7fafd;
+      border: 2px solid #e3f6fc;
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .project-card:hover {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(44,62,80,0.12);
+      border-color: #2980ef;
     }
     
     .project-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     
     .project-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      color: #191919;
+      color: #22314a;
       margin-bottom: 8px;
     }
     
     .project-date {
-      font-size: 0.85rem;
-      color: #666;
+      font-size: 0.9rem;
+      color: #3d4c5c;
+      background: #e3f6fc;
+      padding: 4px 12px;
+      border-radius: 8px;
+    }
+    
+    .project-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .delete-project-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      opacity: 0.7;
+    }
+    
+    .delete-project-btn:hover {
+      opacity: 1;
+      background: rgba(231, 76, 60, 0.1);
+      transform: scale(1.1);
     }
     
     .project-description {
       font-size: 1rem;
-      color: #191919;
+      color: #3d4c5c;
       line-height: 1.6;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     
-    .investment-badge {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeaa7;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
+    .project-status {
+      display: inline-block;
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
       font-weight: 600;
     }
     
     .empty-projects {
       text-align: center;
-      padding: 40px 20px;
-      color: #666;
+      padding: 60px 20px;
+      color: #3d4c5c;
     }
     
     .empty-projects h3 {
-      font-size: 1.3rem;
-      margin-bottom: 8px;
-      color: #191919;
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: #22314a;
     }
     
     .empty-projects p {
-      font-size: 1rem;
-      margin-bottom: 20px;
+      font-size: 1.1rem;
+      margin-bottom: 24px;
     }
     
-    /* Modal */
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 16px;
+      }
+      
+      .page-title {
+        font-size: 2rem;
+      }
+      
+      .profile-section,
+      .contact-section,
+      .projects-section {
+        padding: 24px;
+        border-radius: 20px;
+      }
+      
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+      
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .projects-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 1.8rem;
+      }
+      
+      .page-subtitle {
+        font-size: 1rem;
+      }
+      
+      .profile-section,
+      .contact-section,
+      .projects-section {
+        padding: 20px;
+        border-radius: 16px;
+      }
+      
+      .profile-name {
+        font-size: 1.6rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .profile-section {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .contact-section {
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    .projects-section {
+      animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    
+    .stat-card {
+      animation: fadeInUp 0.6s ease-out 0.6s both;
+    }
+    
+    .contact-item {
+      animation: fadeInUp 0.6s ease-out 0.8s both;
+    }
+    
+    .project-card {
+      animation: fadeInUp 0.6s ease-out 1s both;
+    }
+    
+    /* Share Project Modal */
     .modal {
       display: none;
       position: fixed;
@@ -389,6 +609,7 @@
       height: 100%;
       background: rgba(0,0,0,0.5);
       z-index: 1000;
+      backdrop-filter: blur(5px);
     }
     
     .modal-content {
@@ -396,11 +617,12 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 12px;
-      padding: 32px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
       width: 90%;
-      max-width: 500px;
+      max-width: 600px;
       max-height: 80vh;
       overflow-y: auto;
     }
@@ -409,447 +631,874 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
     
     .modal-title {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: #191919;
+      color: #22314a;
     }
     
     .close-btn {
       background: none;
       border: none;
-      font-size: 1.5rem;
+      font-size: 2rem;
       cursor: pointer;
-      color: #666;
+      color: #3d4c5c;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+    
+    .close-btn:hover {
+      background: #f7fafd;
+      color: #22314a;
     }
     
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
     
     .form-label {
       display: block;
       font-weight: 600;
-      color: #191919;
+      color: #22314a;
       margin-bottom: 8px;
+      font-size: 1rem;
     }
     
     .form-input {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
+      padding: 16px;
       font-size: 1rem;
-      font-family: inherit;
+      border: 2px solid #e3f6fc;
+      border-radius: 12px;
+      background: #f7fafd;
+      transition: border 0.2s;
+      box-sizing: border-box;
+    }
+    
+    .form-input:focus {
+      border-color: #2980ef;
+      outline: none;
+      background: white;
     }
     
     .form-textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
+      padding: 16px;
       font-size: 1rem;
-      font-family: inherit;
+      border: 2px solid #e3f6fc;
+      border-radius: 12px;
+      background: #f7fafd;
+      transition: border 0.2s;
+      box-sizing: border-box;
       resize: vertical;
-      min-height: 100px;
+      min-height: 120px;
+      font-family: inherit;
+    }
+    
+    .form-textarea:focus {
+      border-color: #2980ef;
+      outline: none;
+      background: white;
+    }
+    
+    .file-upload {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    
+    .file-upload input[type=file] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      border: 2px dashed #e3f6fc;
+      border-radius: 12px;
+      background: #f7fafd;
+      color: #3d4c5c;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .file-upload-label:hover {
+      border-color: #2980ef;
+      background: #e3f6fc;
+    }
+    
+    .file-preview {
+      margin-top: 16px;
+      text-align: center;
+    }
+    
+    .file-preview img {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
     .checkbox-group {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: #f7fafd;
+      border-radius: 12px;
+      border: 2px solid #e3f6fc;
     }
     
     .checkbox-input {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
+      accent-color: #2ecc71;
     }
     
     .checkbox-label {
+      font-size: 1rem;
+      color: #22314a;
+      font-weight: 600;
+    }
+    
+    .checkbox-note {
       font-size: 0.9rem;
-      color: #191919;
+      color: #3d4c5c;
+      margin-left: 32px;
+      font-style: italic;
     }
     
     .submit-btn {
-      background: #2980ef;
-      color: #fff;
+      background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
       border: none;
-      padding: 12px 24px;
-      border-radius: 6px;
+      padding: 16px 32px;
+      border-radius: 12px;
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       width: 100%;
+      box-shadow: 0 4px 16px rgba(46,204,113,0.25);
     }
     
     .submit-btn:hover {
-      background: #1a5ca4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(46,204,113,0.35);
     }
     
-    /* Responsive */
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
     @media (max-width: 768px) {
-      .main-content {
-        padding: 16px;
-      }
-      
-      .profile-header {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .profile-photo {
-        width: 100px;
-        height: 100px;
-        font-size: 2.5rem;
-        margin: 0 auto 16px;
-      }
-      
       .modal-content {
         width: 95%;
         padding: 24px;
+        max-height: 90vh;
+      }
+      
+      .modal-title {
+        font-size: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Wave Backgrounds -->
+  <svg class="wave-bg" style="top:0px;" viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#a7c7e7" fill-opacity="0.28" d="M0,60 Q360,0 720,60 T1440,60 Q1200,180 720,140 Q240,100 0,180 Z"/>
+  </svg>
+  <svg class="wave-bg" style="top:220px;" viewBox="0 0 1440 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#b6e2d3" fill-opacity="0.22" d="M0,40 Q600,140 1440,40 Q1200,120 720,100 Q240,80 0,140 Z"/>
+  </svg>
+  <svg class="wave-bg" style="bottom:120px;" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#b6e2d3" fill-opacity="0.18" d="M0,80 Q500,120 1440,80 Q1200,40 720,60 Q240,100 0,40 Z"/>
+  </svg>
+  
   <!-- Header -->
-  <header class="header">
+  <div class="header">
     <a href="index.html.html" class="logo">IDEAI</a>
     <a href="index.html.html" class="back-btn">← Back to Home</a>
-  </header>
-
+  </div>
+  
   <!-- Main Content -->
   <div class="main-content">
+    <div class="page-header">
+      <div class="page-title">My Account</div>
+      <div class="page-subtitle">Manage your profile and projects</div>
+    </div>
+    
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="profile-header">
-        <div class="profile-photo" id="profilePhoto">
-          <!-- Initial will be set by JS -->
-        </div>
+        <div class="profile-avatar" id="profileAvatar">B</div>
         <div class="profile-info">
-          <div class="profile-name" id="profileName"></div>
-          <div class="profile-title">Entrepreneur</div>
-          <div class="profile-bio" id="profileBio">Click edit to add your bio...</div>
-          <button class="edit-bio-btn" onclick="editBio()">Edit Bio</button>
-          
-          <!-- Contact Information Section -->
-          <div class="contact-section">
-            <div id="contactList">
-              <!-- Contact items will be loaded here -->
-            </div>
-            <button class="add-contact-btn" onclick="addContact()">+ Add Contact Info</button>
-          </div>
+          <div class="profile-name" id="profileName">Loading...</div>
+          <div class="profile-role">Entrepreneur</div>
+          <div class="profile-bio" id="profileBio">Loading your profile information...</div>
+          <button class="edit-profile-btn" onclick="editProfile()">Edit Profile</button>
+        </div>
+      </div>
+      
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="projectsCount">0</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="likesCount">0</div>
+          <div class="stat-label">Total Likes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="viewsCount">0</div>
+          <div class="stat-label">Profile Views</div>
         </div>
       </div>
     </div>
-
-    <!-- My Ideas Section -->
-    <div class="my-ideas-section">
-      <div class="section-title">My Ideas</div>
-      <div class="ideas-count" id="ideasCount">0 ideas saved</div>
-      <a href="my-ideas.html" class="view-ideas-btn">View My Ideas</a>
+    
+    <!-- Contact Information -->
+    <div class="contact-section">
+      <div class="section-title">Contact Information</div>
+      <div class="contact-grid" id="contactGrid">
+        <!-- Contact items will be loaded here -->
+      </div>
+      <button class="add-contact-btn" onclick="addContact()">+ Add Contact</button>
     </div>
-
+    
     <!-- Projects Section -->
     <div class="projects-section">
-      <div class="section-title">My Projects</div>
-      <button class="share-project-btn" onclick="openShareModal()">Share a Project</button>
-      <div class="projects-list" id="projectsList">
-        <div class="empty-projects">
-          <h3>No projects shared yet</h3>
-          <p>Share your first project to showcase your work to the community!</p>
-        </div>
+      <div class="projects-header">
+        <div class="projects-title">My Projects</div>
+        <button class="share-project-btn" onclick="shareProject()">+ Share Project</button>
+      </div>
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Projects will be loaded here -->
       </div>
     </div>
   </div>
-
+  
   <!-- Share Project Modal -->
-  <div class="modal" id="shareModal">
+  <div class="modal" id="shareProjectModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title">Share a Project</h2>
+        <div class="modal-title">Share Your Project</div>
         <button class="close-btn" onclick="closeShareModal()">&times;</button>
       </div>
+      
       <form id="shareProjectForm">
         <div class="form-group">
-          <label class="form-label">Project Title</label>
+          <label class="form-label">Project Title *</label>
           <input type="text" class="form-input" id="projectTitle" placeholder="Enter your project title" required>
         </div>
+        
         <div class="form-group">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="projectDescription" placeholder="Describe your project..." required></textarea>
+          <label class="form-label">Description *</label>
+          <textarea class="form-textarea" id="projectDescription" placeholder="Describe your project, goals, and what you're looking for..." required></textarea>
         </div>
+        
+        <div class="form-group">
+          <label class="form-label">Project Image (Optional)</label>
+          <div class="file-upload">
+            <input type="file" id="projectImage" accept="image/*" onchange="previewImage(this)">
+            <label class="file-upload-label" for="projectImage">
+              📷 Click to upload image
+            </label>
+          </div>
+          <div class="file-preview" id="imagePreview"></div>
+        </div>
+        
         <div class="checkbox-group">
           <input type="checkbox" class="checkbox-input" id="lookingForInvestment">
-          <label class="checkbox-label">I'm looking for investment (only investors will see this)</label>
+          <label class="checkbox-label" for="lookingForInvestment">I'm looking for investment</label>
+          <div class="checkbox-note">(Only investors will see this project)</div>
         </div>
-        <button type="submit" class="submit-btn">Share Project</button>
+        
+        <button type="submit" class="submit-btn" id="submitProjectBtn">Share Project</button>
       </form>
     </div>
   </div>
-
+  
+  <!-- Add Contact Modal -->
+  <div class="modal" id="addContactModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Add Contact Information</div>
+        <button class="close-btn" onclick="closeContactModal()">&times;</button>
+      </div>
+      
+      <form id="addContactForm">
+        <div class="form-group">
+          <label class="form-label">Contact Type *</label>
+          <select class="form-input" id="contactType" name="type" required>
+            <option value="">Select contact type</option>
+            <option value="email">📧 Email</option>
+            <option value="linkedin">💼 LinkedIn</option>
+            <option value="instagram">📷 Instagram</option>
+            <option value="twitter">🐦 Twitter</option>
+            <option value="phone">📞 Phone</option>
+            <option value="website">🌐 Website</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Contact Value *</label>
+          <input type="text" class="form-input" id="contactValue" name="value" placeholder="Enter your contact information" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Display Label (Optional)</label>
+          <input type="text" class="form-input" id="contactLabel" name="label" placeholder="e.g., Personal Email, Work LinkedIn">
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitContactBtn">Add Contact</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Edit Profile Modal -->
+  <div class="modal" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Edit Profile</div>
+        <button class="close-btn" onclick="closeEditProfileModal()">&times;</button>
+      </div>
+      
+      <form id="editProfileForm">
+        <div class="form-group">
+          <label class="form-label">Bio</label>
+          <textarea class="form-textarea" id="editBio" name="bio" rows="4" placeholder="Tell us about yourself, your experience, and what you're passionate about..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" class="form-input" id="editLocation" name="location" placeholder="City, Country">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Website</label>
+          <input type="url" class="form-input" id="editWebsite" name="website" placeholder="https://yourwebsite.com">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Skills (comma separated)</label>
+          <input type="text" class="form-input" id="editSkills" name="skills" placeholder="JavaScript, React, Business Development, Marketing">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Interests (comma separated)</label>
+          <input type="text" class="form-input" id="editInterests" name="interests" placeholder="AI, Startups, Innovation, Technology">
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitEditProfileBtn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+  
   <script>
     // Load user data
     function loadUserData() {
       const username = localStorage.getItem('username');
+      const firstname = localStorage.getItem('firstname');
       const userType = localStorage.getItem('userType');
       
-      if (!username || userType !== 'entrepreneur') {
-        window.location.href = 'index.html.html';
-        return;
-      }
-      
-      // Set profile name
-      document.getElementById('profileName').textContent = username;
-      
-      // Set profile photo initial
-      const initial = username.charAt(0).toUpperCase();
-      document.getElementById('profilePhoto').textContent = initial;
-      
-      // Load bio
-      const bio = localStorage.getItem('userBio') || 'Click edit to add your bio...';
-      document.getElementById('profileBio').textContent = bio;
-      
-      // Load contact information
-      loadContactInfo();
-      
-      // Load ideas count
-      const myIdeas = JSON.parse(localStorage.getItem('myIdeas') || '[]');
-      const userIdeas = myIdeas.filter(idea => idea.username === username);
-      document.getElementById('ideasCount').textContent = `${userIdeas.length} ideas saved`;
-      
-      // Load projects
-      loadProjects();
-    }
-    
-    // Edit bio
-    function editBio() {
-      const currentBio = document.getElementById('profileBio').textContent;
-      const newBio = prompt('Edit your bio:', currentBio);
-      
-      if (newBio !== null && newBio.trim() !== '') {
-        localStorage.setItem('userBio', newBio);
-        document.getElementById('profileBio').textContent = newBio;
+      if (username && firstname) {
+        document.getElementById('profileName').textContent = firstname;
+        document.getElementById('profileAvatar').textContent = firstname.charAt(0).toUpperCase();
+        
+        // Load profile from server
+        fetch(`http://localhost:5000/api/user/${username}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              const user = data.user;
+              if (user.profile && user.profile.bio) {
+                document.getElementById('profileBio').textContent = user.profile.bio;
+              } else {
+                document.getElementById('profileBio').textContent = 'No bio added yet. Click "Edit Profile" to add your bio.';
+              }
+              
+              // Load contact information
+              loadContactInfo(user.profile);
+              
+              // Load projects
+              loadProjects(username);
+            }
+          })
+          .catch(error => {
+            console.error('Error loading user data:', error);
+          });
+      } else {
+        window.location.href = 'login.html';
       }
     }
     
     // Load contact information
-    function loadContactInfo() {
-      const username = localStorage.getItem('username');
-      const contacts = JSON.parse(localStorage.getItem('userContacts') || '[]');
-      const userContacts = contacts.filter(contact => contact.username === username);
+    function loadContactInfo(profile) {
+      const contactGrid = document.getElementById('contactGrid');
+      contactGrid.innerHTML = '';
       
-      const contactList = document.getElementById('contactList');
-      
-      if (userContacts.length === 0) {
-        contactList.innerHTML = '<div style="color: #666; font-size: 0.9rem; padding: 12px 0;">No contact information added yet</div>';
-        return;
+      if (profile && profile.email) {
+        addContactItem('email', 'Email', profile.email);
       }
       
-      let html = '';
-      userContacts.forEach(contact => {
-        const iconClass = getIconClass(contact.type);
-        const iconSymbol = getIconSymbol(contact.type);
-        
-        html += `
-          <div class="contact-item">
-            <div class="contact-icon ${iconClass}">${iconSymbol}</div>
-            <div class="contact-info">
-              <div class="contact-label">${contact.type.charAt(0).toUpperCase() + contact.type.slice(1)}</div>
-              <div class="contact-value">
-                ${contact.type === 'email' ? contact.value : `<a href="${getContactLink(contact.type, contact.value)}" target="_blank">${contact.value}</a>`}
-              </div>
-            </div>
-            <button onclick="removeContact('${contact.id}')" style="background: none; border: none; color: #999; cursor: pointer; padding: 4px;">×</button>
-          </div>
-        `;
-      });
-      
-      contactList.innerHTML = html;
-    }
-    
-    // Get icon class for contact type
-    function getIconClass(type) {
-      const iconMap = {
-        'email': 'email',
-        'linkedin': 'linkedin',
-        'twitter': 'twitter',
-        'instagram': 'instagram',
-        'facebook': 'facebook',
-        'github': 'github'
-      };
-      return iconMap[type] || 'email';
-    }
-    
-    // Get icon symbol for contact type
-    function getIconSymbol(type) {
-      const symbolMap = {
-        'email': '✉',
-        'linkedin': 'in',
-        'twitter': '𝕏',
-        'instagram': '📷',
-        'facebook': 'f',
-        'github': 'gh'
-      };
-      return symbolMap[type] || '✉';
-    }
-    
-    // Get contact link
-    function getContactLink(type, value) {
-      const linkMap = {
-        'linkedin': `https://linkedin.com/in/${value}`,
-        'twitter': `https://twitter.com/${value}`,
-        'instagram': `https://instagram.com/${value}`,
-        'facebook': `https://facebook.com/${value}`,
-        'github': `https://github.com/${value}`
-      };
-      return linkMap[type] || value;
-    }
-    
-    // Add contact information
-    function addContact() {
-      const contactTypes = ['email', 'linkedin', 'twitter', 'instagram', 'facebook', 'github'];
-      const type = prompt('Select contact type:\n1. Email\n2. LinkedIn\n3. Twitter\n4. Instagram\n5. Facebook\n6. GitHub\n\nEnter number (1-6):');
-      
-      if (!type || type < 1 || type > 6) return;
-      
-      const selectedType = contactTypes[parseInt(type) - 1];
-      let value = prompt(`Enter your ${selectedType}:`);
-      
-      if (!value || value.trim() === '') return;
-      
-      // Validate email format
-      if (selectedType === 'email' && !isValidEmail(value)) {
-        alert('Please enter a valid email address');
-        return;
+      if (profile && profile.linkedin) {
+        addContactItem('linkedin', 'LinkedIn', profile.linkedin);
       }
       
-      const username = localStorage.getItem('username');
-      let contacts = JSON.parse(localStorage.getItem('userContacts') || '[]');
+      if (profile && profile.twitter) {
+        addContactItem('twitter', 'Twitter', profile.twitter);
+      }
       
-      const newContact = {
-        id: Date.now().toString(),
-        type: selectedType,
-        value: value.trim(),
-        username: username
+      if (profile && profile.instagram) {
+        addContactItem('instagram', 'Instagram', profile.instagram);
+      }
+      
+      if (profile && profile.phone) {
+        addContactItem('phone', 'Phone', profile.phone);
+      }
+      
+      if (profile && profile.website) {
+        addContactItem('website', 'Website', profile.website);
+      }
+      
+      if (contactGrid.children.length === 0) {
+        contactGrid.innerHTML = '<div style="text-align: center; color: #3d4c5c; padding: 40px;">No contact information added yet.</div>';
+      }
+    }
+    
+    // Add contact item
+    function addContactItem(type, label, value) {
+      const contactGrid = document.getElementById('contactGrid');
+      const contactItem = document.createElement('div');
+      contactItem.className = 'contact-item';
+      contactItem.innerHTML = `
+        <div class="contact-icon ${type}">
+          ${getContactIcon(type)}
+        </div>
+        <div class="contact-info">
+          <div class="contact-label">${label}</div>
+          <div class="contact-value">${value}</div>
+        </div>
+      `;
+      contactGrid.appendChild(contactItem);
+    }
+    
+    // Get contact icon
+    function getContactIcon(type) {
+      const icons = {
+        email: '📧',
+        linkedin: '💼',
+        twitter: '🐦',
+        instagram: '📷',
+        phone: '📞',
+        website: '🌐'
       };
-      
-      contacts.push(newContact);
-      localStorage.setItem('userContacts', JSON.stringify(contacts));
-      
-      loadContactInfo();
-    }
-    
-    // Remove contact
-    function removeContact(contactId) {
-      if (!confirm('Are you sure you want to remove this contact information?')) return;
-      
-      let contacts = JSON.parse(localStorage.getItem('userContacts') || '[]');
-      contacts = contacts.filter(contact => contact.id !== contactId);
-      localStorage.setItem('userContacts', JSON.stringify(contacts));
-      
-      loadContactInfo();
-    }
-    
-    // Validate email
-    function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
+      return icons[type] || '📞';
     }
     
     // Load projects
-    function loadProjects() {
-      const username = localStorage.getItem('username');
-      const projects = JSON.parse(localStorage.getItem('userProjects') || '[]');
-      const userProjects = projects.filter(project => project.username === username);
-      
-      const projectsList = document.getElementById('projectsList');
-      
-      if (userProjects.length === 0) {
-        projectsList.innerHTML = `
-          <div class="empty-projects">
-            <h3>No projects shared yet</h3>
-            <p>Share your first project to showcase your work to the community!</p>
-          </div>
-        `;
-        return;
-      }
-      
-      let html = '';
-      userProjects.forEach(project => {
-        const date = new Date(project.date).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
+    function loadProjects(username) {
+      fetch(`http://localhost:5000/api/projects?creator=${username}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const projectsGrid = document.getElementById('projectsGrid');
+            projectsGrid.innerHTML = '';
+            
+            if (data.projects.length === 0) {
+              projectsGrid.innerHTML = `
+                <div class="empty-projects">
+                  <h3>No projects yet</h3>
+                  <p>Start sharing your ideas and projects with the IDEAI community!</p>
+                  <button class="share-project-btn" onclick="shareProject()">Create Your First Project</button>
+                </div>
+              `;
+            } else {
+              data.projects.forEach(project => {
+                addProjectCard(project);
+              });
+            }
+            
+            // Update stats
+            document.getElementById('projectsCount').textContent = data.projects.length;
+            const totalLikes = data.projects.reduce((sum, project) => sum + (project.likes || 0), 0);
+            document.getElementById('likesCount').textContent = totalLikes;
+          }
+        })
+        .catch(error => {
+          console.error('Error loading projects:', error);
         });
-        
-        html += `
-          <div class="project-card">
-            <div class="project-header">
-              <div>
-                <div class="project-title">${project.title}</div>
-                <div class="project-date">${date}</div>
-              </div>
-              ${project.lookingForInvestment ? '<span class="investment-badge">Looking for Investment</span>' : ''}
-            </div>
-            <div class="project-description">${project.description}</div>
-          </div>
-        `;
-      });
+    }
+    
+    // Add project card
+    function addProjectCard(project) {
+      const projectsGrid = document.getElementById('projectsGrid');
+      const projectCard = document.createElement('div');
+      projectCard.className = 'project-card';
+      projectCard.setAttribute('data-project-id', project.id);
       
-      projectsList.innerHTML = html;
+      const date = new Date(project.createdAt).toLocaleDateString();
+      
+      projectCard.innerHTML = `
+        <div class="project-header">
+          <div class="project-title">${project.title}</div>
+          <div class="project-actions">
+            <div class="project-date">${date}</div>
+            <button class="delete-project-btn" onclick="deleteProject('${project.id}')" title="Delete Project">
+              🗑️
+            </button>
+          </div>
+        </div>
+        <div class="project-description">${project.description}</div>
+        <div class="project-status">${project.status}</div>
+      `;
+      
+      projectsGrid.appendChild(projectCard);
     }
     
-    // Modal functions
-    function openShareModal() {
-      document.getElementById('shareModal').style.display = 'block';
+    // Edit profile
+    function editProfile() {
+      // Open profile editing modal
+      document.getElementById('editProfileModal').style.display = 'block';
+      
+      // Load current profile data
+      const username = localStorage.getItem('username');
+      fetch(`http://localhost:5000/api/user/${username}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const user = data.user;
+            const profile = user.profile || {};
+            
+            // Fill form with current data
+            document.getElementById('editBio').value = profile.bio || '';
+            document.getElementById('editLocation').value = profile.location || '';
+            document.getElementById('editWebsite').value = profile.website || '';
+            document.getElementById('editSkills').value = profile.skills ? profile.skills.join(', ') : '';
+            document.getElementById('editInterests').value = profile.interests ? profile.interests.join(', ') : '';
+          }
+        })
+        .catch(error => {
+          console.error('Error loading profile:', error);
+        });
     }
     
-    function closeShareModal() {
-      document.getElementById('shareModal').style.display = 'none';
-      document.getElementById('shareProjectForm').reset();
+    // Add contact
+    function addContact() {
+      // Open contact adding modal
+      document.getElementById('addContactModal').style.display = 'block';
     }
     
     // Share project
+    function shareProject() {
+      // Open modal
+      document.getElementById('shareProjectModal').style.display = 'block';
+    }
+    
+    // Close modal
+    function closeShareModal() {
+      document.getElementById('shareProjectModal').style.display = 'none';
+      document.getElementById('shareProjectForm').reset();
+      document.getElementById('imagePreview').innerHTML = '';
+    }
+    
+    // Preview image
+    function previewImage(input) {
+      const preview = document.getElementById('imagePreview');
+      const file = input.files[0];
+      
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.innerHTML = `<img src="${e.target.result}" alt="Project preview">`;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.innerHTML = '';
+      }
+    }
+    
+    // Handle form submission
     document.getElementById('shareProjectForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
-      const username = localStorage.getItem('username');
-      const title = document.getElementById('projectTitle').value;
-      const description = document.getElementById('projectDescription').value;
+      const submitBtn = document.getElementById('submitProjectBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sharing...';
+      
+      const title = document.getElementById('projectTitle').value.trim();
+      const description = document.getElementById('projectDescription').value.trim();
       const lookingForInvestment = document.getElementById('lookingForInvestment').checked;
+      const username = localStorage.getItem('username');
       
-      let projects = JSON.parse(localStorage.getItem('userProjects') || '[]');
+      // Validate required fields
+      if (!title) {
+        alert('Please enter a project title.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Share Project';
+        return;
+      }
       
-      projects.push({
+      if (!description) {
+        alert('Please enter a project description.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Share Project';
+        return;
+      }
+      
+      // Create project object
+      const project = {
         title: title,
         description: description,
+        category: 'tech', // Default category
+        creator: username,
         lookingForInvestment: lookingForInvestment,
-        date: new Date().toISOString(),
-        username: username
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        likes: 0
+      };
+      
+      // Send to backend
+      fetch('http://localhost:5000/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: title,
+          description: description,
+          category: 'tech',
+          username: username,
+          lookingForInvestment: lookingForInvestment
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Project shared successfully!');
+          closeShareModal();
+          loadProjects(username); // Reload projects
+        } else {
+          alert('Error sharing project: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error sharing project. Please try again.');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Share Project';
       });
-      
-      localStorage.setItem('userProjects', JSON.stringify(projects));
-      
-      closeShareModal();
-      loadProjects();
-      alert('Project shared successfully!');
     });
     
     // Close modal when clicking outside
-    document.getElementById('shareModal').addEventListener('click', function(e) {
+    document.getElementById('shareProjectModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeShareModal();
       }
     });
     
-    // Load data when page loads
-    document.addEventListener('DOMContentLoaded', loadUserData);
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeShareModal();
+        closeContactModal();
+        closeEditProfileModal();
+      }
+    });
+    
+    // Close edit profile modal
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').style.display = 'none';
+      document.getElementById('editProfileForm').reset();
+    }
+    
+    // Handle edit profile form submission
+    document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitEditProfileBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving...';
+      
+      const bio = document.getElementById('editBio').value.trim();
+      const location = document.getElementById('editLocation').value.trim();
+      const website = document.getElementById('editWebsite').value.trim();
+      const skills = document.getElementById('editSkills').value.trim();
+      const interests = document.getElementById('editInterests').value.trim();
+      const username = localStorage.getItem('username');
+      
+      // Convert comma-separated strings to arrays
+      const skillsArray = skills ? skills.split(',').map(s => s.trim()).filter(s => s) : [];
+      const interestsArray = interests ? interests.split(',').map(s => s.trim()).filter(s => s) : [];
+      
+      // Update user profile
+      fetch(`http://localhost:5000/api/user/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          profile: {
+            bio,
+            location,
+            website,
+            skills: skillsArray,
+            interests: interestsArray
+          }
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Profile updated successfully!');
+          closeEditProfileModal();
+          loadUserData(); // Reload user data to show updated profile
+        } else {
+          alert('Error updating profile: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error updating profile. Please try again.');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Changes';
+      });
+    });
+    
+    // Close edit profile modal when clicking outside
+    document.getElementById('editProfileModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeEditProfileModal();
+      }
+    });
+    
+    // Close contact modal
+    function closeContactModal() {
+      document.getElementById('addContactModal').style.display = 'none';
+      document.getElementById('addContactForm').reset();
+    }
+    
+    // Handle contact form submission
+    document.getElementById('addContactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitContactBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Adding...';
+      
+      const type = document.getElementById('contactType').value;
+      const value = document.getElementById('contactValue').value.trim();
+      const label = document.getElementById('contactLabel').value.trim();
+      const username = localStorage.getItem('username');
+      
+      if (!type || !value) {
+        alert('Please fill in all required fields.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Contact';
+        return;
+      }
+      
+      // Update user profile with new contact
+      fetch(`http://localhost:5000/api/user/${username}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          profile: {
+            [type]: value
+          }
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Contact added successfully!');
+          closeContactModal();
+          loadUserData(); // Reload user data to show new contact
+        } else {
+          alert('Error adding contact: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding contact. Please try again.');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Add Contact';
+      });
+    });
+    
+    // Close contact modal when clicking outside
+    document.getElementById('addContactModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeContactModal();
+      }
+    });
+    
+    // Delete project
+    function deleteProject(projectId) {
+      if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+        const username = localStorage.getItem('username');
+        console.log('Deleting project:', projectId, 'for user:', username);
+        
+        fetch(`http://localhost:5000/api/projects/${projectId}?username=${username}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          console.log('Response status:', response.status);
+          return response.json();
+        })
+        .then(data => {
+          console.log('Response data:', data);
+          if (data.success) {
+            alert('Project deleted successfully!');
+            loadProjects(username); // Reload projects
+          } else {
+            alert('Error deleting project: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error deleting project. Please try again.');
+        });
+      }
+    }
+    
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+    });
   </script>
 </body>
 </html> 

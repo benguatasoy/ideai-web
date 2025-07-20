@@ -58,5 +58,17 @@
     "createdAt": "2024-01-03T11:30:00.000Z",
     "investors": [],
     "likes": 20
+  },
+  {
+    "id": "1752911270284",
+    "title": "DENEME",
+    "description": "example trying 1",
+    "category": "tech",
+    "funding": 0,
+    "creator": "cunatasoy",
+    "status": "active",
+    "createdAt": "2025-07-19T07:47:50.284Z",
+    "investors": [],
+    "likes": 0
   }
-] 
+]

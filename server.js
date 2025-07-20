@@ -267,12 +267,12 @@ app.put('/api/user/:username', async (req, res) => {
 // Create project (for entrepreneurs)
 app.post('/api/projects', async (req, res) => {
   try {
-    const { title, description, category, funding, username } = req.body;
+    const { title, description, category, funding, username, lookingForInvestment } = req.body;
     
-    if (!title || !description || !category || !username) {
+    if (!title || !description || !username) {
       return res.status(400).json({ 
         success: false, 
-        message: 'All fields are required.' 
+        message: 'Title, description and username are required.' 
       });
     }
 
@@ -281,9 +281,10 @@ app.post('/api/projects', async (req, res) => {
       id: Date.now().toString(),
       title,
       description,
-      category,
+      category: category || 'tech',
       funding: funding || 0,
       creator: username,
+      lookingForInvestment: lookingForInvestment || false,
       status: 'active',
       createdAt: new Date().toISOString(),
       investors: [],
@@ -413,6 +414,58 @@ app.post('/api/projects/:id/like', async (req, res) => {
     });
   } catch (error) {
     console.error('Like project error:', error);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error.' 
+    });
+  }
+});
+
+// Delete project
+app.delete('/api/projects/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username } = req.query;
+    
+    console.log('Delete project request:', { id, username, query: req.query });
+    
+    if (!username) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Username is required.' 
+      });
+    }
+    
+    const projects = await readProjects();
+    const projectIndex = projects.findIndex(p => p.id === id);
+    
+    if (projectIndex === -1) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Project not found.' 
+      });
+    }
+    
+    const project = projects[projectIndex];
+    
+    // Check if user owns the project
+    if (project.creator !== username) {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'You can only delete your own projects.' 
+      });
+    }
+    
+    // Remove project
+    projects.splice(projectIndex, 1);
+    await writeProjects(projects);
+    
+    return res.json({ 
+      success: true, 
+      message: 'Project deleted successfully!' 
+    });
+  } catch (error) {
+    console.error('Delete project error:', error);
     return res.status(500).json({ 
       success: false, 
       message: 'Internal server error.' 

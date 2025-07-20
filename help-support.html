@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Help & Support - IDEAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2980ef;
+            text-decoration: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: 700;
+            color: #22314a;
+            font-size: 1rem;
+        }
+        
+        .user-type {
+            font-size: 0.8rem;
+            color: #2980ef;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: #f7fafd;
+            color: #2980ef;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: #e3f6fc;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 24px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 60px 0;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #22314a;
+            margin-bottom: 16px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #3d4c5c;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            border: 2px solid #e3f6fc;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: #2980ef;
+            box-shadow: 0 4px 20px rgba(41,128,239,0.15);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #3d4c5c;
+            margin-bottom: 32px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: #f7fafd;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .faq-question {
+            padding: 20px 24px;
+            background: #f7fafd;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #22314a;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+        
+        .faq-question:hover {
+            background: #e3f6fc;
+        }
+        
+        .faq-answer {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .faq-answer.active {
+            padding: 20px 24px;
+            max-height: 200px;
+        }
+        
+        .faq-toggle {
+            font-size: 1.2rem;
+            color: #2980ef;
+            transition: transform 0.2s;
+        }
+        
+        .faq-toggle.active {
+            transform: rotate(180deg);
+        }
+        
+        /* Support Channels */
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .support-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .support-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .support-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 12px;
+        }
+        
+        .support-description {
+            font-size: 1rem;
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .support-btn {
+            background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(41,128,239,0.3);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background: linear-gradient(135deg, #f7fafd 0%, #e3f6fc 100%);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        
+        .action-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 8px;
+        }
+        
+        .action-description {
+            font-size: 0.95rem;
+            color: #5a6c7d;
+            line-height: 1.5;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .contact-description {
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .contact-btn {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .contact-btn.primary {
+            background: white;
+            color: #2980ef;
+        }
+        
+        .contact-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+                margin-top: 70px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content-section {
+                padding: 24px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .faq-question {
+                font-size: 1rem;
+                padding: 16px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .contact-title {
+                font-size: 1.6rem;
+            }
+            
+            .faq-question {
+                font-size: 0.95rem;
+                padding: 14px 16px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .support-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .action-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html.html" class="logo">IDEAI</a>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">👤</div>
+            <div class="user-details">
+                <div class="username" id="username">Guest</div>
+                <div class="user-type" id="userType">Guest</div>
+            </div>
+            <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display: none;">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Help & Support</h1>
+            <p class="hero-subtitle">We're here to help you succeed on IDEAI. Find answers, get support, and make the most of our platform.</p>
+            
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search for help topics..." id="searchBar">
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="content-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="quick-actions">
+                <div class="action-card" onclick="scrollToSection('faq')">
+                    <div class="action-icon">❓</div>
+                    <h3 class="action-title">FAQ</h3>
+                    <p class="action-description">Find answers to frequently asked questions</p>
+                </div>
+                <div class="action-card" onclick="scrollToSection('support')">
+                    <div class="action-icon">💬</div>
+                    <h3 class="action-title">Contact Support</h3>
+                    <p class="action-description">Get in touch with our support team</p>
+                </div>
+                <div class="action-card" onclick="window.open('about.html', '_blank')">
+                    <div class="action-icon">ℹ️</div>
+                    <h3 class="action-title">About IDEAI</h3>
+                    <p class="action-description">Learn more about our platform</p>
+                </div>
+                <div class="action-card" onclick="window.open('contact.html', '_blank')">
+                    <div class="action-icon">📧</div>
+                    <h3 class="action-title">Contact Us</h3>
+                    <p class="action-description">Send us a message or feedback</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="content-section" id="faq">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find quick answers to common questions about IDEAI</p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How does IDEAI match entrepreneurs with investors?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        IDEAI uses advanced AI algorithms to analyze your goals, skills, and preferences. Our system matches entrepreneurs with relevant investors based on project compatibility, funding requirements, and strategic alignment. Simply share your project details and preferences, and we'll suggest the best matches for you.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What types of projects can I submit?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        IDEAI welcomes innovative projects across all industries - from tech startups to sustainable solutions, creative ventures to social enterprises. Whether you're in the ideation phase or ready to scale, our platform supports projects at every stage of development.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How secure is my project information?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Your project information is protected with enterprise-grade security. We use encryption, secure servers, and strict access controls to ensure your ideas and data remain confidential. You control what information is shared and with whom.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What fees does IDEAI charge?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        IDEAI offers a transparent fee structure. Basic platform access is free, with premium features available through subscription plans. We only charge success fees when projects receive funding through our platform, ensuring our success is tied to yours.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How do I get started as an investor?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        To get started as an investor, create an account and complete your profile with investment preferences, portfolio focus, and funding criteria. Our AI will then suggest relevant projects that match your investment strategy and goals.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I edit my project after submission?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, you can edit your project details at any time. Simply go to your project dashboard and make the necessary updates. Changes are reflected immediately, and our matching system will automatically update recommendations based on your modifications.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How long does it take to get matched?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Our AI matching system works in real-time, providing immediate project suggestions. However, the quality and quantity of matches depend on your profile completeness and current market activity. We recommend completing your profile fully for the best results.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        What support do you offer for international users?
+                        <span class="faq-toggle">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        IDEAI is a global platform supporting users worldwide. We offer multi-language support, currency conversion, and region-specific guidance. Our team is available 24/7 to assist with international transactions and compliance requirements.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Channels -->
+        <div class="content-section" id="support">
+            <h2 class="section-title">Support Channels</h2>
+            <p class="section-subtitle">Choose the best way to get the help you need</p>
+            
+            <div class="support-grid">
+                <div class="support-card">
+                    <div class="support-icon">📧</div>
+                    <h3 class="support-title">Email Support</h3>
+                    <p class="support-description">
+                        Get detailed responses to your questions within 24 hours. Perfect for complex issues or detailed inquiries.
+                    </p>
+                    <a href="mailto:support@ideai.com" class="support-btn">Send Email</a>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">💬</div>
+                    <h3 class="support-title">Live Chat</h3>
+                    <p class="support-description">
+                        Connect with our support team in real-time for immediate assistance with urgent matters.
+                    </p>
+                    <button class="support-btn" onclick="startLiveChat()">Start Chat</button>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">📞</div>
+                    <h3 class="support-title">Phone Support</h3>
+                    <p class="support-description">
+                        Speak directly with our support specialists for personalized assistance and guidance.
+                    </p>
+                    <a href="tel:+1234567890" class="support-btn">Call Now</a>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">📚</div>
+                    <h3 class="support-title">Knowledge Base</h3>
+                    <p class="support-description">
+                        Access comprehensive guides, tutorials, and resources to help you succeed on IDEAI.
+                    </p>
+                    <button class="support-btn" onclick="openKnowledgeBase()">Browse Articles</button>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">👥</div>
+                    <h3 class="support-title">Community Forum</h3>
+                    <p class="support-description">
+                        Connect with other entrepreneurs and investors, share experiences, and get peer support.
+                    </p>
+                    <button class="support-btn" onclick="openCommunity()">Join Community</button>
+                </div>
+                
+                <div class="support-card">
+                    <div class="support-icon">🎥</div>
+                    <h3 class="support-title">Video Tutorials</h3>
+                    <p class="support-description">
+                        Watch step-by-step tutorials and learn how to maximize your success on IDEAI.
+                    </p>
+                    <button class="support-btn" onclick="openTutorials()">Watch Videos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h2 class="contact-title">Still Need Help?</h2>
+            <p class="contact-description">
+                Can't find what you're looking for? Our support team is here to help you succeed.
+            </p>
+            <div class="contact-buttons">
+                <a href="contact.html" class="contact-btn primary">Contact Us</a>
+                <a href="mailto:support@ideai.com" class="contact-btn secondary">Email Support</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication and update UI
+        function checkAuth() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            
+            if (username) {
+                document.getElementById('username').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                
+                if (userType === 'entrepreneur') {
+                    document.getElementById('userType').textContent = 'Entrepreneur';
+                    document.getElementById('userType').style.color = '#27ae60';
+                } else if (userType === 'investor') {
+                    document.getElementById('userType').textContent = 'Investor';
+                    document.getElementById('userType').style.color = '#2980ef';
+                } else if (userType === 'admin') {
+                    document.getElementById('userType').textContent = 'Admin';
+                    document.getElementById('userType').style.color = '#e74c3c';
+                } else {
+                    document.getElementById('userType').textContent = 'User';
+                }
+                
+                document.getElementById('logoutBtn').style.display = 'block';
+            } else {
+                document.getElementById('username').textContent = 'Guest';
+                document.getElementById('userType').textContent = 'Guest';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('firstname');
+            localStorage.removeItem('userType');
+            window.location.href = 'index.html.html';
+        }
+
+        // FAQ Toggle Function
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                toggle.classList.remove('active');
+            } else {
+                // Close all other FAQ items
+                document.querySelectorAll('.faq-answer').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.faq-toggle').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Open current FAQ item
+                answer.classList.add('active');
+                toggle.classList.add('active');
+            }
+        }
+
+        // Search Function
+        function searchFAQ() {
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Scroll to section function
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Support functions
+        function startLiveChat() {
+            alert('Live chat feature coming soon! For now, please use email support.');
+        }
+
+        function openKnowledgeBase() {
+            alert('Knowledge base feature coming soon! For now, please check our FAQ section.');
+        }
+
+        function openCommunity() {
+            alert('Community forum feature coming soon! For now, please use our contact channels.');
+        }
+
+        function openTutorials() {
+            alert('Video tutorials feature coming soon! For now, please check our FAQ section.');
+        }
+
+        // Search event listener
+        document.getElementById('searchBar').addEventListener('input', searchFAQ);
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html> 

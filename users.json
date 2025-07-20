@@ -81,11 +81,18 @@
     "userType": "entrepreneur",
     "createdAt": "2025-07-16T06:56:03.991Z",
     "profile": {
-      "bio": "",
-      "skills": [],
-      "interests": [],
-      "location": "",
-      "website": ""
+      "bio": "şu anda daha deneme",
+      "skills": [
+        "javascript",
+        "coding"
+      ],
+      "interests": [
+        "ai"
+      ],
+      "location": "istanbul,turkey",
+      "website": "",
+      "email": "benguatasoy08@gmail.com",
+      "linkedin": "bengü atasoy"
     }
   },
   {

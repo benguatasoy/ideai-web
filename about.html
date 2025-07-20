@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About IDEAI - Where Ideas Become Action</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2980ef;
+            text-decoration: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: 700;
+            color: #22314a;
+            font-size: 1rem;
+        }
+        
+        .user-type {
+            font-size: 0.8rem;
+            color: #2980ef;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: #f7fafd;
+            color: #2980ef;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: #e3f6fc;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 24px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 60px 0;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #22314a;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: #3d4c5c;
+            margin-bottom: 32px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: #3d4c5c;
+            margin-bottom: 32px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        /* Mission & Vision */
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .mission-card, .vision-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 16px;
+        }
+        
+        .card-description {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            line-height: 1.7;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 12px;
+        }
+        
+        .feature-description {
+            font-size: 1rem;
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+        
+        /* Values Section */
+        .values-section {
+            background: linear-gradient(135deg, #f7fafd 0%, #e3f6fc 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+        
+        .value-item {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        
+        .value-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        
+        .value-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 8px;
+        }
+        
+        .value-description {
+            font-size: 0.95rem;
+            color: #5a6c7d;
+            line-height: 1.5;
+        }
+        
+        /* Team Section */
+        .team-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0 auto 16px auto;
+        }
+        
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 8px;
+        }
+        
+        .member-role {
+            font-size: 1rem;
+            color: #2980ef;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .member-bio {
+            font-size: 0.95rem;
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 32px;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-btn {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cta-btn.primary {
+            background: white;
+            color: #2980ef;
+        }
+        
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+                margin-top: 70px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .content-section {
+                padding: 24px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .mission-vision {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-section {
+                padding: 40px 24px;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .feature-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .value-item {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .team-member {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html.html" class="logo">IDEAI</a>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">👤</div>
+            <div class="user-details">
+                <div class="username" id="username">Guest</div>
+                <div class="user-type" id="userType">Guest</div>
+            </div>
+            <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display: none;">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">About IDEAI</h1>
+            <p class="hero-subtitle">Where Ideas Become Action</p>
+            <p class="hero-description">
+                IDEAI is a revolutionary platform that bridges the gap between innovative entrepreneurs and strategic investors. 
+                We believe that every great idea deserves the opportunity to grow, and no entrepreneur should build alone. 
+                Our AI-powered platform creates meaningful connections, fosters collaboration, and accelerates the journey from concept to success.
+            </p>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="content-section">
+            <h2 class="section-title">Our Mission & Vision</h2>
+            <div class="mission-vision">
+                <div class="mission-card">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Our Mission</h3>
+                    <p class="card-description">
+                        To democratize access to innovation by connecting visionary entrepreneurs with strategic investors, 
+                        creating an ecosystem where brilliant ideas can flourish and transform into successful businesses. 
+                        We empower creators to build smarter, faster, and with the support they need to succeed.
+                    </p>
+                </div>
+                <div class="vision-card">
+                    <div class="card-icon">🔮</div>
+                    <h3 class="card-title">Our Vision</h3>
+                    <p class="card-description">
+                        To become the world's leading platform for entrepreneurial innovation, where AI-driven insights 
+                        and human creativity converge to create the next generation of breakthrough companies. 
+                        We envision a future where every entrepreneur has access to the resources and connections they need to succeed.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="content-section">
+            <h2 class="section-title">Why Choose IDEAI?</h2>
+            <p class="section-subtitle">Discover the unique features that make IDEAI the preferred platform for entrepreneurs and investors</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Matching</h3>
+                    <p class="feature-description">
+                        Our advanced AI algorithms analyze your goals, skills, and preferences to suggest the most relevant 
+                        projects and connections, ensuring optimal matches between entrepreneurs and investors.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">Accelerated Growth</h3>
+                    <p class="feature-description">
+                        Get personalized project suggestions and strategic guidance to accelerate your entrepreneurial journey 
+                        from concept to market-ready solutions.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3 class="feature-title">Smart Networking</h3>
+                    <p class="feature-description">
+                        Connect with like-minded entrepreneurs and strategic investors through our intelligent networking system, 
+                        building meaningful relationships that drive success.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Data-Driven Insights</h3>
+                    <p class="feature-description">
+                        Access comprehensive analytics and market insights to make informed decisions about your projects 
+                        and investment opportunities.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">Secure Platform</h3>
+                    <p class="feature-description">
+                        Your ideas and data are protected with enterprise-grade security, ensuring confidentiality 
+                        and trust in every interaction.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3 class="feature-title">Global Reach</h3>
+                    <p class="feature-description">
+                        Access a worldwide network of entrepreneurs and investors, breaking geographical barriers 
+                        to create global opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Values -->
+        <div class="values-section">
+            <h2 class="section-title">Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">💡</div>
+                    <h3 class="value-title">Innovation</h3>
+                    <p class="value-description">
+                        We champion creative thinking and breakthrough ideas that have the potential to transform industries.
+                    </p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🤝</div>
+                    <h3 class="value-title">Collaboration</h3>
+                    <p class="value-description">
+                        We believe in the power of partnerships and collective effort to achieve extraordinary results.
+                    </p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🎯</div>
+                    <h3 class="value-title">Excellence</h3>
+                    <p class="value-description">
+                        We strive for the highest standards in everything we do, from platform development to user experience.
+                    </p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🌱</div>
+                    <h3 class="value-title">Growth</h3>
+                    <p class="value-description">
+                        We support continuous learning and development, helping our community members reach their full potential.
+                    </p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🔒</div>
+                    <h3 class="value-title">Trust</h3>
+                    <p class="value-description">
+                        We build and maintain trust through transparency, security, and reliable service delivery.
+                    </p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">🌟</div>
+                    <h3 class="value-title">Impact</h3>
+                    <p class="value-description">
+                        We measure success by the positive impact our platform has on entrepreneurs, investors, and society.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team -->
+        <div class="content-section">
+            <div class="team-section">
+                <h2 class="section-title">Meet Our Team</h2>
+                <p class="section-subtitle">The passionate minds behind IDEAI's mission to revolutionize entrepreneurship</p>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">B</div>
+                        <h3 class="member-name">Bengü</h3>
+                        <p class="member-role">CEO & Founder</p>
+                        <p class="member-bio">
+                            Visionary leader with a passion for connecting innovative ideas with strategic resources. 
+                            Dedicated to democratizing access to entrepreneurial success.
+                        </p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">A</div>
+                        <h3 class="member-name">AI Team</h3>
+                        <p class="member-role">Technology & Innovation</p>
+                        <p class="member-bio">
+                            Our AI specialists work tirelessly to develop intelligent algorithms that create meaningful 
+                            connections and provide actionable insights for our community.
+                        </p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">C</div>
+                        <h3 class="member-name">Community</h3>
+                        <p class="member-role">Growth & Support</p>
+                        <p class="member-bio">
+                            Our community team ensures every entrepreneur and investor receives the support and guidance 
+                            they need to succeed on their journey.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Start Your Journey?</h2>
+            <p class="cta-description">
+                Join thousands of entrepreneurs and investors who are already building the future with IDEAI
+            </p>
+            <div class="cta-buttons">
+                <a href="signup.html" class="cta-btn primary">Get Started Today</a>
+                <a href="contact.html" class="cta-btn secondary">Contact Us</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication and update UI
+        function checkAuth() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            
+            if (username) {
+                document.getElementById('username').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                
+                if (userType === 'entrepreneur') {
+                    document.getElementById('userType').textContent = 'Entrepreneur';
+                    document.getElementById('userType').style.color = '#27ae60';
+                } else if (userType === 'investor') {
+                    document.getElementById('userType').textContent = 'Investor';
+                    document.getElementById('userType').style.color = '#2980ef';
+                } else if (userType === 'admin') {
+                    document.getElementById('userType').textContent = 'Admin';
+                    document.getElementById('userType').style.color = '#e74c3c';
+                } else {
+                    document.getElementById('userType').textContent = 'User';
+                }
+                
+                document.getElementById('logoutBtn').style.display = 'block';
+            } else {
+                document.getElementById('username').textContent = 'Guest';
+                document.getElementById('userType').textContent = 'Guest';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('firstname');
+            localStorage.removeItem('userType');
+            window.location.href = 'index.html.html';
+        }
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html> 
