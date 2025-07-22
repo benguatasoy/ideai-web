@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keşfet | IDEAI</title>
+    <link rel="stylesheet" href="menu.css">
+    <style>
+    :root {
+        --main-gradient: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+        --main-bg: #f7f9fa;
+        --accent1: #a8edea;
+        --accent2: #fed6e3;
+        --accent3: #fcb69f;
+        --accent4: #f6d365;
+        --accent5: #cfd9df;
+        --primary: #2980ef;
+        --secondary: #f1c40f;
+        --card-bg: #fff;
+        --card-shadow: 0 4px 24px rgba(44,62,80,0.10);
+        --border-radius: 18px;
+        --filter-bg: #f7f9fa;
+        --filter-border: #e3eaf2;
+        --icon-bg1: #a8edea;
+        --icon-bg2: #fed6e3;
+        --icon-bg3: #fcb69f;
+        --icon-bg4: #f6d365;
+        --icon-bg5: #cfd9df;
+    }
+    body {
+        background: var(--main-bg);
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #22314a;
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    /* Dalga SVG arka plan */
+    .wave-bg {
+        position: absolute;
+        top: 0; left: 0; width: 100vw; height: 340px;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .discover-main {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 48px 16px 64px 16px;
+        position: relative;
+        z-index: 1;
+    }
+    .discover-header {
+        text-align: center;
+        margin-bottom: 36px;
+        position: relative;
+    }
+    .discover-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--main-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 10px 0;
+        letter-spacing: 1px;
+    }
+    .discover-header p {
+        font-size: 1.2rem;
+        color: #4a5a6a;
+        margin: 0;
+    }
+    .discover-search-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 32px;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+    }
+    .discover-search-input {
+        width: 400px;
+        padding: 14px 22px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.15rem;
+        background: var(--accent5);
+        box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+        transition: box-shadow 0.2s, background 0.2s;
+    }
+    .discover-search-input:focus {
+        background: #fff;
+        box-shadow: 0 4px 18px rgba(41,128,239,0.13);
+        outline: none;
+    }
+    .discover-search-btn {
+        background: var(--main-gradient);
+        color: #22314a;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 32px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+        transition: background 0.2s;
+    }
+    .discover-search-btn:hover {
+        background: linear-gradient(90deg, #fcb69f 0%, #a8edea 100%);
+    }
+    .discover-section-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 18px;
+        color: #22314a;
+        letter-spacing: 0.5px;
+    }
+    .discover-featured-section {
+        margin-bottom: 36px;
+    }
+    .discover-featured-list {
+        display: flex;
+        gap: 28px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .featured-card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-width: 260px;
+        max-width: 320px;
+        flex: 1 1 260px;
+        transition: box-shadow 0.2s, transform 0.2s;
+        position: relative;
+        border: 2px solid #fff;
+        background-image: linear-gradient(120deg, #a8edea22 0%, #fed6e322 100%);
+    }
+    .featured-card .score {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 8px;
+        padding: 2px 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #a8edea55;
+    }
+    .featured-card:hover {
+        box-shadow: 0 8px 32px rgba(41,128,239,0.18);
+        transform: translateY(-4px) scale(1.03);
+        border-color: var(--accent1);
+    }
+    .featured-card .avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        color: #2980ef;
+        font-size: 2.1rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px #fed6e355;
+        border: 3px solid var(--icon-bg2);
+    }
+    .featured-card .socials {
+        margin-top: 6px;
+        display: flex;
+        gap: 8px;
+    }
+    .featured-card .socials a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--icon-bg3);
+        color: #fff;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+    .featured-card .socials a:hover {
+        background: var(--primary);
+    }
+    .discover-content-wrapper {
+        display: flex;
+        gap: 32px;
+    }
+    .discover-filters {
+        background: var(--filter-bg);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 12px rgba(44,62,80,0.07);
+        padding: 32px 22px;
+        min-width: 260px;
+        max-width: 300px;
+        flex: 0 0 260px;
+        margin-bottom: 32px;
+        height: fit-content;
+        border: 1.5px solid var(--filter-border);
+    }
+    .discover-filters h3 {
+        font-size: 1.15rem;
+        margin-bottom: 18px;
+        color: #22314a;
+    }
+    .filter-group {
+        margin-bottom: 22px;
+    }
+    .filter-group label {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 6px;
+        color: #22314a;
+        font-weight: 500;
+    }
+    .filter-group input[type="checkbox"] {
+        accent-color: var(--primary);
+        margin-right: 7px;
+        transform: scale(1.2);
+    }
+    .filter-group input[type="range"] {
+        width: 100%;
+        margin-top: 6px;
+        accent-color: var(--primary);
+    }
+    .filter-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1.5px solid var(--filter-border);
+        background: #fff;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+    .filter-reset-btn {
+        background: var(--main-gradient);
+        color: #22314a;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 18px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+        box-shadow: 0 2px 8px #a8edea33;
+        transition: background 0.2s;
+    }
+    .filter-reset-btn:hover {
+        background: linear-gradient(90deg, #fcb69f 0%, #a8edea 100%);
+    }
+    .discover-projects-section {
+        flex: 1 1 0%;
+    }
+    .discover-projects-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+    }
+    .project-card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        padding: 32px 32px 26px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition: box-shadow 0.2s, transform 0.2s;
+        min-height: 180px;
+        position: relative;
+        border: 2px solid #fff;
+        background-image: linear-gradient(120deg, #fcb69f22 0%, #a8edea22 100%);
+    }
+    .project-card .badge {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        background: var(--secondary);
+        color: #22314a;
+        border-radius: 8px;
+        padding: 2px 10px;
+        font-size: 1rem;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #f6d36555;
+    }
+    .project-card:hover {
+        box-shadow: 0 8px 32px rgba(41,128,239,0.18);
+        transform: translateY(-4px) scale(1.03);
+        border-color: var(--accent3);
+    }
+    .project-card h2 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 6px 0;
+        color: #22314a;
+    }
+    .project-card p {
+        font-size: 1rem;
+        color: #4a5a6a;
+        margin: 0 0 8px 0;
+    }
+    .project-card small {
+        color: #7b8ca6;
+        font-size: 0.95rem;
+    }
+    .project-card .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: var(--icon-bg1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 8px;
+        box-shadow: 0 2px 8px #a8edea55;
+    }
+    .project-card .tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+    }
+    .project-card .tag {
+        background: var(--accent2);
+        color: #22314a;
+        border-radius: 8px;
+        padding: 2px 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        box-shadow: 0 1px 4px #fed6e355;
+    }
+    .project-card .stats {
+        display: flex;
+        gap: 18px;
+        font-size: 0.98rem;
+        color: #4a5a6a;
+        margin-bottom: 4px;
+    }
+    .project-card .details-btn {
+        margin-top: 8px;
+        background: var(--main-gradient);
+        color: #22314a;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 18px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 2px 8px #a8edea33;
+        transition: background 0.2s;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .project-card:hover .details-btn {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .project-card .fav-btn {
+        position: absolute;
+        top: 16px;
+        left: 18px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.6rem;
+        color: #e74c3c;
+        transition: transform 0.15s;
+        z-index: 2;
+        opacity: 0.85;
+    }
+    .project-card .fav-btn.fav {
+        color: #e74c3c;
+        text-shadow: 0 2px 8px #e74c3c33;
+        transform: scale(1.15);
+        opacity: 1;
+    }
+    .project-card .fav-btn:not(.fav) {
+        color: #cfd9df;
+        text-shadow: none;
+        opacity: 0.7;
+    }
+    .project-card .fav-btn:active {
+        transform: scale(1.25);
+    }
+    .modal-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(44,62,80,0.18);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.2s;
+    }
+    .modal {
+        background: #fff;
+        border-radius: 22px;
+        box-shadow: 0 8px 48px rgba(44,62,80,0.18);
+        padding: 38px 36px 28px 36px;
+        min-width: 340px;
+        max-width: 98vw;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: modalIn 0.18s cubic-bezier(.4,1.6,.6,1) both;
+    }
+    @keyframes modalIn {
+        from { opacity: 0; transform: translateY(40px) scale(0.97); }
+        to { opacity: 1; transform: none; }
+    }
+    .modal-close {
+        position: absolute;
+        top: 18px; right: 22px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #cfd9df;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .modal-close:hover {
+        color: #e74c3c;
+    }
+    .modal .logo {
+        margin: 0 auto 12px auto;
+        display: block;
+    }
+    .modal .tags {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .modal .badge {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .modal .fav-btn {
+        position: static;
+        margin: 0 0 10px 0;
+        font-size: 2rem;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .modal .stats {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .modal h2 {
+        text-align: center;
+        margin: 0 0 10px 0;
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: var(--main-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .modal p {
+        text-align: center;
+        font-size: 1.08rem;
+        color: #4a5a6a;
+        margin-bottom: 16px;
+    }
+    @media (max-width: 900px) {
+        .discover-content-wrapper {
+            flex-direction: column;
+        }
+        .discover-filters {
+            max-width: 100%;
+            min-width: unset;
+            margin-bottom: 24px;
+        }
+    }
+    @media (max-width: 600px) {
+        .discover-main {
+            padding: 12px 2px 32px 2px;
+        }
+        .discover-header h1 {
+            font-size: 1.5rem;
+        }
+        .discover-search-input {
+            width: 100%;
+            min-width: 0;
+        }
+        .discover-featured-list {
+            flex-direction: column;
+            gap: 16px;
+        }
+        .discover-projects-list {
+            grid-template-columns: 1fr;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="wave-bg">
+        <svg viewBox="0 0 1440 340" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+            <path d="M0,160L60,154.7C120,149,240,139,360,154.7C480,171,600,213,720,218.7C840,224,960,192,1080,170.7C1200,149,1320,139,1380,133.3L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#a8edea" fill-opacity="0.45"/>
+            <path d="M0,240L60,218.7C120,197,240,155,360,133.3C480,112,600,112,720,128C840,144,960,176,1080,186.7C1200,197,1320,187,1380,181.3L1440,176L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#fed6e3" fill-opacity="0.35"/>
+            <path d="M0,320L60,293.3C120,267,240,213,360,197.3C480,181,600,203,720,213.3C840,224,960,224,1080,213.3C1200,203,1320,181,1380,170.7L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#fcb69f" fill-opacity="0.25"/>
+        </svg>
+    </div>
+    <header>
+        <nav>
+            <!-- Menü buraya gelecek -->
+        </nav>
+    </header>
+    <main class="discover-main">
+        <div class="discover-header">
+            <h1>Keşfet</h1>
+            <p>Yeni projeleri, öne çıkan girişimci ve yatırımcıları keşfet. Filtrele, ara ve ilham al!</p>
+        </div>
+        <section class="discover-search-section">
+            <input type="text" id="discover-search" class="discover-search-input" placeholder="Proje veya kullanıcı ara...">
+            <button id="discover-search-btn" class="discover-search-btn">Ara</button>
+        </section>
+        <section class="discover-featured-section">
+            <h2 class="discover-section-title">Öne Çıkanlar</h2>
+            <div id="discover-featured-list" class="discover-featured-list">
+                <!-- Öne çıkan kullanıcı kartları buraya gelecek -->
+            </div>
+        </section>
+        <div class="discover-content-wrapper">
+            <aside class="discover-filters">
+                <h3>Filtrele</h3>
+                <div class="filter-group">
+                    <label>Kategoriler</label>
+                    <div id="filter-category-group">
+                        <label><input type="checkbox" value="tech"> Teknoloji</label><br>
+                        <label><input type="checkbox" value="health"> Sağlık</label><br>
+                        <label><input type="checkbox" value="finance"> Finans</label><br>
+                        <label><input type="checkbox" value="education"> Eğitim</label><br>
+                        <label><input type="checkbox" value="other"> Diğer</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Durum</label>
+                    <div id="filter-status-group">
+                        <label><input type="checkbox" value="active"> Aktif</label><br>
+                        <label><input type="checkbox" value="completed"> Tamamlanan</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Beğeni (min)</label>
+                    <input type="range" id="filter-likes" min="0" max="50" value="0">
+                    <span id="filter-likes-value">0</span>
+                </div>
+                <div class="filter-group">
+                    <label>Sırala</label>
+                    <select id="filter-sort">
+                        <option value="">Varsayılan</option>
+                        <option value="most-liked">En Çok Beğenilen</option>
+                        <option value="newest">En Yeni</option>
+                        <option value="most-funded">En Çok Fonlanan</option>
+                    </select>
+                </div>
+                <button id="filter-reset" class="filter-reset-btn">Filtreleri Sıfırla</button>
+            </aside>
+            <section class="discover-projects-section">
+                <h2 class="discover-section-title">Projeler</h2>
+                <div id="discover-projects-list" class="discover-projects-list">
+                    <!-- Proje kartları buraya gelecek -->
+                </div>
+            </section>
+        </div>
+    </main>
+    <div id="modal-root"></div>
+    <script src="menu.js"></script>
+    <script>
+    // ÖRNEK VERİLER
+    const featuredUsers = [
+        { firstname: "Ali", lastname: "Yılmaz", username: "aliyilmaz", userType: "investor", score: 8.0 },
+        { firstname: "Ayşe", lastname: "Demir", username: "aysedemir", userType: "investor", score: 8.2 },
+        { firstname: "Mehmet", lastname: "Kaya", username: "mehmetkaya", userType: "investor", score: 8.1 },
+        { firstname: "Elif", lastname: "Çelik", username: "elifcelik", userType: "investor", score: 8.3 },
+        { firstname: "Burak", lastname: "Şahin", username: "buraksahin", userType: "investor", score: 8.0 }
+    ];
+    const featuredUsersEntrepreneur = [
+        { firstname: "Zeynep", lastname: "Aydın", username: "zeynepaydin", userType: "entrepreneur", score: 8.1 },
+        { firstname: "Emre", lastname: "Koç", username: "emrekoc", userType: "entrepreneur", score: 8.0 },
+        { firstname: "Fatma", lastname: "Güneş", username: "fatmagunes", userType: "entrepreneur", score: 8.2 },
+        { firstname: "Can", lastname: "Yıldız", username: "canyildiz", userType: "entrepreneur", score: 8.0 },
+        { firstname: "Deniz", lastname: "Kurt", username: "denizkurt", userType: "entrepreneur", score: 8.3 }
+    ];
+    const projects = [
+        { title: "Yapay Zeka Destekli Sağlık Platformu", description: "Hastaların sağlık verilerini analiz eden ve doktorlara öneriler sunan bir platform.", category: "health", creator: "zeynepaydin", likes: 42, status: "active", funding: 80, badge: "Bestseller", logo: "🧬", tags: ["AI", "Sağlık", "Yeni"], comments: 12, investors: 3 },
+        { title: "Online Eğitim Portalı", description: "Her yaşa uygun, interaktif ve kişiselleştirilmiş eğitim içerikleri sunan bir platform.", category: "education", creator: "emrekoc", likes: 35, status: "active", funding: 60, logo: "📚", tags: ["Eğitim", "Popüler"], comments: 8, investors: 2 },
+        { title: "Finansal Danışmanlık Uygulaması", description: "KOBİ'ler için finansal analiz ve yatırım önerileri sunan mobil uygulama.", category: "finance", creator: "mehmetkaya", likes: 28, status: "completed", funding: 100, badge: "Bestseller", logo: "💸", tags: ["Finans", "AI"], comments: 15, investors: 4 },
+        { title: "Akıllı Ev Otomasyon Sistemi", description: "Evdeki cihazları uzaktan kontrol etmeye yarayan IoT tabanlı sistem.", category: "tech", creator: "aliyilmaz", likes: 22, status: "active", funding: 40, logo: "🏠", tags: ["IoT", "Teknoloji"], comments: 5, investors: 1 },
+        { title: "Dijital Kitaplık", description: "Kullanıcıların kitaplarını dijital ortamda saklayıp paylaşabildiği bir platform.", category: "other", creator: "aysedemir", likes: 18, status: "active", funding: 30, logo: "📖", tags: ["Kitap", "Yeni"], comments: 3, investors: 1 },
+        { title: "Sağlıklı Yaşam Takipçisi", description: "Kişisel sağlık hedeflerini takip eden ve öneriler sunan mobil uygulama.", category: "health", creator: "elifcelik", likes: 25, status: "completed", funding: 90, logo: "🏃‍♂️", tags: ["Sağlık", "Mobil"], comments: 7, investors: 2 },
+        { title: "Çevrimiçi Mentorluk Platformu", description: "Girişimciler ve yatırımcıları buluşturan, mentorluk desteği sunan platform.", category: "tech", creator: "buraksahin", likes: 30, status: "active", funding: 70, logo: "🤝", tags: ["Mentorluk", "Teknoloji", "Popüler"], comments: 10, investors: 3 },
+        { title: "Çocuklar için Kodlama Atölyesi", description: "Çocuklara kodlama öğretmek için oyunlaştırılmış eğitim platformu.", category: "education", creator: "fatmagunes", likes: 20, status: "active", funding: 50, logo: "👾", tags: ["Eğitim", "Çocuk"], comments: 4, investors: 1 }
+    ];
+
+    // Kullanıcı tipini localStorage'dan al (varsayılan: entrepreneur)
+    const userType = localStorage.getItem('userType') || 'entrepreneur';
+
+    // Öne çıkan kullanıcıları getir ve göster
+    function loadFeaturedUsers() {
+        const featuredList = document.getElementById('discover-featured-list');
+        const data = userType === 'entrepreneur' ? featuredUsers : featuredUsersEntrepreneur;
+        featuredList.innerHTML = data.slice(0, 4).map(user => `
+            <div class="featured-card">
+                <div class="avatar" style="background: linear-gradient(135deg, #${Math.floor(Math.random()*16777215).toString(16)} 0%, #fed6e3 100%);">${user.firstname[0] || ''}${user.lastname[0] || ''}</div>
+                <div>
+                    <strong>${user.firstname} ${user.lastname}</strong><br>
+                    <span>@${user.username}</span><br>
+                    <span>${user.userType === 'entrepreneur' ? 'Girişimci' : 'Yatırımcı'}</span>
+                    <div class="socials">
+                        <a href="#" title="LinkedIn"><svg width="16" height="16" fill="currentColor"><circle cx="8" cy="8" r="8"/></svg></a>
+                        <a href="#" title="Mail"><svg width="16" height="16" fill="currentColor"><rect width="16" height="12" y="2" rx="3"/></svg></a>
+                    </div>
+                </div>
+                <span class="score">${user.score}</span>
+            </div>
+        `).join('');
+    }
+
+    function getFavs() {
+        return JSON.parse(localStorage.getItem('discoverFavs') || '[]');
+    }
+    function setFavs(favs) {
+        localStorage.setItem('discoverFavs', JSON.stringify(favs));
+    }
+    function isFav(title) {
+        return getFavs().includes(title);
+    }
+    function toggleFav(title) {
+        let favs = getFavs();
+        if (favs.includes(title)) {
+            favs = favs.filter(t => t !== title);
+        } else {
+            favs.push(title);
+        }
+        setFavs(favs);
+        loadProjects(window._lastFilters || {}, window._lastSearch || '');
+    }
+
+    function showModal(project) {
+        const modalRoot = document.getElementById('modal-root');
+        const fav = isFav(project.title);
+        modalRoot.innerHTML = `
+            <div class="modal-overlay" onclick="closeModal(event)">
+                <div class="modal" onclick="event.stopPropagation()">
+                    <button class="modal-close" onclick="closeModal(event)">&times;</button>
+                    <div class="logo">${project.logo || '🚀'}</div>
+                    <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
+                    ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
+                    <button class="fav-btn${fav ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }'); event.stopPropagation();">
+                        ${fav ? '❤️' : '🤍'}
+                    </button>
+                    <h2>${project.title}</h2>
+                    <p>${project.description}</p>
+                    <div class="stats">
+                        <span>💬 ${project.comments || 0} yorum</span>
+                        <span>👥 ${project.investors || 0} yatırımcı</span>
+                        <span>💰 %${project.funding}</span>
+                    </div>
+                    <small>Kategori: ${project.category || ''} | Oluşturan: ${project.creator || ''}</small><br>
+                    <small>Beğeni: ${project.likes || 0} | Durum: ${project.status || ''}</small>
+                </div>
+            </div>
+        `;
+    }
+    function closeModal(e) {
+        document.getElementById('modal-root').innerHTML = '';
+    }
+
+    // Projeleri getir ve göster
+    function loadProjects(filters = {}, search = '') {
+        window._lastFilters = filters;
+        window._lastSearch = search;
+        const listEl = document.getElementById('discover-projects-list');
+        let filtered = [...projects];
+        // Arama
+        if (search) {
+            const s = search.toLowerCase();
+            filtered = filtered.filter(p =>
+                p.title.toLowerCase().includes(s) ||
+                p.description.toLowerCase().includes(s) ||
+                (p.category && p.category.toLowerCase().includes(s))
+            );
+        }
+        // Kategori (çoklu)
+        if (filters.categories && filters.categories.length > 0) {
+            filtered = filtered.filter(p => filters.categories.includes(p.category));
+        }
+        // Durum (çoklu)
+        if (filters.statuses && filters.statuses.length > 0) {
+            filtered = filtered.filter(p => filters.statuses.includes(p.status));
+        }
+        // Beğeni (min)
+        if (filters.minLikes) {
+            filtered = filtered.filter(p => (p.likes || 0) >= filters.minLikes);
+        }
+        // Sıralama
+        if (filters.sort === 'most-liked') {
+            filtered = filtered.sort((a, b) => b.likes - a.likes);
+        } else if (filters.sort === 'newest') {
+            filtered = filtered.sort((a, b) => b.title.localeCompare(a.title));
+        } else if (filters.sort === 'most-funded') {
+            filtered = filtered.sort((a, b) => (b.funding || 0) - (a.funding || 0));
+        }
+        if (filtered.length > 0) {
+            listEl.innerHTML = filtered.map(project => `
+                <div class="project-card">
+                    <button class="fav-btn${isFav(project.title) ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')">
+                        ${isFav(project.title) ? '❤️' : '🤍'}
+                    </button>
+                    <div class="logo">${project.logo || '🚀'}</div>
+                    <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
+                    <h2>${project.title}</h2>
+                    <p>${project.description}</p>
+                    <div class="stats">
+                        <span>💬 ${project.comments || 0} yorum</span>
+                        <span>👥 ${project.investors || 0} yatırımcı</span>
+                        <span>💰 %${project.funding}</span>
+                    </div>
+                    <small>Kategori: ${project.category || ''} | Oluşturan: ${project.creator || ''}</small><br>
+                    <small>Beğeni: ${project.likes || 0} | Durum: ${project.status || ''}</small>
+                    ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
+                    <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Detay</button>
+                </div>
+            `).join('');
+        } else {
+            listEl.innerHTML = '<p>Hiç proje bulunamadı.</p>';
+        }
+    }
+
+    // Filtre ve arama işlemleri
+    function setupDiscoverFilters() {
+        const categoryGroup = document.getElementById('filter-category-group');
+        const statusGroup = document.getElementById('filter-status-group');
+        const likesInput = document.getElementById('filter-likes');
+        const likesValue = document.getElementById('filter-likes-value');
+        const sortSel = document.getElementById('filter-sort');
+        const resetBtn = document.getElementById('filter-reset');
+        const searchInput = document.getElementById('discover-search');
+        const searchBtn = document.getElementById('discover-search-btn');
+
+        let filters = {
+            categories: [],
+            statuses: [],
+            minLikes: 0,
+            sort: '',
+        };
+        let search = '';
+
+        function reload() {
+            loadProjects(filters, search);
+        }
+
+        categoryGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                filters.categories = Array.from(categoryGroup.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
+                reload();
+            });
+        });
+        statusGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+                filters.statuses = Array.from(statusGroup.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
+                reload();
+            });
+        });
+        likesInput.addEventListener('input', e => {
+            filters.minLikes = Number(e.target.value);
+            likesValue.textContent = e.target.value;
+            reload();
+        });
+        sortSel.addEventListener('change', e => {
+            filters.sort = e.target.value;
+            reload();
+        });
+        resetBtn.addEventListener('click', () => {
+            filters = { categories: [], statuses: [], minLikes: 0, sort: '' };
+            categoryGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            statusGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            likesInput.value = 0;
+            likesValue.textContent = 0;
+            sortSel.value = '';
+            reload();
+        });
+        searchBtn.addEventListener('click', () => {
+            search = searchInput.value.trim();
+            reload();
+        });
+        searchInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                search = searchInput.value.trim();
+                reload();
+            }
+        });
+    }
+
+    // Sayfa yüklendiğinde başlat
+    window.addEventListener('DOMContentLoaded', () => {
+        loadFeaturedUsers();
+        loadProjects();
+        setupDiscoverFilters();
+    });
+    </script>
+</body>
+</html> 
