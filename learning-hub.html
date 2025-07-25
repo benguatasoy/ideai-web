@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Hub | IDEAI</title>
+    <link rel="stylesheet" href="menu.css">
+    <style>
+    :root {
+        --main-gradient: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+        --main-bg: #f7f9fa;
+        --accent1: #a8edea;
+        --accent2: #fed6e3;
+        --accent3: #fcb69f;
+        --accent4: #f6d365;
+        --accent5: #cfd9df;
+        --primary: #2980ef;
+        --secondary: #f1c40f;
+        --card-bg: #fff;
+        --card-shadow: 0 4px 24px rgba(44,62,80,0.10);
+        --border-radius: 18px;
+        --filter-bg: #f7f9fa;
+        --filter-border: #e3eaf2;
+        --icon-bg1: #a8edea;
+        --icon-bg2: #fed6e3;
+        --icon-bg3: #fcb69f;
+        --icon-bg4: #f6d365;
+        --icon-bg5: #cfd9df;
+    }
+    
+    /* Hamburger menu */
+    .hamburger {
+        position: absolute;
+        top: -32px;
+        left: 24px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        z-index: 2;
+    }
+    .hamburger span {
+        display: block;
+        height: 4px;
+        width: 100%;
+        background: #2c3e50;
+        border-radius: 2px;
+    }
+
+    /* Profile card */
+    .profile-card {
+        position: absolute;
+        top: -32px;
+        right: 24px;
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        padding: 6px 16px 6px 6px;
+        z-index: 2;
+    }
+    .profile-card img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+    .profile-card .name {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-right: 8px;
+    }
+    .profile-card .initials {
+        background: #e3eaf2;
+        color: #2c3e50;
+        border-radius: 8px;
+        padding: 2px 8px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    /* Side menu */
+    .side-menu {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        transition: left 0.3s ease;
+        padding-top: 60px;
+    }
+    .side-menu.open {
+        left: 0;
+    }
+    .side-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .side-menu li {
+        margin: 0;
+    }
+    .side-menu a {
+        display: block;
+        padding: 18px 28px;
+        color: #22314a;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        border-bottom: 1px solid #e3eaf2;
+        transition: background 0.2s;
+    }
+    .side-menu a:hover {
+        background: #f8f9fa;
+    }
+    .side-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.3);
+        z-index: 999;
+        display: none;
+    }
+    
+    body {
+        background: var(--main-bg);
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #22314a;
+        position: relative;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+    
+    /* Dalga SVG arka plan */
+    .wave-bg {
+        position: absolute;
+        top: 0; left: 0; width: 100vw; height: 340px;
+        z-index: 0;
+        pointer-events: none;
+    }
+    
+    .learning-main {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 48px 16px 64px 16px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .learning-header {
+        text-align: center;
+        margin-bottom: 36px;
+        position: relative;
+    }
+    
+    .learning-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--main-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 10px 0;
+        letter-spacing: 1px;
+    }
+    
+    .learning-header p {
+        font-size: 1.2rem;
+        color: #4a5a6a;
+        margin: 0;
+    }
+    
+    .learning-categories {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+    }
+    
+    .category-btn {
+        background: var(--card-bg);
+        border: 2px solid var(--accent1);
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #22314a;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .category-btn:hover {
+        background: var(--accent1);
+        transform: translateY(-2px);
+    }
+    
+    .category-btn.active {
+        background: var(--main-gradient);
+        border-color: var(--primary);
+        color: #22314a;
+    }
+    
+    .learning-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 32px;
+        margin-top: 32px;
+    }
+    
+    .video-card {
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: box-shadow 0.2s, transform 0.2s;
+        border: 2px solid #fff;
+        background-image: linear-gradient(120deg, #a8edea22 0%, #fed6e322 100%);
+    }
+    
+    .video-card:hover {
+        box-shadow: 0 8px 32px rgba(41,128,239,0.18);
+        transform: translateY(-4px) scale(1.02);
+        border-color: var(--accent1);
+    }
+    
+    .video-thumbnail {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, var(--accent1) 0%, var(--accent2) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .video-thumbnail::before {
+        content: "▶";
+        font-size: 3rem;
+        color: #fff;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        z-index: 2;
+    }
+    
+    .video-thumbnail::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .video-info {
+        padding: 24px;
+    }
+    
+    .video-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        color: #22314a;
+    }
+    
+    .video-description {
+        font-size: 1rem;
+        color: #4a5a6a;
+        margin: 0 0 16px 0;
+        line-height: 1.5;
+    }
+    
+    .video-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #7b8ca6;
+    }
+    
+    .video-duration {
+        background: var(--accent2);
+        color: #22314a;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    
+    .video-level {
+        background: var(--accent3);
+        color: #22314a;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    
+    .coming-soon {
+        text-align: center;
+        padding: 60px 20px;
+        color: #7b8ca6;
+    }
+    
+    .coming-soon h3 {
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+        color: #22314a;
+    }
+    
+    .coming-soon p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 900px) {
+        .learning-categories {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .learning-content {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .learning-main {
+            padding: 12px 2px 32px 2px;
+        }
+        
+        .learning-header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .learning-categories {
+            gap: 12px;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="wave-bg">
+        <svg viewBox="0 0 1440 340" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="none">
+            <path d="M0,160L60,154.7C120,149,240,139,360,154.7C480,171,600,213,720,218.7C840,224,960,192,1080,170.7C1200,149,1320,139,1380,133.3L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#a8edea" fill-opacity="0.45"/>
+            <path d="M0,240L60,218.7C120,197,240,155,360,133.3C480,112,600,112,720,128C840,144,960,176,1080,186.7C1200,197,1320,187,1380,181.3L1440,176L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#fed6e3" fill-opacity="0.35"/>
+            <path d="M0,320L60,293.3C120,267,240,213,360,197.3C480,181,600,203,720,213.3C840,224,960,224,1080,213.3C1200,203,1320,181,1380,170.7L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" fill="#fcb69f" fill-opacity="0.25"/>
+        </svg>
+    </div>
+    
+    <header>
+        <nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="profile-card" id="profile-card">
+                <img src="https://via.placeholder.com/36x36" alt="Profile" id="profile-img">
+                <span class="name" id="profile-name">Guest</span>
+                <span class="initials" id="profile-initials">G</span>
+            </div>
+        </nav>
+        <div id="side-menu" class="side-menu">
+            <div id="side-menu-list"></div>
+        </div>
+        <div id="side-menu-overlay" class="side-menu-overlay"></div>
+    </header>
+    
+    <main class="learning-main">
+        <div class="learning-header">
+            <h1>Learning Hub</h1>
+            <p>Master entrepreneurship with expert-led tutorials, best practices, and actionable insights</p>
+        </div>
+        
+        <div class="learning-categories">
+            <button class="category-btn active" data-category="all">All Topics</button>
+            <button class="category-btn" data-category="funding">Funding</button>
+            <button class="category-btn" data-category="pitch">Pitch Deck</button>
+            <button class="category-btn" data-category="marketing">Marketing</button>
+            <button class="category-btn" data-category="legal">Legal</button>
+            <button class="category-btn" data-category="growth">Growth</button>
+        </div>
+        
+        <div class="learning-content">
+            <!-- Video cards will be added here -->
+        </div>
+        
+        <div class="coming-soon">
+            <h3>🎬 Video Content Coming Soon!</h3>
+            <p>We're working hard to bring you high-quality educational content from successful entrepreneurs and industry experts.</p>
+            <p>Stay tuned for tutorials, best practices, and actionable insights to help you grow your business!</p>
+        </div>
+    </main>
+    
+    <script src="menu.js"></script>
+    <script>
+    // Menü fonksiyonları
+    function renderUserArea() {
+        const username = localStorage.getItem('username');
+        const firstname = localStorage.getItem('firstname');
+        const profileName = document.getElementById('profile-name');
+        const profileInitials = document.getElementById('profile-initials');
+        
+        if (username) {
+            profileName.textContent = firstname || username;
+            profileInitials.textContent = (firstname || username).charAt(0).toUpperCase();
+        } else {
+            profileName.textContent = 'Guest';
+            profileInitials.textContent = 'G';
+        }
+    }
+    
+    function renderSideMenu() {
+        const username = localStorage.getItem('username');
+        const userType = localStorage.getItem('userType');
+        const sideMenuList = document.getElementById('side-menu-list');
+        let html = '';
+        
+        if (username) {
+            if (userType === 'entrepreneur') {
+                html += `<li><a href="entrepreneur-account.html">Account</a></li>`;
+                html += `<li><a href="my-ideas.html">My Ideas</a></li>`;
+                html += `<li><a href="discover.html">Discover</a></li>`;
+                html += `<li><a href="learning-hub.html">Learning Hub</a></li>`;
+                html += `<li><a href="help-support.html">Help & Support</a></li>`;
+                html += `<li><a href="about.html">About IDEAI</a></li>`;
+                html += `<li><a href="contact.html">Contact Us</a></li>`;
+                html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+            } else if (userType === 'investor') {
+                html += `<li><a href="#">Account</a></li>`;
+                html += `<li><a href="#">Investment Portfolio</a></li>`;
+                html += `<li><a href="#">Messages</a></li>`;
+                html += `<li><a href="discover.html">Discover</a></li>`;
+                html += `<li><a href="help-support.html">Help & Support</a></li>`;
+                html += `<li><a href="about.html">About IDEAI</a></li>`;
+                html += `<li><a href="contact.html">Contact Us</a></li>`;
+                html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+            } else {
+                html += `<li><a href="#">Account</a></li>`;
+                html += `<li><a href="#">Favorites</a></li>`;
+                html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+            }
+        } else {
+            html += `<li><a href="about.html">About IDEAI</a></li>`;
+            html += `<li><a href="help-support.html">Help & Support</a></li>`;
+            html += `<li><a href="contact.html">Contact Us</a></li>`;
+            html += `<li><a href="signup.html">Sign Up</a></li>`;
+        }
+        sideMenuList.innerHTML = html;
+    }
+    
+    function logout() {
+        localStorage.removeItem('username');
+        localStorage.removeItem('firstname');
+        localStorage.removeItem('userType');
+        renderUserArea();
+        renderSideMenu();
+        // Menüyü kapat
+        document.getElementById('side-menu').style.display = 'none';
+        document.getElementById('side-menu-overlay').style.display = 'none';
+    }
+    
+    // Kategori filtreleme
+    function setupCategoryFilters() {
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Aktif butonu güncelle
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Burada kategori filtreleme yapılacak
+                const category = btn.dataset.category;
+                console.log('Selected category:', category);
+            });
+        });
+    }
+    
+    // Menü event listener'ları
+    document.addEventListener('DOMContentLoaded', function() {
+        const hamburger = document.getElementById('hamburger');
+        const sideMenu = document.getElementById('side-menu');
+        const sideMenuOverlay = document.getElementById('side-menu-overlay');
+        
+        renderUserArea();
+        renderSideMenu();
+        setupCategoryFilters();
+        
+        hamburger.addEventListener('click', function() {
+            renderSideMenu();
+            sideMenu.style.display = 'block';
+            sideMenuOverlay.style.display = 'block';
+            setTimeout(() => {
+                sideMenu.classList.add('open');
+            }, 10);
+        });
+        
+        sideMenuOverlay.addEventListener('click', function() {
+            sideMenu.classList.remove('open');
+            setTimeout(() => {
+                sideMenu.style.display = 'none';
+                sideMenuOverlay.style.display = 'none';
+            }, 300);
+        });
+        
+        // ESC ile menüyü kapat
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                sideMenu.classList.remove('open');
+                setTimeout(() => {
+                    sideMenu.style.display = 'none';
+                    sideMenuOverlay.style.display = 'none';
+                }, 300);
+            }
+        });
+    });
+    </script>
+</body>
+</html> 

@@ -491,7 +491,7 @@
             
             <!-- Search Bar -->
             <div class="search-container">
-                <input type="text" class="search-bar" placeholder="Search for help topics..." id="searchBar">
+                <input type="text" class="search-bar" placeholder="Search for help topics (e.g., 'project', 'funding', 'security')..." id="searchBar">
             </div>
         </div>
 
@@ -667,7 +667,7 @@
                     <p class="support-description">
                         Watch step-by-step tutorials and learn how to maximize your success on IDEAI.
                     </p>
-                    <button class="support-btn" onclick="openTutorials()">Watch Videos</button>
+                    <a href="learning-hub.html" class="support-btn">Watch Videos</a>
                 </div>
             </div>
         </div>
@@ -747,21 +747,152 @@
             }
         }
 
-        // Search Function
+        // Gelişmiş Arama Fonksiyonu
         function searchFAQ() {
-            const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+            const searchTerm = document.getElementById('searchBar').value.toLowerCase().trim();
             const faqItems = document.querySelectorAll('.faq-item');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchTerm) {
+                // Arama boşsa tüm FAQ'ları göster
+                faqItems.forEach(item => {
+                    item.style.display = 'block';
+                    // Vurgulamayı kaldır
+                    const question = item.querySelector('.faq-question');
+                    const answer = item.querySelector('.faq-answer');
+                    question.innerHTML = question.textContent;
+                    answer.innerHTML = answer.textContent;
+                });
+                if (searchResults) searchResults.style.display = 'none';
+                return;
+            }
+            
+            let matchCount = 0;
             
             faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question').textContent.toLowerCase();
-                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const questionText = question.textContent.toLowerCase();
+                const answerText = answer.textContent.toLowerCase();
                 
-                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                // Arama terimini kelimelere böl
+                const searchWords = searchTerm.split(' ').filter(word => word.length > 0);
+                
+                // Her kelime için kontrol et
+                const questionMatches = searchWords.some(word => questionText.includes(word));
+                const answerMatches = searchWords.some(word => answerText.includes(word));
+                
+                if (questionMatches || answerMatches) {
                     item.style.display = 'block';
+                    matchCount++;
+                    
+                    // Vurgulama yap
+                    highlightText(question, searchWords);
+                    highlightText(answer, searchWords);
+                    
+                    // Eşleşen FAQ'ı otomatik aç
+                    if (!answer.classList.contains('active')) {
+                        answer.classList.add('active');
+                        item.querySelector('.faq-toggle').classList.add('active');
+                    }
                 } else {
                     item.style.display = 'none';
+                    // Vurgulamayı kaldır
+                    question.innerHTML = question.textContent;
+                    answer.innerHTML = answer.textContent;
                 }
             });
+            
+            // Arama sonuçlarını göster
+            showSearchResults(matchCount, searchTerm);
+        }
+        
+        // Metni vurgula
+        function highlightText(element, searchWords) {
+            let text = element.textContent;
+            let highlightedText = text;
+            
+            searchWords.forEach(word => {
+                const regex = new RegExp(`(${word})`, 'gi');
+                highlightedText = highlightedText.replace(regex, '<mark style="background-color: #ffeb3b; padding: 2px 4px; border-radius: 3px; font-weight: bold;">$1</mark>');
+            });
+            
+            element.innerHTML = highlightedText;
+        }
+        
+        // Arama sonuçlarını göster
+        function showSearchResults(count, searchTerm) {
+            let searchResults = document.getElementById('searchResults');
+            
+            if (!searchResults) {
+                // Arama sonuçları elementi yoksa oluştur
+                searchResults = document.createElement('div');
+                searchResults.id = 'searchResults';
+                searchResults.style.cssText = `
+                    background: #e3f6fc;
+                    border-radius: 12px;
+                    padding: 16px 20px;
+                    margin: 20px 0;
+                    text-align: center;
+                    border: 2px solid #2980ef;
+                    box-shadow: 0 4px 12px rgba(41,128,239,0.15);
+                `;
+                
+                const faqContainer = document.querySelector('.faq-container');
+                faqContainer.parentNode.insertBefore(searchResults, faqContainer);
+            }
+            
+            if (count > 0) {
+                searchResults.innerHTML = `
+                    <div style="font-weight: 600; color: #2980ef; font-size: 1.1rem; margin-bottom: 8px;">
+                        🔍 Search Results
+                    </div>
+                    <div style="color: #22314a; font-size: 1rem;">
+                        Found <strong>${count}</strong> FAQ item${count > 1 ? 's' : ''} matching "<strong>${searchTerm}</strong>"
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <button onclick="clearSearch()" style="
+                            background: #2980ef;
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                        ">Clear Search</button>
+                    </div>
+                `;
+                searchResults.style.display = 'block';
+            } else {
+                searchResults.innerHTML = `
+                    <div style="font-weight: 600; color: #e74c3c; font-size: 1.1rem; margin-bottom: 8px;">
+                        🔍 No Results Found
+                    </div>
+                    <div style="color: #22314a; font-size: 1rem;">
+                        No FAQ items found matching "<strong>${searchTerm}</strong>"
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <button onclick="clearSearch()" style="
+                            background: #2980ef;
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                        ">Clear Search</button>
+                    </div>
+                `;
+                searchResults.style.display = 'block';
+            }
+        }
+        
+        // Aramayı temizle
+        function clearSearch() {
+            document.getElementById('searchBar').value = '';
+            searchFAQ();
         }
 
         // Scroll to section function
@@ -785,12 +916,24 @@
             alert('Community forum feature coming soon! For now, please use our contact channels.');
         }
 
-        function openTutorials() {
-            alert('Video tutorials feature coming soon! For now, please check our FAQ section.');
-        }
 
-        // Search event listener
-        document.getElementById('searchBar').addEventListener('input', searchFAQ);
+
+        // Debounce için timeout
+        let searchTimeout;
+        
+        // Search event listener with debounce
+        document.getElementById('searchBar').addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchFAQ, 300);
+        });
+        
+        // Enter tuşu desteği
+        document.getElementById('searchBar').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                searchFAQ();
+            }
+        });
 
         // Initialize
         checkAuth();
