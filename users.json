@@ -96,14 +96,31 @@
     }
   },
   {
-    "id": "1752727879205",
+    "id": "1753444579465",
+    "firstname": "Bilgesu",
+    "lastname": "Atasoy",
+    "username": "bilgesuatasoy",
+    "email": "benguatasoy08@outlook.com",
+    "password": "$2a$12$.i2b3Vf.DR9oTmfVqXy2outSW5Hbza20Jya81YOJOBdEd7By9sNkS",
+    "userType": "investor",
+    "createdAt": "2025-07-25T11:56:19.465Z",
+    "profile": {
+      "bio": "",
+      "skills": [],
+      "interests": [],
+      "location": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "1753446834605",
     "firstname": "Bengü",
     "lastname": "Atasoy",
     "username": "benguatasoy0",
     "email": "benguatasoy@yahoo.com.tr",
-    "password": "$2a$12$u1UeD.FQegupNlilzHqZE.Mw16bmq00RhOItbIgXzLeH..Vr/WFzi",
+    "password": "$2a$12$9U.BXNutF9qxSMeITgN7iuorjsbDhVixaSL9SaL548F6CVMSfineG",
     "userType": "investor",
-    "createdAt": "2025-07-17T04:51:19.205Z",
+    "createdAt": "2025-07-25T12:33:54.605Z",
     "profile": {
       "bio": "",
       "skills": [],

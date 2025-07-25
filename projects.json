@@ -70,5 +70,18 @@
     "createdAt": "2025-07-19T07:47:50.284Z",
     "investors": [],
     "likes": 0
+  },
+  {
+    "id": "1753443117295",
+    "title": "vdsgrwg",
+    "description": "fdgdrhg",
+    "category": "tech",
+    "funding": 0,
+    "creator": "cunatasoy",
+    "lookingForInvestment": true,
+    "status": "active",
+    "createdAt": "2025-07-25T11:31:57.295Z",
+    "investors": [],
+    "likes": 0
   }
 ]
