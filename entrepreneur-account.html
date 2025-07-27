@@ -1113,8 +1113,8 @@
           <div class="stat-label">Total Likes</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="viewsCount">0</div>
-          <div class="stat-label">Profile Views</div>
+          <div class="stat-number" id="commentsCount">0</div>
+          <div class="stat-label">Total Comments</div>
         </div>
       </div>
     </div>
@@ -1152,6 +1152,23 @@
         <div class="form-group">
           <label class="form-label">Project Title *</label>
           <input type="text" class="form-input" id="projectTitle" placeholder="Enter your project title" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-input" id="projectCategory" required>
+            <option value="">Select a category</option>
+            <option value="tech">Technology</option>
+            <option value="fashion">Fashion</option>
+            <option value="health">Health</option>
+            <option value="environment">Environment</option>
+            <option value="education">Education</option>
+            <option value="art">Art & Design</option>
+            <option value="business">Business & Finance</option>
+            <option value="media">Digital & Media</option>
+            <option value="science">Science & Discovery</option>
+            <option value="pets">Pets & Animals</option>
+          </select>
         </div>
         
         <div class="form-group">
@@ -1254,6 +1271,25 @@
         
         <button type="submit" class="submit-btn" id="submitEditProfileBtn">Save Changes</button>
       </form>
+    </div>
+  </div>
+  
+  <!-- Comments Modal -->
+  <div class="modal" id="commentsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Project Comments</div>
+        <button class="close-btn" onclick="closeCommentsModal()">&times;</button>
+      </div>
+      <div id="commentsList" style="max-height: 400px; overflow-y: auto; margin-bottom: 24px;">
+        <!-- Comments will be loaded here -->
+      </div>
+      <div style="border-top: 2px solid #f0f0f0; padding-top: 24px;">
+        <textarea id="newCommentInput" placeholder="Write a comment..." style="width: 100%; padding: 12px; border: 2px solid #e3f6fc; border-radius: 12px; font-size: 1rem; resize: vertical; min-height: 80px; font-family: inherit; margin-bottom: 16px;"></textarea>
+        <button onclick="addNewComment()" style="background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s;">
+          Add Comment
+        </button>
+      </div>
     </div>
   </div>
   
@@ -1368,6 +1404,10 @@
             const projectsGrid = document.getElementById('projectsGrid');
             projectsGrid.innerHTML = '';
             
+            // Get like and comment data from localStorage
+            const projectLikes = JSON.parse(localStorage.getItem('projectLikes') || '{}');
+            const projectComments = JSON.parse(localStorage.getItem('projectComments') || '{}');
+            
             if (data.projects.length === 0) {
               projectsGrid.innerHTML = `
                 <div class="empty-projects">
@@ -1377,15 +1417,39 @@
                 </div>
               `;
             } else {
-              data.projects.forEach(project => {
+              // Update projects with like and comment counts
+              const updatedProjects = data.projects.map(project => {
+                const originalLikes = project.likes || 0;
+                const additionalLikes = projectLikes[project.title] || 0;
+                const totalLikes = originalLikes + additionalLikes;
+                const commentCount = (projectComments[project.title] || []).length;
+                
+                return {
+                  ...project,
+                  likes: totalLikes,
+                  comments: commentCount
+                };
+              });
+              
+              updatedProjects.forEach(project => {
                 addProjectCard(project);
               });
             }
             
             // Update stats
             document.getElementById('projectsCount').textContent = data.projects.length;
-            const totalLikes = data.projects.reduce((sum, project) => sum + (project.likes || 0), 0);
+            const totalLikes = data.projects.reduce((sum, project) => {
+              const originalLikes = project.likes || 0;
+              const additionalLikes = projectLikes[project.title] || 0;
+              return sum + originalLikes + additionalLikes;
+            }, 0);
             document.getElementById('likesCount').textContent = totalLikes;
+            
+            const totalComments = data.projects.reduce((sum, project) => {
+              const commentCount = (projectComments[project.title] || []).length;
+              return sum + commentCount;
+            }, 0);
+            document.getElementById('commentsCount').textContent = totalComments;
           }
         })
         .catch(error => {
@@ -1413,7 +1477,32 @@
           </div>
         </div>
         <div class="project-description">${project.description}</div>
-        <div class="project-status">${project.status}</div>
+        <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+          <div class="project-status">${project.status}</div>
+          ${project.category ? `<div style="background: #f1c40f; color: white; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 700;">${project.category}</div>` : ''}
+        </div>
+        
+        <!-- Project Stats -->
+        <div style="display: flex; gap: 16px; margin-top: 20px; padding: 16px; background: #f7fafd; border-radius: 12px; border: 1px solid #e3f6fc;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">❤️</span>
+            <span style="font-weight: 600; color: #22314a;">${project.likes || 0} likes</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">💬</span>
+            <span style="font-weight: 600; color: #22314a;">${project.comments || 0} comments</span>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; margin-top: 16px; justify-content: center;">
+          <button onclick="viewOnDiscover('${project.title}')" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;">
+            🔍 View on Discover
+          </button>
+          <button onclick="viewComments('${project.title}')" style="background: #f7fafd; color: #3d4c5c; border: 2px solid #e3f6fc; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 0.9rem;">
+            💬 View Comments
+          </button>
+        </div>
       `;
       
       projectsGrid.appendChild(projectCard);
@@ -1490,6 +1579,7 @@
       submitBtn.textContent = 'Sharing...';
       
       const title = document.getElementById('projectTitle').value.trim();
+      const category = document.getElementById('projectCategory').value;
       const description = document.getElementById('projectDescription').value.trim();
       const lookingForInvestment = document.getElementById('lookingForInvestment').checked;
       const username = localStorage.getItem('username');
@@ -1497,6 +1587,13 @@
       // Validate required fields
       if (!title) {
         alert('Please enter a project title.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Share Project';
+        return;
+      }
+      
+      if (!category) {
+        alert('Please select a project category.');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Share Project';
         return;
@@ -1530,7 +1627,7 @@
         body: JSON.stringify({
           title: title,
           description: description,
-          category: 'tech',
+          category: category,
           username: username,
           lookingForInvestment: lookingForInvestment
         })
@@ -1735,6 +1832,96 @@
         });
       }
     }
+    
+    // View project on discover page
+    function viewOnDiscover(projectTitle) {
+      // Navigate to discover page
+      window.open('discover.html', '_blank');
+    }
+    
+    // View comments for a project
+    let currentProjectForComments = '';
+    
+    function viewComments(projectTitle) {
+      currentProjectForComments = projectTitle;
+      document.getElementById('commentsModal').style.display = 'block';
+      loadProjectComments(projectTitle);
+    }
+    
+    function closeCommentsModal() {
+      document.getElementById('commentsModal').style.display = 'none';
+      document.getElementById('newCommentInput').value = '';
+      currentProjectForComments = '';
+    }
+    
+    function loadProjectComments(projectTitle) {
+      const comments = JSON.parse(localStorage.getItem('projectComments') || '{}');
+      const projectComments = comments[projectTitle] || [];
+      const commentsList = document.getElementById('commentsList');
+      
+      if (projectComments.length === 0) {
+        commentsList.innerHTML = '<p style="text-align: center; color: #7b8ca6; font-style: italic; padding: 40px;">No comments yet. Be the first to comment!</p>';
+      } else {
+        commentsList.innerHTML = projectComments.map(comment => `
+          <div style="background: #f7fafd; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #2980ef;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-weight: 600; color: #22314a; font-size: 0.9rem;">${comment.author}</div>
+              <div style="font-size: 0.8rem; color: #7b8ca6;">${new Date(comment.date).toLocaleDateString()}</div>
+            </div>
+            <div style="color: #3d4c5c; line-height: 1.5;">${comment.text}</div>
+          </div>
+        `).join('');
+      }
+    }
+    
+    function addNewComment() {
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert('Please sign in to add comments.');
+        return;
+      }
+      
+      const commentText = document.getElementById('newCommentInput').value.trim();
+      if (!commentText) {
+        alert('Please enter a comment.');
+        return;
+      }
+      
+      if (!currentProjectForComments) {
+        alert('No project selected for comment.');
+        return;
+      }
+      
+      // Get existing comments
+      const comments = JSON.parse(localStorage.getItem('projectComments') || '{}');
+      if (!comments[currentProjectForComments]) {
+        comments[currentProjectForComments] = [];
+      }
+      
+      // Add new comment
+      comments[currentProjectForComments].push({
+        author: username,
+        text: commentText,
+        date: new Date().toISOString()
+      });
+      
+      // Save to localStorage
+      localStorage.setItem('projectComments', JSON.stringify(comments));
+      
+      // Update UI
+      loadProjectComments(currentProjectForComments);
+      document.getElementById('newCommentInput').value = '';
+      
+      // Reload projects to update comment count
+      loadProjects(username);
+    }
+    
+    // Close comments modal when clicking outside
+    document.getElementById('commentsModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeCommentsModal();
+      }
+    });
     
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {

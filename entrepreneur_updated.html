@@ -436,6 +436,7 @@
                             <option value="business">Business & Finance</option>
                             <option value="media">Digital & Media</option>
                             <option value="science">Science & Discovery</option>
+                            <option value="pets">Pets & Animals</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -485,6 +486,43 @@
                             <option value="Development started">Development started</option>
                             <option value="Prototype ready">Prototype ready</option>
                             <option value="Ready to launch">Ready to launch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="teamSize">Team Size</label>
+                        <select id="teamSize" name="teamSize" required>
+                            <option value="Solo">Solo (Just me)</option>
+                            <option value="Small team">Small team (2-5 people)</option>
+                            <option value="Medium team">Medium team (6-15 people)</option>
+                            <option value="Large team">Large team (16+ people)</option>
+                            <option value="Open to hiring">Open to hiring</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="socialImpact">Social Impact</label>
+                        <select id="socialImpact" name="socialImpact" required>
+                            <option value="High">High - Major positive impact</option>
+                            <option value="Medium">Medium - Moderate positive impact</option>
+                            <option value="Low">Low - Minor positive impact</option>
+                            <option value="None">None - Focus on profit only</option>
+                            <option value="Environmental">Environmental focus</option>
+                            <option value="Educational">Educational focus</option>
+                            <option value="Healthcare">Healthcare focus</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessModel">Business Model</label>
+                        <select id="businessModel" name="businessModel" required>
+                            <option value="Online platform">Online platform</option>
+                            <option value="Website/Web app">Website/Web app</option>
+                            <option value="Mobile app">Mobile app</option>
+                            <option value="Physical company">Physical company</option>
+                            <option value="E-commerce">E-commerce</option>
+                            <option value="SaaS">SaaS (Software as a Service)</option>
+                            <option value="Marketplace">Marketplace</option>
+                            <option value="Consulting">Consulting services</option>
+                            <option value="Product-based">Product-based business</option>
+                            <option value="Freelance">Freelance/Independent</option>
                         </select>
                     </div>
                 </div>
@@ -557,7 +595,7 @@
         }
 
         // Advanced idea generator function
-        function generateIdeas(category, audience, budget, timeframe, stage, description) {
+        function generateIdeas(category, audience, budget, timeframe, stage, teamSize, socialImpact, businessModel, description) {
             const ideas = [];
             const catMap = {
                 tech: [
@@ -667,6 +705,18 @@
                     'Open access journal hub',
                     'Citizen science platform',
                     'Research funding finder'
+                ],
+                pets: [
+                    'Pet health monitoring app',
+                    'Pet sitting marketplace',
+                    'Pet training platform',
+                    'Pet food delivery service',
+                    'Pet grooming booking app',
+                    'Pet adoption network',
+                    'Pet insurance comparison tool',
+                    'Pet social media platform',
+                    'Pet emergency alert system',
+                    'Pet-friendly travel guide'
                 ]
             };
 
@@ -724,6 +774,9 @@
             const currency = document.getElementById('currency').value;
             const timeframe = document.getElementById('timeframe').value;
             const stage = document.getElementById('stage').value;
+            const teamSize = document.getElementById('teamSize').value;
+            const socialImpact = document.getElementById('socialImpact').value;
+            const businessModel = document.getElementById('businessModel').value;
             const description = document.getElementById('description').value;
             
             // Redirect to entrepreneur_cards.html with form data
@@ -734,6 +787,9 @@
                 currency: currency,
                 timeframe: timeframe,
                 stage: stage,
+                teamSize: teamSize,
+                socialImpact: socialImpact,
+                businessModel: businessModel,
                 description: description
             });
             

@@ -277,54 +277,113 @@
         .team-section {
             text-align: center;
             margin-bottom: 40px;
+            background: linear-gradient(135deg, rgba(168, 237, 234, 0.1) 0%, rgba(254, 214, 227, 0.1) 100%);
+            border-radius: 24px;
+            padding: 48px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="%23ffffff" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
         }
         
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 32px;
             margin-top: 32px;
+            position: relative;
+            z-index: 1;
         }
         
         .team-member {
-            background: white;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 36px 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #a8edea 0%, #fed6e3 0%, #fcb69f 100%);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
         }
         
         .member-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 2rem;
-            margin: 0 auto 16px auto;
+            color: #2c3e50;
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 8px 24px rgba(168, 237, 234, 0.3);
+            position: relative;
+        }
+        
+        .member-avatar::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.3;
         }
         
         .member-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #22314a;
-            margin-bottom: 8px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
         }
         
         .member-role {
-            font-size: 1rem;
-            color: #2980ef;
-            font-weight: 600;
-            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: #a8edea;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .member-bio {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #5a6c7d;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 400;
         }
         
         /* CTA Section */
@@ -650,7 +709,7 @@
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-avatar">B</div>
-                        <h3 class="member-name">Bengü</h3>
+                        <h3 class="member-name">Bengü Atasoy</h3>
                         <p class="member-role">CEO & Founder</p>
                         <p class="member-bio">
                             Visionary leader with a passion for connecting innovative ideas with strategic resources. 
