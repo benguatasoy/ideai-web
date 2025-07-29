@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites - IDEAI</title>
+    <link rel="stylesheet" href="menu.css">
+    <style>
+        :root {
+            --main-gradient: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+            --main-bg: #f7f9fa;
+            --accent1: #a8edea;
+            --accent2: #fed6e3;
+            --accent3: #fcb69f;
+            --accent4: #f6d365;
+            --accent5: #cfd9df;
+            --primary: #2980ef;
+            --secondary: #f1c40f;
+            --card-bg: #fff;
+            --card-shadow: 0 4px 24px rgba(44,62,80,0.10);
+            --border-radius: 18px;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #e3f6fc 0%, #f7ecd7 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2980ef;
+            text-decoration: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(90deg, #2980ef 0%, #0056b3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: 700;
+            color: #22314a;
+            font-size: 1rem;
+        }
+        
+        .user-type {
+            font-size: 0.8rem;
+            color: #2980ef;
+            font-weight: 600;
+        }
+        
+        .logout-btn {
+            background: #f7fafd;
+            color: #2980ef;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background: #e3f6fc;
+        }
+        
+        /* Hamburger menu */
+        .hamburger {
+            position: absolute;
+            top: -32px;
+            left: 24px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .hamburger span {
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: #2c3e50;
+            border-radius: 2px;
+        }
+
+        /* Profile card */
+        .profile-card {
+            position: absolute;
+            top: -32px;
+            right: 24px;
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 6px 16px 6px 6px;
+            z-index: 2;
+        }
+        .profile-card img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .profile-card .name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-right: 8px;
+        }
+        .profile-card .initials {
+            background: #e3eaf2;
+            color: #2c3e50;
+            border-radius: 8px;
+            padding: 2px 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Side menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding-top: 60px;
+        }
+        .side-menu.open {
+            left: 0;
+        }
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .side-menu li {
+            margin: 0;
+        }
+        .side-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+        .side-menu a:hover {
+            background: #f0f0f0;
+        }
+        .side-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 24px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+        
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #22314a;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #2980ef 0%, #2ecc71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #5a6c7d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Favorites Grid */
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .favorite-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .favorite-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .favorite-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        
+        .favorite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .favorite-logo {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        
+        .favorite-badge {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #2c3e50;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .favorite-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        .favorite-description {
+            color: #5a6c7d;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .favorite-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .favorite-tag {
+            background: #f7fafd;
+            color: #2980ef;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .favorite-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #7b8ca6;
+        }
+        
+        .favorite-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn.primary {
+            background: linear-gradient(135deg, #2980ef 0%, #0056b3 100%);
+            color: white;
+        }
+        
+        .action-btn.secondary {
+            background: #f7fafd;
+            color: #2980ef;
+            border: 1px solid #e3eaf2;
+        }
+        
+        .action-btn.danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22314a;
+            margin-bottom: 12px;
+        }
+        
+        .empty-description {
+            color: #5a6c7d;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        
+        .empty-btn {
+            background: linear-gradient(135deg, #2980ef 0%, #0056b3 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .empty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(41,128,239,0.3);
+        }
+        
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #2980ef;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 16px;
+                margin-top: 70px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .favorites-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .favorite-card {
+                padding: 20px;
+            }
+            
+            .favorite-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .favorite-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html.html" class="logo">IDEAI</a>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">👤</div>
+            <div class="user-details">
+                <div class="username" id="username">Guest</div>
+                <div class="user-type" id="userType">Guest</div>
+            </div>
+            <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display: none;">Logout</button>
+        </div>
+    </header>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <div id="side-menu-list"></div>
+    </div>
+    <div id="side-menu-overlay" class="side-menu-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">My Favorites</h1>
+            <p class="page-subtitle">
+                Your saved projects and ideas that caught your attention. 
+                Keep track of the most promising opportunities for investment.
+            </p>
+        </div>
+
+        <!-- Favorites Grid -->
+        <div id="favorites-container">
+            <!-- Loading State -->
+            <div class="loading-state" id="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Loading your favorites...</p>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">💝</div>
+                <h2 class="empty-title">No Favorites Yet</h2>
+                <p class="empty-description">
+                    You haven't added any projects to your favorites yet. 
+                    Start exploring and save the projects that interest you!
+                </p>
+                <a href="discover.html" class="empty-btn">Explore Projects</a>
+            </div>
+            
+            <!-- Favorites Grid -->
+            <div class="favorites-grid" id="favorites-grid" style="display: none;">
+                <!-- Favorites will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="menu.js"></script>
+    <script>
+        // Check authentication and update UI
+        function checkAuth() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            
+            if (username) {
+                document.getElementById('username').textContent = username;
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                
+                if (userType === 'entrepreneur') {
+                    document.getElementById('userType').textContent = 'Entrepreneur';
+                    document.getElementById('userType').style.color = '#27ae60';
+                } else if (userType === 'investor') {
+                    document.getElementById('userType').textContent = 'Investor';
+                    document.getElementById('userType').style.color = '#2980ef';
+                } else if (userType === 'admin') {
+                    document.getElementById('userType').textContent = 'Admin';
+                    document.getElementById('userType').style.color = '#e74c3c';
+                } else {
+                    document.getElementById('userType').textContent = 'User';
+                }
+                
+                document.getElementById('logoutBtn').style.display = 'block';
+            } else {
+                document.getElementById('username').textContent = 'Guest';
+                document.getElementById('userType').textContent = 'Guest';
+                document.getElementById('logoutBtn').style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('firstname');
+            localStorage.removeItem('userType');
+            window.location.href = 'index.html.html';
+        }
+
+        // Render side menu
+        function renderSideMenu() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            const sideMenuList = document.getElementById('side-menu-list');
+            let html = '';
+            
+            if (username) {
+                if (userType === 'entrepreneur') {
+                    html += `<li><a href="entrepreneur-account.html">Account</a></li>`;
+                    html += `<li><a href="my-ideas.html">My Ideas</a></li>`;
+                    html += `<li><a href="discover.html">Discover</a></li>`;
+                    html += `<li><a href="help-support.html">Help & Support</a></li>`;
+                    html += `<li><a href="about.html">About IDEAI</a></li>`;
+                    html += `<li><a href="contact.html">Contact Us</a></li>`;
+                    html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+                } else if (userType === 'investor') {
+                    html += `<li><a href="investor-account.html">Account</a></li>`;
+                    html += `<li><a href="discover.html">Discover</a></li>`;
+                    html += `<li><a href="investor-favorites.html" style="background: #e3f6fc; color: #2980ef; font-weight: 700;">My Favorites</a></li>`;
+                    html += `<li><a href="learning-hub.html">Learning Hub</a></li>`;
+                    html += `<li><a href="help-support.html">Help & Support</a></li>`;
+                    html += `<li><a href="about.html">About IDEAI</a></li>`;
+                    html += `<li><a href="contact.html">Contact Us</a></li>`;
+                    html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+                } else {
+                    html += `<li><a href="#">Account</a></li>`;
+                    html += `<li><a href="#">Favorites</a></li>`;
+                    html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
+                }
+            } else {
+                html += `<li><a href="about.html">About IDEAI</a></li>`;
+                html += `<li><a href="help-support.html">Help & Support</a></li>`;
+                html += `<li><a href="contact.html">Contact Us</a></li>`;
+                html += `<li><a href="signup.html">Sign Up</a></li>`;
+            }
+            sideMenuList.innerHTML = html;
+        }
+
+        // Load favorites
+        function loadFavorites() {
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            
+            if (!username) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            if (userType !== 'investor') {
+                alert('This page is only available for investors.');
+                window.location.href = 'discover.html';
+                return;
+            }
+            
+            const loadingState = document.getElementById('loading-state');
+            const emptyState = document.getElementById('empty-state');
+            const favoritesGrid = document.getElementById('favorites-grid');
+            
+            // Get favorites from localStorage
+            const userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            
+            loadingState.style.display = 'none';
+            
+            if (userFavorites.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            // Demo projects data
+            const demoProjects = [
+                { title: "AI-Powered Health Platform", description: "A platform that analyzes patient health data and provides recommendations to doctors.", category: "health", creator: "sarahjohnson", likes: 42, status: "active", funding: 80, badge: "Bestseller", logo: "🧬", tags: ["AI", "Health", "New"], comments: 12, investors: 3, isDemo: true },
+                { title: "Online Education Portal", description: "A platform offering interactive and personalized educational content for all ages.", category: "education", creator: "michaelchen", likes: 35, status: "active", funding: 60, logo: "📚", tags: ["Education", "Popular"], comments: 8, investors: 2, isDemo: true },
+                { title: "Finansal Danışmanlık Uygulaması", description: "KOBİ'ler için finansal analiz ve yatırım önerileri sunan mobil uygulama.", category: "finance", creator: "mehmetkaya", likes: 28, status: "completed", funding: 100, badge: "Bestseller", logo: "💸", tags: ["Finance", "AI"], comments: 15, investors: 4, isDemo: true },
+                { title: "Smart Home Automation System", description: "IoT-based system for remote control of home devices.", category: "tech", creator: "davidkim", likes: 22, status: "active", funding: 40, logo: "🏠", tags: ["IoT", "Technology"], comments: 5, investors: 1, isDemo: true },
+                { title: "Dijital Kitaplık", description: "Kullanıcıların kitaplarını dijital ortamda saklayıp paylaşabildiği bir platform.", category: "other", creator: "aysedemir", likes: 18, status: "active", funding: 30, logo: "📖", tags: ["Books", "New"], comments: 3, investors: 1, isDemo: true },
+                { title: "Sağlıklı Yaşam Takipçisi", description: "Kişisel sağlık hedeflerini takip eden ve öneriler sunan mobil uygulama.", category: "health", creator: "elifcelik", likes: 25, status: "completed", funding: 90, logo: "🏃‍♂️", tags: ["Health", "Mobile"], comments: 7, investors: 2, isDemo: true },
+                { title: "Çevrimiçi Mentorluk Platformu", description: "Girişimciler ve yatırımcıları buluşturan, mentorluk desteği sunan platform.", category: "tech", creator: "buraksahin", likes: 30, status: "active", funding: 70, logo: "🤝", tags: ["Mentorship", "Technology", "Popular"], comments: 10, investors: 3, isDemo: true },
+                { title: "Çocuklar için Kodlama Atölyesi", description: "Çocuklara kodlama öğretmek için oyunlaştırılmış eğitim platformu.", category: "education", creator: "fatmagunes", likes: 20, status: "active", funding: 50, logo: "👾", tags: ["Education", "Kids"], comments: 4, investors: 1, isDemo: true }
+            ];
+            
+            // Filter demo projects to show only favorited ones
+            const favoriteProjects = demoProjects.filter(project => userFavorites.includes(project.title));
+            
+            favoritesGrid.style.display = 'grid';
+            favoritesGrid.innerHTML = favoriteProjects.map(project => {
+                return `
+                    <div class="favorite-card">
+                        <div class="favorite-header">
+                            <div class="favorite-logo">${project.logo || '🚀'}</div>
+                            <div class="favorite-badge">${project.isDemo ? 'Demo' : 'Live'}</div>
+                        </div>
+                        <h3 class="favorite-title">${project.title}</h3>
+                        <p class="favorite-description">${project.description}</p>
+                        <div class="favorite-tags">
+                            ${(project.tags || []).map(tag => `<span class="favorite-tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="favorite-stats">
+                            <span>💬 ${project.comments || 0} comments</span>
+                            <span>👥 ${project.investors || 0} investors</span>
+                            <span>💰 %${project.funding || 0}</span>
+                            <span>❤️ ${project.likes || 0} likes</span>
+                        </div>
+                        <div class="favorite-actions">
+                            <button class="action-btn primary" onclick="viewProjectDetails('${project.title}')">
+                                View Details
+                            </button>
+                            <button class="action-btn secondary" onclick="contactCreator('${project.creator}')">
+                                Contact Creator
+                            </button>
+                            <button class="action-btn danger" onclick="removeFromFavorites('${project.title}')">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Remove from favorites
+        function removeFromFavorites(projectTitle) {
+            const username = localStorage.getItem('username');
+            
+            if (!confirm('Are you sure you want to remove this project from your favorites?')) {
+                return;
+            }
+            
+            // Get current favorites
+            const userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            
+            // Remove the project
+            const newFavorites = userFavorites.filter(fav => fav !== projectTitle);
+            localStorage.setItem(`favorites_${username}`, JSON.stringify(newFavorites));
+            
+            alert('Project removed from favorites!');
+            
+            // Reload favorites to update the page properly
+            setTimeout(() => {
+                loadFavorites();
+            }, 100);
+        }
+
+        // View project details
+        function viewProjectDetails(projectId) {
+            // For now, redirect to discover page
+            // In the future, this could open a modal or go to a project detail page
+            window.location.href = `discover.html#project-${projectId}`;
+        }
+
+        // Contact creator
+        function contactCreator(creator) {
+            alert(`Contact feature for ${creator} will be implemented soon!`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            renderSideMenu();
+            loadFavorites();
+            
+            // Hamburger menu functionality
+            const hamburger = document.getElementById('hamburger');
+            const sideMenu = document.getElementById('side-menu');
+            const sideMenuOverlay = document.getElementById('side-menu-overlay');
+            
+            hamburger.addEventListener('click', function() {
+                renderSideMenu();
+                sideMenu.style.display = 'block';
+                sideMenuOverlay.style.display = 'block';
+                setTimeout(() => {
+                    sideMenu.classList.add('open');
+                }, 10);
+            });
+            
+            sideMenuOverlay.addEventListener('click', function() {
+                sideMenu.classList.remove('open');
+                setTimeout(() => {
+                    sideMenu.style.display = 'none';
+                    sideMenuOverlay.style.display = 'none';
+                }, 300);
+            });
+            
+            // ESC to close menu
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    sideMenu.classList.remove('open');
+                    setTimeout(() => {
+                        sideMenu.style.display = 'none';
+                        sideMenuOverlay.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

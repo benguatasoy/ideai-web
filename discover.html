@@ -571,6 +571,19 @@
         font-weight: 700;
         box-shadow: 0 2px 8px #f6d36555;
     }
+    .project-card .project-badge {
+        position: absolute;
+        top: 40px;
+        right: 8px;
+        background: var(--secondary);
+        color: #22314a;
+        border-radius: 8px;
+        padding: 2px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 2px 8px #f6d36555;
+        z-index: 1;
+    }
     .project-card:hover {
         box-shadow: 0 8px 32px rgba(41,128,239,0.18);
         transform: translateY(-4px) scale(1.03);
@@ -648,30 +661,38 @@
     }
     .project-card .fav-btn {
         position: absolute;
-        top: 16px;
-        left: 18px;
-        background: none;
-        border: none;
+        top: 8px;
+        right: 8px;
+        background: rgba(255,255,255,0.9);
+        border: 1px solid #e3eaf2;
+        border-radius: 8px;
+        padding: 4px 8px;
         cursor: pointer;
-        font-size: 1.6rem;
-        color: #e74c3c;
-        transition: transform 0.15s;
+        font-size: 0.7rem;
+        font-weight: 500;
+        transition: all 0.2s;
         z-index: 2;
-        opacity: 0.85;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        color: #2980ef;
+        opacity: 0.8;
     }
     .project-card .fav-btn.fav {
-        color: #e74c3c;
-        text-shadow: 0 2px 8px #e74c3c33;
-        transform: scale(1.15);
+        background: #e74c3c;
+        color: white;
+        border-color: #e74c3c;
         opacity: 1;
     }
     .project-card .fav-btn:not(.fav) {
-        color: #cfd9df;
-        text-shadow: none;
-        opacity: 0.7;
+        background: #f7fafd;
+        color: #2980ef;
+    }
+    .project-card .fav-btn:hover {
+        opacity: 1;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
     .project-card .fav-btn:active {
-        transform: scale(1.25);
+        transform: scale(0.95);
     }
     .modal-overlay {
         position: fixed;
@@ -1330,14 +1351,14 @@
     ];
     // Demo projects (will be mixed with real user projects)
     const demoProjects = [
-        { title: "AI-Powered Health Platform", description: "A platform that analyzes patient health data and provides recommendations to doctors.", category: "health", creator: "sarahjohnson", likes: 42, status: "active", funding: 80, badge: "Bestseller", logo: "🧬", tags: ["AI", "Health", "New"], comments: 12, investors: 3, isDemo: true },
-        { title: "Online Education Portal", description: "A platform offering interactive and personalized educational content for all ages.", category: "education", creator: "michaelchen", likes: 35, status: "active", funding: 60, logo: "📚", tags: ["Education", "Popular"], comments: 8, investors: 2, isDemo: true },
-        { title: "Finansal Danışmanlık Uygulaması", description: "KOBİ'ler için finansal analiz ve yatırım önerileri sunan mobil uygulama.", category: "finance", creator: "mehmetkaya", likes: 28, status: "completed", funding: 100, badge: "Bestseller", logo: "💸", tags: ["Finance", "AI"], comments: 15, investors: 4, isDemo: true },
-        { title: "Smart Home Automation System", description: "IoT-based system for remote control of home devices.", category: "tech", creator: "davidkim", likes: 22, status: "active", funding: 40, logo: "🏠", tags: ["IoT", "Technology"], comments: 5, investors: 1, isDemo: true },
-        { title: "Dijital Kitaplık", description: "Kullanıcıların kitaplarını dijital ortamda saklayıp paylaşabildiği bir platform.", category: "other", creator: "aysedemir", likes: 18, status: "active", funding: 30, logo: "📖", tags: ["Books", "New"], comments: 3, investors: 1, isDemo: true },
-        { title: "Sağlıklı Yaşam Takipçisi", description: "Kişisel sağlık hedeflerini takip eden ve öneriler sunan mobil uygulama.", category: "health", creator: "elifcelik", likes: 25, status: "completed", funding: 90, logo: "🏃‍♂️", tags: ["Health", "Mobile"], comments: 7, investors: 2, isDemo: true },
-        { title: "Çevrimiçi Mentorluk Platformu", description: "Girişimciler ve yatırımcıları buluşturan, mentorluk desteği sunan platform.", category: "tech", creator: "buraksahin", likes: 30, status: "active", funding: 70, logo: "🤝", tags: ["Mentorship", "Technology", "Popular"], comments: 10, investors: 3, isDemo: true },
-        { title: "Çocuklar için Kodlama Atölyesi", description: "Çocuklara kodlama öğretmek için oyunlaştırılmış eğitim platformu.", category: "education", creator: "fatmagunes", likes: 20, status: "active", funding: 50, logo: "👾", tags: ["Education", "Kids"], comments: 4, investors: 1, isDemo: true }
+        { id: "demo-1", title: "AI-Powered Health Platform", description: "A platform that analyzes patient health data and provides recommendations to doctors.", category: "health", creator: "sarahjohnson", likes: 42, status: "active", funding: 80, badge: "Bestseller", logo: "🧬", tags: ["AI", "Health", "New"], comments: 12, investors: 3, isDemo: true },
+        { id: "demo-2", title: "Online Education Portal", description: "A platform offering interactive and personalized educational content for all ages.", category: "education", creator: "michaelchen", likes: 35, status: "active", funding: 60, logo: "📚", tags: ["Education", "Popular"], comments: 8, investors: 2, isDemo: true },
+        { id: "demo-3", title: "Finansal Danışmanlık Uygulaması", description: "KOBİ'ler için finansal analiz ve yatırım önerileri sunan mobil uygulama.", category: "finance", creator: "mehmetkaya", likes: 28, status: "completed", funding: 100, badge: "Bestseller", logo: "💸", tags: ["Finance", "AI"], comments: 15, investors: 4, isDemo: true },
+        { id: "demo-4", title: "Smart Home Automation System", description: "IoT-based system for remote control of home devices.", category: "tech", creator: "davidkim", likes: 22, status: "active", funding: 40, logo: "🏠", tags: ["IoT", "Technology"], comments: 5, investors: 1, isDemo: true },
+        { id: "demo-5", title: "Dijital Kitaplık", description: "Kullanıcıların kitaplarını dijital ortamda saklayıp paylaşabildiği bir platform.", category: "other", creator: "aysedemir", likes: 18, status: "active", funding: 30, logo: "📖", tags: ["Books", "New"], comments: 3, investors: 1, isDemo: true },
+        { id: "demo-6", title: "Sağlıklı Yaşam Takipçisi", description: "Kişisel sağlık hedeflerini takip eden ve öneriler sunan mobil uygulama.", category: "health", creator: "elifcelik", likes: 25, status: "completed", funding: 90, logo: "🏃‍♂️", tags: ["Health", "Mobile"], comments: 7, investors: 2, isDemo: true },
+        { id: "demo-7", title: "Çevrimiçi Mentorluk Platformu", description: "Girişimciler ve yatırımcıları buluşturan, mentorluk desteği sunan platform.", category: "tech", creator: "buraksahin", likes: 30, status: "active", funding: 70, logo: "🤝", tags: ["Mentorship", "Technology", "Popular"], comments: 10, investors: 3, isDemo: true },
+        { id: "demo-8", title: "Çocuklar için Kodlama Atölyesi", description: "Çocuklara kodlama öğretmek için oyunlaştırılmış eğitim platformu.", category: "education", creator: "fatmagunes", likes: 20, status: "active", funding: 50, logo: "👾", tags: ["Education", "Kids"], comments: 4, investors: 1, isDemo: true }
     ];
     
     // Combined projects array (will be populated with demo + real projects)
@@ -1375,22 +1396,129 @@
         localStorage.setItem('discoverFavs', JSON.stringify(favs));
     }
     function isFav(title) {
-        return getFavs().includes(title);
+        const username = localStorage.getItem('username');
+        const userType = localStorage.getItem('userType');
+        
+        if (!username || userType !== 'investor') {
+            return false;
+        }
+        
+        const userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+        return userFavorites.includes(title);
     }
     function toggleFav(title) {
-        let favs = getFavs();
-        if (favs.includes(title)) {
-            favs = favs.filter(t => t !== title);
-        } else {
-            favs.push(title);
+        const username = localStorage.getItem('username');
+        const userType = localStorage.getItem('userType');
+        
+        if (!username) {
+            alert('Please sign in to add favorites.');
+            return;
         }
-        setFavs(favs);
-        loadProjects(window._lastFilters || {}, window._lastSearch || '');
+        
+        if (userType !== 'investor') {
+            alert('Favorites are only available for investors.');
+            return;
+        }
+        
+        // Get current favorites
+        const userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+        const isInFavorites = userFavorites.includes(title);
+        
+        if (isInFavorites) {
+            // Remove from favorites
+            const newFavorites = userFavorites.filter(fav => fav !== title);
+            localStorage.setItem(`favorites_${username}`, JSON.stringify(newFavorites));
+            console.log('Removed from favorites:', title);
+            alert('Project removed from favorites!');
+            
+            // Update the button immediately
+            const favBtn = document.querySelector(`[onclick*="${title.replace(/'/g, "\\'")}"]`);
+            if (favBtn) {
+                favBtn.innerHTML = 'Add';
+                favBtn.classList.remove('fav');
+            }
+        } else {
+            // Add to favorites
+            userFavorites.push(title);
+            localStorage.setItem(`favorites_${username}`, JSON.stringify(userFavorites));
+            console.log('Added to favorites:', title);
+            alert('Project added to favorites!');
+            
+            // Update the button immediately
+            const favBtn = document.querySelector(`[onclick*="${title.replace(/'/g, "\\'")}"]`);
+            if (favBtn) {
+                favBtn.innerHTML = 'Remove';
+                favBtn.classList.add('fav');
+            }
+        }
+    }
+    
+    async function addToFavorites(projectId) {
+        const username = localStorage.getItem('username');
+        
+        try {
+            const response = await fetch('/api/favorites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    projectId: projectId
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('Project added to favorites successfully');
+                alert('Project added to favorites!');
+            } else {
+                console.error('Error adding to favorites:', data.message);
+                alert(data.message || 'Error adding to favorites.');
+            }
+        } catch (error) {
+            console.error('Error adding to favorites:', error);
+            alert('Error adding to favorites. Please try again.');
+        }
+    }
+    
+    async function removeFromFavorites(projectId) {
+        const username = localStorage.getItem('username');
+        
+        try {
+            const response = await fetch(`/api/favorites/${projectId}?username=${username}`, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                console.log('Project removed from favorites successfully');
+                alert('Project removed from favorites!');
+            } else {
+                console.error('Error removing from favorites:', data.message);
+                alert(data.message || 'Error removing from favorites.');
+            }
+        } catch (error) {
+            console.error('Error removing from favorites:', error);
+            alert('Error removing from favorites. Please try again.');
+        }
     }
 
     function showModal(project) {
         const modalRoot = document.getElementById('modal-root');
-        const fav = isFav(project.title);
+        
+        // Get user favorites for investor users
+        const username = localStorage.getItem('username');
+        const userType = localStorage.getItem('userType');
+        let isFavorite = false;
+        
+        if (username && userType === 'investor') {
+            const userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            isFavorite = userFavorites.includes(project.title);
+        }
+        
         modalRoot.innerHTML = `
             <div class="modal-overlay" onclick="closeModal(event)">
                 <div class="modal" onclick="event.stopPropagation()">
@@ -1398,8 +1526,8 @@
                     <div class="logo">${project.logo || '🚀'}</div>
                     <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
                     ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
-                    <button class="fav-btn${fav ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }'); event.stopPropagation();">
-                        ${fav ? '❤️' : '🤍'}
+                    <button class="fav-btn${isFavorite ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }'); event.stopPropagation();">
+                        ${isFavorite ? 'Remove' : 'Add'}
                     </button>
                     <h2>${project.title}</h2>
                     <p>${project.description}</p>
@@ -1420,43 +1548,9 @@
 
     // Load real user projects from backend
     function loadRealUserProjects() {
-        fetch('http://localhost:5000/api/projects')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.projects && data.projects.length > 0) {
-                    // Convert backend projects to frontend format
-                    const realProjects = data.projects.map(project => ({
-                        title: project.title,
-                        description: project.description,
-                        category: project.category || 'tech',
-                        creator: project.creator || project.username,
-                        likes: project.likes || 0,
-                        status: project.status || 'active',
-                        funding: Math.floor(Math.random() * 100) + 10, // Demo funding
-                        logo: getCategoryLogo(project.category || 'tech'),
-                        tags: [project.category || 'tech', 'New'],
-                        comments: 0,
-                        investors: Math.floor(Math.random() * 5) + 1, // Demo investors
-                        isDemo: false,
-                        createdAt: project.createdAt
-                    }));
-                    
-                    // Combine demo and real projects, limit to 50
-                    projects = [...demoProjects, ...realProjects].slice(0, 50);
-                } else {
-                    // If no real projects, just use demo projects
-                    projects = [...demoProjects];
-                }
-                
-                // Reload projects with current filters
-                loadProjects(window._lastFilters || {});
-            })
-            .catch(error => {
-                console.error('Error loading real projects:', error);
-                // If error, just use demo projects
-                projects = [...demoProjects];
-                loadProjects(window._lastFilters || {});
-            });
+        // For now, just use demo projects since we're working client-side
+        projects = [...demoProjects];
+        loadProjects(window._lastFilters || {});
     }
     
     // Get category logo
@@ -1479,7 +1573,7 @@
     }
     
     // Projeleri getir ve göster
-    function loadProjects(filters = {}) {
+    async function loadProjects(filters = {}) {
         window._lastFilters = filters;
         const listEl = document.getElementById('discover-projects-list');
         let filtered = [...projects];
@@ -1506,35 +1600,55 @@
         }
         
         if (filtered.length > 0) {
-            listEl.innerHTML = filtered.map(project => `
-                <div class="project-card">
-                    ${project.isDemo ? '<div class="demo-badge">Demo</div>' : '<div class="demo-badge" style="background: #10b981; color: white;">Live</div>'}
-                    <button class="fav-btn${isFav(project.title) ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')">
-                        ${isFav(project.title) ? '❤️' : '🤍'}
-                    </button>
-                    <div class="logo">${project.logo || '🚀'}</div>
-                    <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
-                    <h2>${project.title}</h2>
-                    <p>${project.description}</p>
-                    <div class="stats">
-                        <span>💬 ${project.comments || 0} comments</span>
-                        <span>👥 ${project.investors || 0} investors</span>
-                        <span>💰 %${project.funding}</span>
-                    </div>
-                    <small>Category: ${project.category || ''} | Created by: ${project.creator || ''}</small><br>
-                    <small>Likes: ${project.likes || 0} | Status: ${project.status || ''}</small>
-                    ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
-                    <div class="project-actions">
-                        <button class="like-btn" onclick="toggleLike('${project.title.replace(/'/g, "\\'")}')" data-liked="${project.liked || false}">
-                            ${project.liked ? '❤️' : '🤍'} ${project.likes || 0}
+            // Get user favorites for investor users
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            let userFavorites = [];
+            
+            if (username && userType === 'investor') {
+                try {
+                    const response = await fetch(`/api/favorites/${username}`);
+                    const data = await response.json();
+                    if (data.success) {
+                        userFavorites = data.favorites.map(fav => fav.id);
+                    }
+                } catch (error) {
+                    console.error('Error loading favorites:', error);
+                }
+            }
+            
+            listEl.innerHTML = filtered.map(project => {
+                const isFavorite = userFavorites.includes(project.id);
+                return `
+                    <div class="project-card">
+                        ${project.isDemo ? '<div class="demo-badge">Demo</div>' : '<div class="demo-badge" style="background: #10b981; color: white;">Live</div>'}
+                        <button class="fav-btn${isFavorite ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')" data-project-id="${project.id}">
+                            ${isFavorite ? 'Remove' : 'Add'}
                         </button>
-                        <button class="comment-btn" onclick="showComments('${project.title.replace(/'/g, "\\'")}')">
-                            💬 ${project.comments || 0}
-                        </button>
-                        <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Details</button>
+                        <div class="logo">${project.logo || '🚀'}</div>
+                        <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
+                        <h2>${project.title}</h2>
+                        <p>${project.description}</p>
+                        <div class="stats">
+                            <span>💬 ${project.comments || 0} comments</span>
+                            <span>👥 ${project.investors || 0} investors</span>
+                            <span>💰 %${project.funding}</span>
+                        </div>
+                        <small>Category: ${project.category || ''} | Created by: ${project.creator || ''}</small><br>
+                        <small>Likes: ${project.likes || 0} | Status: ${project.status || ''}</small>
+                        ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
+                        <div class="project-actions">
+                            <button class="like-btn" onclick="toggleLike('${project.title.replace(/'/g, "\\'")}')" data-liked="${project.liked || false}">
+                                ${project.liked ? '❤️' : '🤍'} ${project.likes || 0}
+                            </button>
+                            <button class="comment-btn" onclick="showComments('${project.title.replace(/'/g, "\\'")}')">
+                                💬 ${project.comments || 0}
+                            </button>
+                            <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Details</button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         } else {
             listEl.innerHTML = '<p>No projects found.</p>';
         }
@@ -1729,27 +1843,39 @@
         const listEl = document.getElementById('discover-projects-list');
         
         if (filteredProjects.length > 0) {
-            listEl.innerHTML = filteredProjects.map(project => `
-                <div class="project-card">
-                    <div class="demo-badge">Demo</div>
-                    <button class="fav-btn${isFav(project.title) ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')">
-                        ${isFav(project.title) ? '❤️' : '🤍'}
-                    </button>
-                    <div class="logo">${project.logo || '🚀'}</div>
-                    <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${highlightText(tag, searchTerm)}</span>`).join('')}</div>
-                    <h2>${highlightText(project.title, searchTerm)}</h2>
-                    <p>${highlightText(project.description, searchTerm)}</p>
-                    <div class="stats">
-                        <span>💬 ${project.comments || 0} comments</span>
-                        <span>👥 ${project.investors || 0} investors</span>
-                        <span>💰 %${project.funding}</span>
+            // Get user favorites for investor users
+            const username = localStorage.getItem('username');
+            const userType = localStorage.getItem('userType');
+            let userFavorites = [];
+            
+            if (username && userType === 'investor') {
+                userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+            }
+            
+            listEl.innerHTML = filteredProjects.map(project => {
+                const isFavorite = userFavorites.includes(project.title);
+                return `
+                    <div class="project-card">
+                        <div class="demo-badge">Demo</div>
+                        <button class="fav-btn${isFavorite ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')">
+                            ${isFavorite ? 'Remove' : 'Add'}
+                        </button>
+                        <div class="logo">${project.logo || '🚀'}</div>
+                        <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${highlightText(tag, searchTerm)}</span>`).join('')}</div>
+                        <h2>${highlightText(project.title, searchTerm)}</h2>
+                        <p>${highlightText(project.description, searchTerm)}</p>
+                        <div class="stats">
+                            <span>💬 ${project.comments || 0} comments</span>
+                            <span>👥 ${project.investors || 0} investors</span>
+                            <span>💰 %${project.funding}</span>
+                        </div>
+                        <small>Category: ${highlightText(project.category, searchTerm)} | Created by: ${highlightText(project.creator, searchTerm)}</small><br>
+                        <small>Likes: ${project.likes || 0} | Status: ${project.status || ''}</small>
+                        ${project.badge ? `<div class="project-badge">${project.badge}</div>` : ''}
+                        <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Details</button>
                     </div>
-                    <small>Category: ${highlightText(project.category, searchTerm)} | Created by: ${highlightText(project.creator, searchTerm)}</small><br>
-                    <small>Likes: ${project.likes || 0} | Status: ${project.status || ''}</small>
-                    ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
-                    <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Details</button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         } else {
             listEl.innerHTML = '<p>No projects found matching your search criteria.</p>';
         }
@@ -1868,11 +1994,10 @@
                 html += `<li><a href="contact.html">Contact Us</a></li>`;
                 html += `<li><a href="#" onclick="logout()">Logout</a></li>`;
             } else if (userType === 'investor') {
-                html += `<li><a href="#">Account</a></li>`;
-                html += `<li><a href="#">Investment Portfolio</a></li>`;
-                html += `<li><a href="#">Messages</a></li>`;
+                html += `<li><a href="investor-account.html">Account</a></li>`;
                 html += `<li><a href="discover.html">Discover</a></li>`;
-                html += `<li><a href="#" onclick="showFavorites()">My Favorites</a></li>`;
+                html += `<li><a href="investor-favorites.html">My Favorites</a></li>`;
+                html += `<li><a href="learning-hub.html">Learning Hub</a></li>`;
                 html += `<li><a href="help-support.html">Help & Support</a></li>`;
                 html += `<li><a href="about.html">About IDEAI</a></li>`;
                 html += `<li><a href="contact.html">Contact Us</a></li>`;
@@ -2132,12 +2257,21 @@
             filtered = filtered.sort((a, b) => (b.funding || 0) - (a.funding || 0));
         }
         
+        // Get user favorites for investor users
+        let userFavorites = [];
+        const userType = localStorage.getItem('userType');
+        if (username && userType === 'investor') {
+            userFavorites = JSON.parse(localStorage.getItem(`favorites_${username}`) || '[]');
+        }
+        
         if (filtered.length > 0) {
-            listEl.innerHTML = filtered.map(project => `
+            listEl.innerHTML = filtered.map(project => {
+                const isFavorite = userFavorites.includes(project.title);
+                return `
                 <div class="project-card">
                     ${project.isDemo ? '<div class="demo-badge">Demo</div>' : '<div class="demo-badge" style="background: #10b981; color: white;">Live</div>'}
-                    <button class="fav-btn${isFav(project.title) ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')">
-                        ${isFav(project.title) ? '❤️' : '🤍'}
+                    <button class="fav-btn${isFavorite ? ' fav' : ''}" title="Favorilere ekle/kaldır" onclick="toggleFav('${project.title.replace(/'/g, "\\'") }')" data-project-id="${project.id}">
+                        ${isFavorite ? 'Remove' : 'Add'}
                     </button>
                     <div class="logo">${project.logo || '🚀'}</div>
                     <div class="tags">${(project.tags||[]).map(tag => `<span class='tag'>${tag}</span>`).join('')}</div>
@@ -2150,7 +2284,7 @@
                     </div>
                     <small>Category: ${project.category || ''} | Created by: ${project.creator || ''}</small><br>
                     <small>Likes: ${project.likes || 0} | Status: ${project.status || ''}</small>
-                    ${project.badge ? `<span class=\"badge\">${project.badge}</span>` : ''}
+                    ${project.badge ? `<div class="project-badge">${project.badge}</div>` : ''}
                     <div class="project-actions">
                         <button class="like-btn ${project.liked ? 'liked' : ''}" onclick="toggleLike('${project.title.replace(/'/g, "\\'")}')" data-liked="${project.liked || false}">
                             ${project.liked ? '❤️' : '🤍'} ${project.likes || 0}
@@ -2161,7 +2295,8 @@
                         <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>Details</button>
                     </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
         } else {
             listEl.innerHTML = '<p>No projects found.</p>';
         }
@@ -2197,46 +2332,115 @@
         document.getElementById('favoritesModal').style.display = 'none';
     }
     
-    function loadFavorites() {
+    async function loadFavorites() {
         const username = localStorage.getItem('username');
-        const userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
-        const userFavorites = userLikes[username] || [];
         const favoritesList = document.getElementById('favoritesList');
         
-        if (userFavorites.length === 0) {
-            favoritesList.innerHTML = '<p style="text-align: center; color: #7b8ca6; font-style: italic;">No favorite projects yet. Start exploring and like some projects!</p>';
+        try {
+            const response = await fetch(`/api/favorites/${username}`);
+            const data = await response.json();
+            
+            if (!data.success) {
+                favoritesList.innerHTML = '<p style="text-align: center; color: #e74c3c;">Error loading favorites.</p>';
+                return;
+            }
+            
+            if (data.favorites.length === 0) {
+                favoritesList.innerHTML = '<p style="text-align: center; color: #7b8ca6; font-style: italic;">No favorite projects yet. Start exploring and add some projects to your favorites!</p>';
+                return;
+            }
+            
+            favoritesList.innerHTML = data.favorites.map(project => {
+                return `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <div class="comment-author">${project.title}</div>
+                            <div class="comment-date">${project.category}</div>
+                        </div>
+                        <div class="comment-text">${project.description}</div>
+                        <div style="margin-top: 12px;">
+                            <button class="like-btn liked" onclick="toggleLike('${project.title.replace(/'/g, "\\'")}'); loadFavorites();">
+                                ❤️ ${project.likes || 0}
+                            </button>
+                            <button class="comment-btn" onclick="showComments('${project.title.replace(/'/g, "\\'")}')">
+                                💬 ${project.comments || 0}
+                            </button>
+                            <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>
+                                Details
+                            </button>
+                            <button class="remove-fav-btn" onclick="removeFromFavorites('${project.id}')" style="background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin-left: 8px;">
+                                Remove from Favorites
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } catch (error) {
+            console.error('Error loading favorites:', error);
+            favoritesList.innerHTML = '<p style="text-align: center; color: #e74c3c;">Error loading favorites.</p>';
+        }
+    }
+    
+    async function addToFavorites(projectId) {
+        const username = localStorage.getItem('username');
+        
+        if (!username) {
+            alert('Please sign in to add favorites.');
             return;
         }
         
-        // Filter projects to show only favorites
-        const favoriteProjects = projects.filter(project => userFavorites.includes(project.title));
-        
-        favoritesList.innerHTML = favoriteProjects.map(project => {
-            const originalLikes = project.likes || 0;
-            const additionalLikes = JSON.parse(localStorage.getItem('projectLikes') || '{}')[project.title] || 0;
-            const totalLikes = originalLikes + additionalLikes;
+        try {
+            const response = await fetch('/api/favorites', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    projectId: projectId
+                })
+            });
             
-            return `
-                <div class="comment-item">
-                    <div class="comment-header">
-                        <div class="comment-author">${project.title}</div>
-                        <div class="comment-date">${project.category}</div>
-                    </div>
-                    <div class="comment-text">${project.description}</div>
-                    <div style="margin-top: 12px;">
-                        <button class="like-btn liked" onclick="toggleLike('${project.title.replace(/'/g, "\\'")}'); loadFavorites();">
-                            ❤️ ${totalLikes}
-                        </button>
-                        <button class="comment-btn" onclick="showComments('${project.title.replace(/'/g, "\\'")}')">
-                            💬 ${project.comments || 0}
-                        </button>
-                        <button class="details-btn" onclick='showModal(${JSON.stringify(project).replace(/'/g, "\\'") })'>
-                            Details
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update the favorite button
+                const favBtn = document.querySelector(`[onclick*="${projectId}"]`);
+                if (favBtn) {
+                    favBtn.innerHTML = 'Remove';
+                    favBtn.classList.add('fav');
+                }
+                alert('Project added to favorites!');
+            } else {
+                alert(data.message || 'Error adding to favorites.');
+            }
+        } catch (error) {
+            console.error('Error adding to favorites:', error);
+            alert('Error adding to favorites.');
+        }
+    }
+    
+    async function removeFromFavorites(projectId) {
+        const username = localStorage.getItem('username');
+        
+        try {
+            const response = await fetch(`/api/favorites/${projectId}?username=${username}`, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Reload favorites
+                loadFavorites();
+                alert('Project removed from favorites!');
+            } else {
+                alert(data.message || 'Error removing from favorites.');
+            }
+        } catch (error) {
+            console.error('Error removing from favorites:', error);
+            alert('Error removing from favorites.');
+        }
     }
     
     // Close favorites modal when clicking outside
