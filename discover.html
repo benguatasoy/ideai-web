@@ -1547,9 +1547,31 @@
     }
 
     // Load real user projects from backend
-    function loadRealUserProjects() {
-        // For now, just use demo projects since we're working client-side
-        projects = [...demoProjects];
+    async function loadRealUserProjects() {
+        try {
+            const response = await fetch('http://localhost:5000/api/projects');
+            const data = await response.json();
+            
+            if (data.success) {
+                // Combine demo projects with real projects
+                const realProjects = data.projects.map(project => ({
+                    ...project,
+                    logo: getCategoryLogo(project.category),
+                    tags: [project.category, 'New'],
+                    isDemo: false
+                }));
+                
+                projects = [...demoProjects, ...realProjects];
+            } else {
+                // Fallback to demo projects if API fails
+                projects = [...demoProjects];
+            }
+        } catch (error) {
+            console.error('Error loading projects:', error);
+            // Fallback to demo projects
+            projects = [...demoProjects];
+        }
+        
         loadProjects(window._lastFilters || {});
     }
     
@@ -1581,6 +1603,12 @@
         // Kategori (çoklu)
         if (filters.categories && filters.categories.length > 0) {
             filtered = filtered.filter(p => filters.categories.includes(p.category));
+        }
+        
+        // Investment arayan projeleri filtrele (sadece yatırımcılar görebilir)
+        const userType = localStorage.getItem('userType');
+        if (userType !== 'investor') {
+            filtered = filtered.filter(p => !p.lookingForInvestment);
         }
         // Durum (çoklu)
         if (filters.statuses && filters.statuses.length > 0) {

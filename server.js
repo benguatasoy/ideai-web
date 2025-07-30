@@ -267,7 +267,7 @@ app.put('/api/user/:username', async (req, res) => {
 // Create project (for entrepreneurs)
 app.post('/api/projects', async (req, res) => {
   try {
-    const { title, description, category, funding, username, lookingForInvestment } = req.body;
+    const { title, description, category, funding, username, lookingForInvestment, investmentData } = req.body;
     
     if (!title || !description || !username) {
       return res.status(400).json({ 
@@ -285,6 +285,7 @@ app.post('/api/projects', async (req, res) => {
       funding: funding || 0,
       creator: username,
       lookingForInvestment: lookingForInvestment || false,
+      investmentData: investmentData || null,
       status: 'active',
       createdAt: new Date().toISOString(),
       investors: [],
@@ -655,6 +656,24 @@ app.get('/api/favorites/:username', async (req, res) => {
       message: 'Internal server error.' 
     });
   }
+});
+
+// Test endpoint to check if server is running
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Server is running!',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Test endpoint for projects endpoint
+app.get('/api/projects/test', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: 'Projects endpoint is accessible!',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Express route for serving HTML files

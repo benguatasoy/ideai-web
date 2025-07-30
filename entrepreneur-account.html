@@ -605,6 +605,12 @@
       box-shadow: 0 16px 48px rgba(59, 130, 246, 0.4);
     }
     
+    .share-project-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -1188,9 +1194,50 @@
         </div>
         
         <div class="checkbox-group">
-          <input type="checkbox" class="checkbox-input" id="lookingForInvestment">
+          <input type="checkbox" class="checkbox-input" id="lookingForInvestment" onchange="toggleInvestmentDetails()">
           <label class="checkbox-label" for="lookingForInvestment">I'm looking for investment</label>
           <div class="checkbox-note">(Only investors will see this project)</div>
+        </div>
+        
+        <!-- Investment Details Section (Hidden by default) -->
+        <div id="investmentDetails" style="display: none; margin-top: 24px; padding: 24px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
+          <h3 style="margin-bottom: 20px; color: #1e293b; font-size: 1.2rem; font-weight: 700;">Investment Details</h3>
+          
+          <div class="form-group">
+            <label class="form-label">How much funding do you need? (USD) *</label>
+            <select class="form-input" id="fundingAmount" required>
+              <option value="">Select amount</option>
+              <option value="1000-5000">$1,000 - $5,000</option>
+              <option value="5000-10000">$5,000 - $10,000</option>
+              <option value="10000-25000">$10,000 - $25,000</option>
+              <option value="25000-50000">$25,000 - $50,000</option>
+              <option value="50000-100000">$50,000 - $100,000</option>
+              <option value="100000+">$100,000+</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">What type of investment are you looking for? *</label>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; color: #22314a;">
+                <input type="radio" name="investmentType" value="grant" required style="width: auto; margin: 0;">
+                <span>Grant (Non-repayable funding)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; color: #22314a;">
+                <input type="radio" name="investmentType" value="equity" required style="width: auto; margin: 0;">
+                <span>Equity Partnership (Share ownership)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; color: #22314a;">
+                <input type="radio" name="investmentType" value="loan" required style="width: auto; margin: 0;">
+                <span>Loan (Repayable funding)</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Additional Investment Details (Optional)</label>
+            <textarea class="form-textarea" id="investmentDetails" placeholder="Describe your funding needs, timeline, and any specific requirements..."></textarea>
+          </div>
         </div>
         
         <button type="submit" class="submit-btn" id="submitProjectBtn">Share Project</button>
@@ -1480,7 +1527,19 @@
         <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
           <div class="project-status">${project.status}</div>
           ${project.category ? `<div style="background: #f1c40f; color: white; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 700;">${project.category}</div>` : ''}
+          ${project.lookingForInvestment ? `<div style="background: #3b82f6; color: white; padding: 8px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 700;">💰 Looking for Investment</div>` : ''}
         </div>
+        
+        ${project.lookingForInvestment && project.investmentData ? `
+        <div style="margin-top: 16px; padding: 16px; background: #f0f9ff; border-radius: 12px; border-left: 4px solid #3b82f6;">
+          <div style="font-size: 0.9rem; color: #1e40af; font-weight: 600; margin-bottom: 8px;">Investment Details:</div>
+          <div style="font-size: 0.85rem; color: #475569;">
+            <div>Amount: ${project.investmentData.fundingAmount}</div>
+            <div>Type: ${project.investmentData.investmentType}</div>
+            ${project.investmentData.investmentDetails ? `<div>Details: ${project.investmentData.investmentDetails}</div>` : ''}
+          </div>
+        </div>
+        ` : ''}
         
         <!-- Project Stats -->
         <div style="display: flex; gap: 16px; margin-top: 20px; padding: 16px; background: #f7fafd; border-radius: 12px; border: 1px solid #e3f6fc;">
@@ -1543,8 +1602,43 @@
     
     // Share project
     function shareProject() {
-      // Open modal
-      document.getElementById('shareProjectModal').style.display = 'block';
+      // Check if user is logged in
+      const username = localStorage.getItem('username');
+      if (!username) {
+        alert('Please log in to share a project.');
+        return;
+      }
+      
+      // Disable the button and show loading state
+      const shareBtn = document.querySelector('.share-project-btn');
+      const originalText = shareBtn.textContent;
+      shareBtn.disabled = true;
+      shareBtn.textContent = 'Checking server...';
+      shareBtn.style.opacity = '0.7';
+      
+      // Check server status before opening modal
+      checkServerStatus().then(isRunning => {
+        // Reset button state
+        shareBtn.disabled = false;
+        shareBtn.textContent = originalText;
+        shareBtn.style.opacity = '1';
+        
+        if (!isRunning) {
+          alert('Server is not running. Please start the server with: npm start');
+          return;
+        }
+        
+        // Open modal
+        document.getElementById('shareProjectModal').style.display = 'block';
+      }).catch(error => {
+        // Reset button state on error
+        shareBtn.disabled = false;
+        shareBtn.textContent = originalText;
+        shareBtn.style.opacity = '1';
+        
+        console.error('Error checking server status:', error);
+        alert('Error checking server status. Please try again.');
+      });
     }
     
     // Close modal
@@ -1575,8 +1669,14 @@
       e.preventDefault();
       
       const submitBtn = document.getElementById('submitProjectBtn');
+      const originalText = submitBtn.textContent;
+      
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sharing...';
+      
+      // Add loading animation
+      submitBtn.style.opacity = '0.7';
+      submitBtn.style.cursor = 'not-allowed';
       
       const title = document.getElementById('projectTitle').value.trim();
       const category = document.getElementById('projectCategory').value;
@@ -1584,71 +1684,139 @@
       const lookingForInvestment = document.getElementById('lookingForInvestment').checked;
       const username = localStorage.getItem('username');
       
+      // Get investment details if looking for investment
+      let investmentData = null;
+      if (lookingForInvestment) {
+        const fundingAmount = document.getElementById('fundingAmount').value;
+        const investmentType = document.querySelector('input[name="investmentType"]:checked')?.value;
+        const investmentDetails = document.getElementById('investmentDetails').value.trim();
+        
+        if (!fundingAmount || !investmentType) {
+          alert('Please fill in all investment details.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          submitBtn.style.opacity = '1';
+          submitBtn.style.cursor = 'pointer';
+          return;
+        }
+        
+        investmentData = {
+          fundingAmount,
+          investmentType,
+          investmentDetails
+        };
+      }
+      
       // Validate required fields
       if (!title) {
         alert('Please enter a project title.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Share Project';
+        submitBtn.textContent = originalText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
         return;
       }
       
       if (!category) {
         alert('Please select a project category.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Share Project';
+        submitBtn.textContent = originalText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
         return;
       }
       
       if (!description) {
         alert('Please enter a project description.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Share Project';
+        submitBtn.textContent = originalText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
         return;
       }
       
-      // Create project object
-      const project = {
+      // Check if server is running first
+      console.log('Attempting to share project:', { title, category, description, username, lookingForInvestment });
+      console.log('Request payload:', {
         title: title,
         description: description,
-        category: 'tech', // Default category
-        creator: username,
+        category: category,
+        username: username,
         lookingForInvestment: lookingForInvestment,
-        status: 'active',
-        createdAt: new Date().toISOString(),
-        likes: 0
-      };
+        investmentData: investmentData
+      });
       
-      // Send to backend
+      // Create AbortController for timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      console.log('Making fetch request to:', 'http://localhost:5000/api/projects');
+      
+      // Send to backend with better error handling
       fetch('http://localhost:5000/api/projects', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           title: title,
           description: description,
           category: category,
           username: username,
-          lookingForInvestment: lookingForInvestment
-        })
+          lookingForInvestment: lookingForInvestment,
+          investmentData: investmentData
+        }),
+        signal: controller.signal
       })
-      .then(response => response.json())
+      .then(response => {
+        clearTimeout(timeoutId);
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (!response.ok) {
+          return response.text().then(text => {
+            console.log('Error response text:', text);
+            throw new Error(`HTTP error! status: ${response.status}, message: ${text}`);
+          });
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log('Success response:', data);
         if (data.success) {
           alert('Project shared successfully!');
           closeShareModal();
           loadProjects(username); // Reload projects
         } else {
-          alert('Error sharing project: ' + data.message);
+          alert('Error sharing project: ' + (data.message || 'Unknown error'));
         }
       })
       .catch(error => {
-        console.error('Error:', error);
-        alert('Error sharing project. Please try again.');
+        clearTimeout(timeoutId);
+        console.error('Error sharing project:', error);
+        
+        let errorMessage = 'Error sharing project. Please try again.';
+        
+        if (error.name === 'AbortError') {
+          errorMessage = 'Request timed out. Please check your internet connection and try again.';
+        } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorMessage = 'Cannot connect to server. Please make sure the server is running (npm start) and try again.';
+        } else if (error.message.includes('HTTP error! status: 500')) {
+          errorMessage = 'Server error. Please try again later.';
+        } else if (error.message.includes('HTTP error! status: 400')) {
+          errorMessage = 'Invalid data. Please check your input and try again.';
+        } else if (error.message.includes('HTTP error! status: 404')) {
+          errorMessage = 'Server endpoint not found. Please check if the server is running correctly.';
+        }
+        
+        alert(errorMessage);
       })
       .finally(() => {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Share Project';
+        submitBtn.textContent = originalText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
       });
     });
     
@@ -1923,9 +2091,95 @@
       }
     });
     
+    // Toggle investment details section
+    function toggleInvestmentDetails() {
+      const checkbox = document.getElementById('lookingForInvestment');
+      const detailsSection = document.getElementById('investmentDetails');
+      
+      if (checkbox.checked) {
+        detailsSection.style.display = 'block';
+        // Make investment fields required
+        document.getElementById('fundingAmount').required = true;
+        document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+          radio.required = true;
+        });
+      } else {
+        detailsSection.style.display = 'none';
+        // Remove required from investment fields
+        document.getElementById('fundingAmount').required = false;
+        document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+          radio.required = false;
+        });
+      }
+    }
+    
+    // Check server status
+    async function checkServerStatus() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+        
+        const response = await fetch('http://localhost:5000/api/test', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          },
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Server is running:', data.message);
+          return true;
+        } else {
+          console.error('Server responded with error status:', response.status);
+          return false;
+        }
+      } catch (error) {
+        console.error('Server is not running or not accessible:', error);
+        return false;
+      }
+    }
+    
     // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
       loadUserData();
+      
+      // Check server status on page load
+      checkServerStatus().then(isRunning => {
+        if (!isRunning) {
+          console.warn('Server is not running. Please start the server with: npm start');
+          
+          // Show warning to user
+          const warningDiv = document.createElement('div');
+          warningDiv.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          `;
+          warningDiv.innerHTML = '⚠️ Server not running. Please start with: npm start';
+          document.body.appendChild(warningDiv);
+          
+          // Remove warning after 10 seconds
+          setTimeout(() => {
+            if (warningDiv.parentNode) {
+              warningDiv.parentNode.removeChild(warningDiv);
+            }
+          }, 10000);
+        } else {
+          console.log('✅ Server is running and accessible');
+        }
+      });
     });
   </script>
 </body>
