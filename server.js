@@ -678,7 +678,7 @@ app.get('/api/projects/test', (req, res) => {
 
 // Express route for serving HTML files
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/login', (req, res) => {
