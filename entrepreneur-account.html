@@ -1157,12 +1157,12 @@
       <form id="shareProjectForm">
         <div class="form-group">
           <label class="form-label">Project Title *</label>
-          <input type="text" class="form-input" id="projectTitle" placeholder="Enter your project title" required>
+          <input type="text" class="form-input" id="projectTitle" name="projectTitle" placeholder="Enter your project title" required>
         </div>
         
         <div class="form-group">
           <label class="form-label">Category *</label>
-          <select class="form-input" id="projectCategory" required>
+          <select class="form-input" id="projectCategory" name="projectCategory" required>
             <option value="">Select a category</option>
             <option value="tech">Technology</option>
             <option value="fashion">Fashion</option>
@@ -1179,7 +1179,7 @@
         
         <div class="form-group">
           <label class="form-label">Description *</label>
-          <textarea class="form-textarea" id="projectDescription" placeholder="Describe your project, goals, and what you're looking for..." required></textarea>
+          <textarea class="form-textarea" id="projectDescription" name="projectDescription" placeholder="Describe your project, goals, and what you're looking for..." required></textarea>
         </div>
         
         <div class="form-group">
@@ -1200,12 +1200,12 @@
         </div>
         
         <!-- Investment Details Section (Hidden by default) -->
-        <div id="investmentDetails" style="display: none; margin-top: 24px; padding: 24px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
+        <div id="investmentDetailsSection" style="display: none; margin-top: 24px; padding: 24px; background: #f8f9fa; border-radius: 16px; border: 2px solid #e9ecef;">
           <h3 style="margin-bottom: 20px; color: #1e293b; font-size: 1.2rem; font-weight: 700;">Investment Details</h3>
           
           <div class="form-group">
             <label class="form-label">How much funding do you need? (USD) *</label>
-            <select class="form-input" id="fundingAmount" required>
+            <select class="form-input" id="fundingAmount" name="fundingAmount" required>
               <option value="">Select amount</option>
               <option value="1000-5000">$1,000 - $5,000</option>
               <option value="5000-10000">$5,000 - $10,000</option>
@@ -1236,7 +1236,7 @@
           
           <div class="form-group">
             <label class="form-label">Additional Investment Details (Optional)</label>
-            <textarea class="form-textarea" id="investmentDetails" placeholder="Describe your funding needs, timeline, and any specific requirements..."></textarea>
+            <textarea class="form-textarea" id="investmentDetailsText" placeholder="Describe your funding needs, timeline, and any specific requirements..."></textarea>
           </div>
         </div>
         
@@ -1689,10 +1689,12 @@
       if (lookingForInvestment) {
         const fundingAmount = document.getElementById('fundingAmount').value;
         const investmentType = document.querySelector('input[name="investmentType"]:checked')?.value;
-        const investmentDetails = document.getElementById('investmentDetails').value.trim();
+        const investmentDetails = document.getElementById('investmentDetailsText').value.trim();
+        
+        console.log('Investment validation:', { fundingAmount, investmentType, investmentDetails });
         
         if (!fundingAmount || !investmentType) {
-          alert('Please fill in all investment details.');
+          alert('Please fill in all required investment details (funding amount and investment type).');
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
           submitBtn.style.opacity = '1';
@@ -2094,7 +2096,9 @@
     // Toggle investment details section
     function toggleInvestmentDetails() {
       const checkbox = document.getElementById('lookingForInvestment');
-      const detailsSection = document.getElementById('investmentDetails');
+      const detailsSection = document.getElementById('investmentDetailsSection');
+      
+      console.log('Toggle investment details:', checkbox.checked);
       
       if (checkbox.checked) {
         detailsSection.style.display = 'block';
@@ -2103,6 +2107,7 @@
         document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
           radio.required = true;
         });
+        console.log('Investment details section shown');
       } else {
         detailsSection.style.display = 'none';
         // Remove required from investment fields
@@ -2110,6 +2115,7 @@
         document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
           radio.required = false;
         });
+        console.log('Investment details section hidden');
       }
     }
     

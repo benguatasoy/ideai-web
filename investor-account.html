@@ -1081,17 +1081,17 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">First Name</label>
-                        <input type="text" class="form-input" id="editFirstName" required>
+                        <input type="text" class="form-input" id="editFirstName" name="editFirstName" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Last Name</label>
-                        <input type="text" class="form-input" id="editLastName" required>
+                        <input type="text" class="form-input" id="editLastName" name="editLastName" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="editUsername" required>
+                                            <input type="text" class="form-input" id="editUsername" name="editUsername" required>
                 </div>
                 
                 <div class="form-group">
@@ -1168,7 +1168,7 @@
             <form id="addContactForm" onsubmit="return addContact(event)">
                 <div class="form-group">
                     <label class="form-label">Contact Type</label>
-                    <select class="form-input" id="contactType" required>
+                    <select class="form-input" id="contactType" name="contactType" required>
                         <option value="">Select contact type</option>
                         <option value="email">Email</option>
                         <option value="phone">Phone</option>
@@ -1182,7 +1182,7 @@
                 
                 <div class="form-group">
                     <label class="form-label">Contact Value</label>
-                    <input type="text" class="form-input" id="contactValue" placeholder="Enter your contact information" required>
+                    <input type="text" class="form-input" id="contactValue" name="contactValue" placeholder="Enter your contact information" required>
                 </div>
                 
                 <div class="form-group">
