@@ -128,5 +128,37 @@
     "createdAt": "2025-07-31T18:59:22.347Z",
     "investors": [],
     "likes": 0
+  },
+  {
+    "id": "1754159614616",
+    "title": "test deneme",
+    "description": "bu kadar",
+    "category": "fashion",
+    "funding": 0,
+    "creator": "cunatasoy",
+    "lookingForInvestment": true,
+    "investmentData": {
+      "fundingAmount": "5000-10000",
+      "investmentType": "equity",
+      "investmentDetails": "evet"
+    },
+    "status": "active",
+    "createdAt": "2025-08-02T18:33:34.617Z",
+    "investors": [],
+    "likes": 0
+  },
+  {
+    "id": "1754160237329",
+    "title": "lütfeeeeeeen",
+    "description": "olur",
+    "category": "health",
+    "funding": 0,
+    "creator": "cunatasoy",
+    "lookingForInvestment": false,
+    "investmentData": null,
+    "status": "active",
+    "createdAt": "2025-08-02T18:43:57.329Z",
+    "investors": [],
+    "likes": 0
   }
 ]

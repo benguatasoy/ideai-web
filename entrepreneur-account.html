@@ -1193,10 +1193,20 @@
           <div class="file-preview" id="imagePreview"></div>
         </div>
         
-        <div class="checkbox-group">
-          <input type="checkbox" class="checkbox-input" id="lookingForInvestment" onchange="toggleInvestmentDetails()">
-          <label class="checkbox-label" for="lookingForInvestment">I'm looking for investment</label>
-          <div class="checkbox-note">(Only investors will see this project)</div>
+        <div class="form-group">
+          <label class="form-label">Investment Status *</label>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; color: #22314a;">
+              <input type="radio" name="investmentStatus" value="looking" id="lookingForInvestment" onchange="toggleInvestmentDetails()" required style="width: auto; margin: 0;">
+              <span>I'm looking for investment</span>
+              <span style="font-size: 0.8rem; color: #64748b;">(Only investors will see this project)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-weight: normal; color: #22314a;">
+              <input type="radio" name="investmentStatus" value="not-looking" id="notLookingForInvestment" onchange="toggleInvestmentDetails()" required style="width: auto; margin: 0;">
+              <span>I'm not looking for investment</span>
+              <span style="font-size: 0.8rem; color: #64748b;">(Everyone can see this project)</span>
+            </label>
+          </div>
         </div>
         
         <!-- Investment Details Section (Hidden by default) -->
@@ -1646,6 +1656,13 @@
       document.getElementById('shareProjectModal').style.display = 'none';
       document.getElementById('shareProjectForm').reset();
       document.getElementById('imagePreview').innerHTML = '';
+      
+      // Reset investment fields
+      document.getElementById('fundingAmount').required = false;
+      document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+        radio.required = false;
+      });
+      document.getElementById('investmentDetailsSection').style.display = 'none';
     }
     
     // Preview image
@@ -1682,7 +1699,26 @@
       const category = document.getElementById('projectCategory').value;
       const description = document.getElementById('projectDescription').value.trim();
       const lookingForInvestment = document.getElementById('lookingForInvestment').checked;
+      const notLookingForInvestment = document.getElementById('notLookingForInvestment').checked;
       const username = localStorage.getItem('username');
+      
+      // Check if investment status is selected
+      if (!lookingForInvestment && !notLookingForInvestment) {
+        alert('Please select whether you are looking for investment or not.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+        return;
+      }
+      
+      // Temporarily remove required attributes from hidden investment fields
+      if (!lookingForInvestment) {
+        document.getElementById('fundingAmount').required = false;
+        document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+          radio.required = false;
+        });
+      }
       
       // Get investment details if looking for investment
       let investmentData = null;
@@ -1819,6 +1855,15 @@
         submitBtn.textContent = originalText;
         submitBtn.style.opacity = '1';
         submitBtn.style.cursor = 'pointer';
+        
+        // Restore required attributes based on checkbox state
+        const lookingForInvestment = document.getElementById('lookingForInvestment').checked;
+        if (lookingForInvestment) {
+          document.getElementById('fundingAmount').required = true;
+          document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+            radio.required = true;
+          });
+        }
       });
     });
     
@@ -2095,14 +2140,15 @@
     
     // Toggle investment details section
     function toggleInvestmentDetails() {
-      const checkbox = document.getElementById('lookingForInvestment');
+      const lookingRadio = document.getElementById('lookingForInvestment');
+      const notLookingRadio = document.getElementById('notLookingForInvestment');
       const detailsSection = document.getElementById('investmentDetailsSection');
       
-      console.log('Toggle investment details:', checkbox.checked);
+      console.log('Toggle investment details - Looking:', lookingRadio.checked, 'Not looking:', notLookingRadio.checked);
       
-      if (checkbox.checked) {
+      if (lookingRadio.checked) {
         detailsSection.style.display = 'block';
-        // Make investment fields required
+        // Make investment fields required only when visible
         document.getElementById('fundingAmount').required = true;
         document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
           radio.required = true;
@@ -2110,11 +2156,17 @@
         console.log('Investment details section shown');
       } else {
         detailsSection.style.display = 'none';
-        // Remove required from investment fields
+        // Remove required from investment fields when hidden
         document.getElementById('fundingAmount').required = false;
         document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
           radio.required = false;
         });
+        // Clear the values when hiding
+        document.getElementById('fundingAmount').value = '';
+        document.querySelectorAll('input[name="investmentType"]').forEach(radio => {
+          radio.checked = false;
+        });
+        document.getElementById('investmentDetailsText').value = '';
         console.log('Investment details section hidden');
       }
     }
