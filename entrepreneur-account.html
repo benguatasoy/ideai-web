@@ -1351,6 +1351,11 @@
   </div>
   
   <script>
+    // Base URL configuration - will be updated for production
+    const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:5000' 
+      : 'https://ideai-backend-production.up.railway.app'; // Railway URL will be updated after deployment
+    
     // Load user data
     function loadUserData() {
       const username = localStorage.getItem('username');
@@ -1362,7 +1367,7 @@
         document.getElementById('profileAvatar').textContent = firstname.charAt(0).toUpperCase();
         
         // Load profile from server
-        fetch(`http://localhost:5000/api/user/${username}`)
+        fetch(`${BASE_URL}/api/user/${username}`)
           .then(response => response.json())
           .then(data => {
             if (data.success) {
@@ -1454,7 +1459,7 @@
     
     // Load projects
     function loadProjects(username) {
-      fetch(`http://localhost:5000/api/projects?creator=${username}`)
+      fetch(`${BASE_URL}/api/projects?creator=${username}`)
         .then(response => response.json())
         .then(data => {
           if (data.success) {
@@ -1584,7 +1589,7 @@
       
       // Load current profile data
       const username = localStorage.getItem('username');
-      fetch(`http://localhost:5000/api/user/${username}`)
+      fetch(`${BASE_URL}/api/user/${username}`)
         .then(response => response.json())
         .then(data => {
           if (data.success) {
@@ -1788,10 +1793,10 @@
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
       
-      console.log('Making fetch request to:', 'http://localhost:5000/api/projects');
+      console.log('Making fetch request to:', `${BASE_URL}/api/projects`);
       
       // Send to backend with better error handling
-      fetch('http://localhost:5000/api/projects', {
+      fetch(`${BASE_URL}/api/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1909,7 +1914,7 @@
       const interestsArray = interests ? interests.split(',').map(s => s.trim()).filter(s => s) : [];
       
       // Update user profile
-      fetch(`http://localhost:5000/api/user/${username}`, {
+      fetch(`${BASE_URL}/api/user/${username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -1978,7 +1983,7 @@
       }
       
       // Update user profile with new contact
-      fetch(`http://localhost:5000/api/user/${username}`, {
+      fetch(`${BASE_URL}/api/user/${username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -2022,7 +2027,7 @@
         const username = localStorage.getItem('username');
         console.log('Deleting project:', projectId, 'for user:', username);
         
-        fetch(`http://localhost:5000/api/projects/${projectId}?username=${username}`, {
+        fetch(`${BASE_URL}/api/projects/${projectId}?username=${username}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -2177,7 +2182,7 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
         
-        const response = await fetch('http://localhost:5000/api/test', {
+        const response = await fetch(`${BASE_URL}/api/test`, {
           method: 'GET',
           headers: {
             'Accept': 'application/json'

@@ -117,6 +117,11 @@
     <div class="cards" id="projectCards"></div>
   </div>
   <script>
+    // Base URL configuration - will be updated for production
+    const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+      ? 'http://localhost:5000' 
+      : 'https://ideai-backend-production.up.railway.app'; // Railway URL will be updated after deployment
+    
     const params = new URLSearchParams(window.location.search);
     const interest = params.get('interest') || 'tech';
     const budget = params.get('budget') || '1000-5000';
@@ -366,7 +371,7 @@
     // Load real projects from API
     async function loadMatchingProjects() {
       try {
-        const response = await fetch('http://localhost:5000/api/projects');
+        const response = await fetch(`${BASE_URL}/api/projects`);
         const data = await response.json();
         
         if (data.success) {

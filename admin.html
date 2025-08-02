@@ -442,6 +442,11 @@
     </div>
 
     <script>
+        // Base URL configuration - will be updated for production
+        const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+          ? 'http://localhost:5000' 
+          : 'https://ideai-backend-production.up.railway.app'; // Railway URL will be updated after deployment
+        
         // Check authentication
         function checkAuth() {
             const username = localStorage.getItem('username');
@@ -475,7 +480,7 @@
         async function loadPlatformData() {
             try {
                 // Load users
-                const usersResponse = await fetch('http://localhost:5000/api/users');
+                const usersResponse = await fetch(`${BASE_URL}/api/users`);
                 const usersData = await usersResponse.json();
                 
                 if (usersData.success) {
@@ -484,7 +489,7 @@
                 }
                 
                 // Load projects
-                const projectsResponse = await fetch('http://localhost:5000/api/projects');
+                const projectsResponse = await fetch(`${BASE_URL}/api/projects`);
                 const projectsData = await projectsResponse.json();
                 
                 if (projectsData.success) {
