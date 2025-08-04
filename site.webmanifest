@@ -1,0 +1,26 @@
+{
+  "name": "IDEAI Tech Consultancy",
+  "short_name": "IDEAI",
+  "description": "IDEAI Tech Consultancy - Where Ideas Become Action",
+  "icons": [
+    {
+      "src": "favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#2980ef",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+} 

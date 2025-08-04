@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investor Account - IDEAI</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="menu.css">
     <style>
         * {
@@ -258,8 +265,84 @@
             box-shadow: 0 16px 48px rgba(59, 130, 246, 0.4);
         }
         
-            /* Stats Grid */
-    .stats-grid {
+        /* Bio Details Grid */
+        .bio-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .bio-detail-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bio-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border-radius: 16px;
+            z-index: -1;
+        }
+        
+        .bio-detail-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+            border-color: rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .bio-detail-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
+        
+        .bio-detail-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .bio-detail-value {
+            font-size: 1.1rem;
+            color: #1e293b;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+        
+        .bio-detail-value.empty {
+            color: #94a3b8;
+            font-style: italic;
+            font-weight: 400;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 32px;
@@ -937,6 +1020,100 @@
             box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
         }
         
+        /* Investment Focus Styles */
+        .investment-focus-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .focus-options, .focus-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .focus-option-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+        
+        .custom-focus-input {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .custom-focus-input .form-input {
+            flex: 1;
+        }
+        
+        .add-focus-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        
+        .add-focus-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .custom-focus-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .focus-tag {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+        
+        .focus-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .focus-tag .remove-tag {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .focus-tag .remove-tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .main-content {
@@ -958,6 +1135,21 @@
                 font-size: 2.5rem;
             }
             
+            .bio-details-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+            }
+            
+            .bio-detail-card {
+                padding: 20px;
+            }
+            
+            .bio-detail-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
+            }
+            
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -968,6 +1160,34 @@
             
             .contact-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            /* Investment Focus Responsive */
+            .investment-focus-container {
+                gap: 16px;
+            }
+            
+            .custom-focus-input {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .custom-focus-input .form-input {
+                width: 100%;
+            }
+            
+            .add-focus-btn {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .custom-focus-tags {
+                gap: 6px;
+            }
+            
+            .focus-tag {
+                font-size: 0.8rem;
+                padding: 4px 10px;
             }
         }
     </style>
@@ -1018,6 +1238,11 @@
                     <p class="profile-bio" id="profileBio">Tell us about your investment experience and interests...</p>
                     <button class="edit-profile-btn">Edit Profile</button>
                 </div>
+            </div>
+            
+            <!-- Bio Details Grid -->
+            <div class="bio-details-grid" id="bioDetailsGrid">
+                <!-- Bio details will be loaded here dynamically -->
             </div>
         </section>
 
@@ -1108,18 +1333,36 @@
                 
                 <div class="form-group">
                     <label class="form-label">Investment Focus</label>
-                    <select class="form-input" id="editInvestmentFocus" multiple>
-                        <option value="Technology">Technology</option>
-                        <option value="Healthcare">Healthcare</option>
-                        <option value="Finance">Finance</option>
-                        <option value="Education">Education</option>
-                        <option value="Energy">Energy</option>
-                        <option value="E-commerce">E-commerce</option>
-                        <option value="AI/ML">AI/ML</option>
-                        <option value="Biotech">Biotech</option>
-                        <option value="Clean Energy">Clean Energy</option>
-                        <option value="Fintech">Fintech</option>
-                    </select>
+                    <div class="investment-focus-container">
+                        <div class="focus-options">
+                            <label class="focus-option-label">Select from options:</label>
+                            <select class="form-input" id="editInvestmentFocus" multiple>
+                                <option value="Technology">Technology</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Education">Education</option>
+                                <option value="Energy">Energy</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="AI/ML">AI/ML</option>
+                                <option value="Biotech">Biotech</option>
+                                <option value="Clean Energy">Clean Energy</option>
+                                <option value="Fintech">Fintech</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Manufacturing">Manufacturing</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Food & Beverage">Food & Beverage</option>
+                            </select>
+                        </div>
+                        <div class="focus-custom">
+                            <label class="focus-option-label">Or add custom focus areas:</label>
+                            <div class="custom-focus-input">
+                                <input type="text" class="form-input" id="customFocusInput" placeholder="Type custom focus area and press Enter">
+                                <button type="button" class="add-focus-btn" onclick="addCustomFocus()">Add</button>
+                            </div>
+                            <div class="custom-focus-tags" id="customFocusTags"></div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -1516,6 +1759,9 @@
             Array.from(focusSelect.options).forEach(option => {
                 option.selected = savedFocus.includes(option.value);
             });
+            
+            // Load custom focus areas
+            loadCustomFocusAreas(profileData.customFocusAreas || []);
         }
 
         function saveProfileChanges(e) {
@@ -1531,7 +1777,8 @@
                 bio: document.getElementById('editBio').value,
                 location: document.getElementById('editLocation').value,
                 experience: document.getElementById('editExperience').value,
-                investmentFocus: Array.from(document.getElementById('editInvestmentFocus').selectedOptions).map(option => option.value)
+                investmentFocus: Array.from(document.getElementById('editInvestmentFocus').selectedOptions).map(option => option.value),
+                customFocusAreas: getCustomFocusAreas()
             };
             
             // Save to localStorage
@@ -1542,6 +1789,9 @@
             
             // Update profile display
             updateProfileDisplay(formData);
+            
+            // Update bio details display
+            updateBioDetailsDisplay(formData);
             
             // Close modal
             closeEditModal();
@@ -1661,6 +1911,9 @@
                 // Load saved bio from localStorage (only for current user)
                 loadSavedBio();
                 
+                // Load bio details
+                loadBioDetails();
+                
                 // Load contact information from localStorage (only for current user)
                 loadContactInfo();
             }
@@ -1688,6 +1941,108 @@
             } else {
                 // No saved profile, show empty bio
                 profileBio.textContent = 'Tell us about your investment experience and interests...';
+            }
+        }
+
+        // Load bio details from localStorage
+        function loadBioDetails() {
+            const username = localStorage.getItem('username');
+            const savedProfile = localStorage.getItem('investorProfile');
+            const bioDetailsGrid = document.getElementById('bioDetailsGrid');
+            
+            if (!bioDetailsGrid) return;
+            
+            if (savedProfile && username) {
+                try {
+                    const profileData = JSON.parse(savedProfile);
+                    // Check if the saved profile belongs to current user
+                    if (profileData.username === username) {
+                        updateBioDetailsDisplay(profileData);
+                    } else {
+                        // Different user, show empty bio details
+                        updateBioDetailsDisplay({});
+                    }
+                } catch (error) {
+                    console.error('Error parsing profile data:', error);
+                    updateBioDetailsDisplay({});
+                }
+            } else {
+                // No saved profile, show empty bio details
+                updateBioDetailsDisplay({});
+            }
+        }
+
+        // Update bio details display
+        function updateBioDetailsDisplay(profileData) {
+            const bioDetailsGrid = document.getElementById('bioDetailsGrid');
+            if (!bioDetailsGrid) return;
+            
+            const bioDetails = [
+                {
+                    icon: '📍',
+                    label: 'Location',
+                    value: profileData.location || 'Not specified',
+                    empty: !profileData.location
+                },
+                {
+                    icon: '⏰',
+                    label: 'Years of Experience',
+                    value: profileData.experience ? `${profileData.experience} years` : 'Not specified',
+                    empty: !profileData.experience
+                },
+                {
+                    icon: '💰',
+                    label: 'Investment Range',
+                    value: profileData.investmentRange || 'Not specified',
+                    empty: !profileData.investmentRange
+                },
+                {
+                    icon: '🎯',
+                    label: 'Investment Focus',
+                    value: (() => {
+                        const predefinedFocus = profileData.investmentFocus || [];
+                        const customFocus = profileData.customFocusAreas || [];
+                        const allFocus = [...predefinedFocus, ...customFocus];
+                        return allFocus.length > 0 ? allFocus.join(', ') : 'Not specified';
+                    })(),
+                    empty: (() => {
+                        const predefinedFocus = profileData.investmentFocus || [];
+                        const customFocus = profileData.customFocusAreas || [];
+                        return predefinedFocus.length === 0 && customFocus.length === 0;
+                    })()
+                },
+                {
+                    icon: '🏢',
+                    label: 'Investor Type',
+                    value: profileData.investorType || 'Not specified',
+                    empty: !profileData.investorType
+                },
+                {
+                    icon: '📊',
+                    label: 'Portfolio Status',
+                    value: getPortfolioStatus(),
+                    empty: false
+                }
+            ];
+            
+            bioDetailsGrid.innerHTML = bioDetails.map(detail => `
+                <div class="bio-detail-card">
+                    <div class="bio-detail-icon">${detail.icon}</div>
+                    <div class="bio-detail-label">${detail.label}</div>
+                    <div class="bio-detail-value ${detail.empty ? 'empty' : ''}">${detail.value}</div>
+                </div>
+            `).join('');
+        }
+
+        // Get portfolio status based on investments
+        function getPortfolioStatus() {
+            const investments = getInvestments();
+            if (investments.length === 0) {
+                return 'No investments yet';
+            } else if (investments.length === 1) {
+                return '1 active investment';
+            } else {
+                return `${investments.length} active investments`;
             }
         }
 
@@ -1895,6 +2250,64 @@
                     closeAddContactModal();
                 }
             });
+        });
+        
+        // Custom Focus Area Functions
+        function addCustomFocus() {
+            const input = document.getElementById('customFocusInput');
+            const value = input.value.trim();
+            
+            if (value) {
+                const customFocusAreas = getCustomFocusAreas();
+                if (!customFocusAreas.includes(value)) {
+                    customFocusAreas.push(value);
+                    updateCustomFocusTags(customFocusAreas);
+                    input.value = '';
+                }
+            }
+        }
+        
+        function removeCustomFocus(focusArea) {
+            const customFocusAreas = getCustomFocusAreas();
+            const updatedAreas = customFocusAreas.filter(area => area !== focusArea);
+            updateCustomFocusTags(updatedAreas);
+        }
+        
+        function getCustomFocusAreas() {
+            const tagsContainer = document.getElementById('customFocusTags');
+            if (!tagsContainer) return [];
+            
+            const tags = tagsContainer.querySelectorAll('.focus-tag');
+            return Array.from(tags).map(tag => tag.textContent.replace('×', '').trim());
+        }
+        
+        function loadCustomFocusAreas(focusAreas) {
+            updateCustomFocusTags(focusAreas);
+        }
+        
+        function updateCustomFocusTags(focusAreas) {
+            const tagsContainer = document.getElementById('customFocusTags');
+            if (!tagsContainer) return;
+            
+            tagsContainer.innerHTML = focusAreas.map(area => `
+                <div class="focus-tag">
+                    ${area}
+                    <button class="remove-tag" onclick="removeCustomFocus('${area}')">×</button>
+                </div>
+            `).join('');
+        }
+        
+        // Add event listener for Enter key on custom focus input
+        document.addEventListener('DOMContentLoaded', function() {
+            const customFocusInput = document.getElementById('customFocusInput');
+            if (customFocusInput) {
+                customFocusInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addCustomFocus();
+                    }
+                });
+            }
         });
     </script>
 </body>
