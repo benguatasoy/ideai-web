@@ -781,15 +781,24 @@
         margin-bottom: 16px;
     }
     @media (max-width: 900px) {
-        .discover-content-wrapper {
-            flex-direction: column;
-        }
-        .discover-filters {
-            max-width: 100%;
-            min-width: unset;
-            margin-bottom: 24px;
-        }
-    }
+  .discover-content-wrapper {
+    flex-direction: column !important;
+    z-index: auto !important;
+  }
+  .discover-filters {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: unset !important;
+    margin-bottom: 24px !important;
+    position: static !important;
+    top: unset !important;
+    left: unset !important;
+    z-index: auto !important;
+  }
+  .discover-projects-section {
+    width: 100% !important;
+  }
+}
     @media (max-width: 600px) {
         .discover-main {
             padding: 12px 2px 32px 2px;
@@ -2502,4 +2511,4 @@
     });
     </script>
 </body>
-</html> 
+</html>
